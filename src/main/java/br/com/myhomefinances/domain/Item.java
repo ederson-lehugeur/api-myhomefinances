@@ -1,21 +1,20 @@
 package br.com.myhomefinances.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
-public class Categoria implements Serializable {
+public class Item implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -24,16 +23,18 @@ public class Categoria implements Serializable {
 	private String nome;
 	private String complemento;
 
-	@OneToMany(mappedBy="categoria")
-	private List<Item> itens = new ArrayList<>();
+	@ManyToOne
+	@JoinColumn(name="categoria_id")
+	private Categoria categoria;
 
-	public Categoria() {}
+	public Item() {}
 
-	public Categoria(Integer id, String nome, String complemento) {
+	public Item(Integer id, String nome, String complemento, Categoria categoria) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.complemento = complemento;
+		this.categoria = categoria;
 	}
 
 	public Integer getId() {
@@ -60,12 +61,12 @@ public class Categoria implements Serializable {
 		this.complemento = complemento;
 	}
 
-	public List<Item> getItens() {
-		return itens;
+	public Categoria getCategoria() {
+		return categoria;
 	}
 
-	public void setItens(List<Item> itens) {
-		this.itens = itens;
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 
 	@Override
@@ -84,7 +85,7 @@ public class Categoria implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		Item other = (Item) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
