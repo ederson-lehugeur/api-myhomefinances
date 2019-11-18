@@ -35,8 +35,6 @@ public class MyhomefinancesApplication implements CommandLineRunner {
 		Item item2 = new Item(null, "Depósito", null, categoria1);
 		Item item3 = new Item(null, "Transferência", null, categoria1);
 
-		categoria1.getItens().addAll(Arrays.asList(item1, item2, item3));
-
 		categoriaRepository.saveAll(Arrays.asList(categoria1));
 		itemRepository.saveAll(Arrays.asList(item1, item2, item3));
 

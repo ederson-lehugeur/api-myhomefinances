@@ -1,20 +1,13 @@
 package br.com.myhomefinances.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Categoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -23,9 +16,6 @@ public class Categoria implements Serializable {
 	private Integer id;
 	private String nome;
 	private String complemento;
-
-	@OneToMany(mappedBy="categoria")
-	private List<Item> itens = new ArrayList<>();
 
 	public Categoria() {}
 
@@ -58,14 +48,6 @@ public class Categoria implements Serializable {
 
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
-	}
-
-	public List<Item> getItens() {
-		return itens;
-	}
-
-	public void setItens(List<Item> itens) {
-		this.itens = itens;
 	}
 
 	@Override
