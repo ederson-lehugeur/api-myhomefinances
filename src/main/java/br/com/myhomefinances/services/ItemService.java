@@ -25,8 +25,8 @@ public class ItemService {
 	public Item find(Integer id) {
 		Optional<Item> item = itemRepository.findById(id);
 
-		return item.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! "
-				+ "Id: " + id + ", Tipo: " + Item.class.getName()));
+		return item.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
+				id, Item.class.getName()));
 	}
 
 }

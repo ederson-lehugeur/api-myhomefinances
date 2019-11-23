@@ -1,19 +1,18 @@
-package br.com.myhomefinances.services.exception;
+package br.com.myhomefinances.resources.exception;
 
-public class ObjectNotFoundException extends RuntimeException {
+import java.io.Serializable;
+
+public class ObjectNotFoundError extends StandardError implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
 	private String entidade;
 
-	public ObjectNotFoundException(String msg, Integer id, String entidade) {
-		super(msg);
+	public ObjectNotFoundError(Integer status, String message, Long timestamp,
+			Integer id, String entidade) {
+		super(status, message, timestamp);
 		this.id = id;
 		this.entidade = entidade;
-	}
-
-	public ObjectNotFoundException(String msg, Throwable cause) {
-		super(msg, cause);
 	}
 
 	public Integer getId() {
