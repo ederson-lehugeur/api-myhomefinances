@@ -9,8 +9,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.com.myhomefinances.domain.Categoria;
 import br.com.myhomefinances.domain.Item;
+import br.com.myhomefinances.domain.Status;
 import br.com.myhomefinances.repositories.CategoriaRepository;
 import br.com.myhomefinances.repositories.ItemRepository;
+import br.com.myhomefinances.repositories.StatusRepository;
 
 @SpringBootApplication
 public class MyhomefinancesApplication implements CommandLineRunner {
@@ -20,6 +22,9 @@ public class MyhomefinancesApplication implements CommandLineRunner {
 
 	@Autowired
 	ItemRepository itemRepository;
+
+	@Autowired
+	StatusRepository statusRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MyhomefinancesApplication.class, args);
@@ -38,6 +43,12 @@ public class MyhomefinancesApplication implements CommandLineRunner {
 		categoriaRepository.saveAll(Arrays.asList(categoria1));
 		itemRepository.saveAll(Arrays.asList(item1, item2, item3));
 
+		Status status1 = new Status(null, "Pago");
+		Status status2 = new Status(null, "Pendente");
+		Status status3 = new Status(null, "Saque");
+		Status status4 = new Status(null, "Ganho");
+
+		statusRepository.saveAll(Arrays.asList(status1, status2, status3, status4));
 	}
 
 }
