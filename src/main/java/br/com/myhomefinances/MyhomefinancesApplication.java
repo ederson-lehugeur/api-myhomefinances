@@ -12,13 +12,13 @@ import br.com.myhomefinances.domain.Categoria;
 import br.com.myhomefinances.domain.Item;
 import br.com.myhomefinances.domain.Registro;
 import br.com.myhomefinances.domain.Saldo;
-import br.com.myhomefinances.domain.Status;
+import br.com.myhomefinances.domain.TipoRegistro;
 import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.repositories.CategoriaRepository;
 import br.com.myhomefinances.repositories.ItemRepository;
 import br.com.myhomefinances.repositories.RegistroRepository;
 import br.com.myhomefinances.repositories.SaldoRepository;
-import br.com.myhomefinances.repositories.StatusRepository;
+import br.com.myhomefinances.repositories.TipoRegistroRepository;
 import br.com.myhomefinances.repositories.UsuarioRepository;
 
 @SpringBootApplication
@@ -31,7 +31,7 @@ public class MyhomefinancesApplication implements CommandLineRunner {
 	ItemRepository itemRepository;
 
 	@Autowired
-	StatusRepository statusRepository;
+	TipoRegistroRepository tipoRegistroRepository;
 
 	@Autowired
 	UsuarioRepository usuarioRepository;
@@ -59,12 +59,13 @@ public class MyhomefinancesApplication implements CommandLineRunner {
 		categoriaRepository.saveAll(Arrays.asList(categoria1));
 		itemRepository.saveAll(Arrays.asList(item1, item2, item3));
 
-		Status status1 = new Status(null, "Pago");
-		Status status2 = new Status(null, "Pendente");
-		Status status3 = new Status(null, "Saque");
-		Status status4 = new Status(null, "Ganho");
+		TipoRegistro tipoRegistro1 = new TipoRegistro(null, "Pagamento");
+		TipoRegistro tipoRegistro2 = new TipoRegistro(null, "Pendencia");
+		TipoRegistro tipoRegistro3 = new TipoRegistro(null, "Saque");
+		TipoRegistro tipoRegistro4 = new TipoRegistro(null, "Ganho");
+		TipoRegistro tipoRegistro5 = new TipoRegistro(null, "Salário");
 
-		statusRepository.saveAll(Arrays.asList(status1, status2, status3, status4));
+		tipoRegistroRepository.saveAll(Arrays.asList(tipoRegistro1, tipoRegistro2, tipoRegistro3, tipoRegistro4, tipoRegistro5));
 
 		Usuario usuario1 = new Usuario(null, "Ederson", "Lehugeur", "eder.lehugeur@gmail.com", "123456");
 
@@ -72,7 +73,7 @@ public class MyhomefinancesApplication implements CommandLineRunner {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS");
 
-		Registro registro1 = new Registro(null, 100.00, sdf.parse("22/11/2019 16:00:00.000"), status3, usuario1,
+		Registro registro1 = new Registro(null, 100.00, sdf.parse("22/11/2019 16:00:00.000"), tipoRegistro3, usuario1,
 				item1);
 
 		registroRepository.saveAll(Arrays.asList(registro1));

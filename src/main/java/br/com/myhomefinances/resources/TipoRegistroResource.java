@@ -9,30 +9,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.myhomefinances.domain.Status;
-import br.com.myhomefinances.services.StatusService;
+import br.com.myhomefinances.domain.TipoRegistro;
+import br.com.myhomefinances.services.TipoRegistroService;
 
 @RestController
-@RequestMapping(value="status")
-public class StatusResource {
+@RequestMapping(value="tiposRegistros")
+public class TipoRegistroResource {
 
 	@Autowired
-	StatusService statusService;
+	TipoRegistroService tipoRegistroService;
 
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<?> findAll() {
 
-		List<Status> listaStatus = statusService.findAll();
+		List<TipoRegistro> listaTipoRegistro = tipoRegistroService.findAll();
 
-		return ResponseEntity.ok().body(listaStatus);
+		return ResponseEntity.ok().body(listaTipoRegistro);
 	}
 
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 
-		Status status = statusService.find(id);
+		TipoRegistro tipoRegistro = tipoRegistroService.find(id);
 
-		return ResponseEntity.ok().body(status);
+		return ResponseEntity.ok().body(tipoRegistro);
 	}
 
 }

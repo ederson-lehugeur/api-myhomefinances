@@ -25,8 +25,8 @@ public class Registro implements Serializable {
 	private Date dataHora;
 
 	@ManyToOne
-	@JoinColumn(name="status_id")
-	private Status status;
+	@JoinColumn(name="tiporegistro_id")
+	private TipoRegistro tipoRegistro;
 
 	@ManyToOne
 	@JoinColumn(name="usuario_id")
@@ -38,12 +38,12 @@ public class Registro implements Serializable {
 
 	public Registro() {}
 
-	public Registro(Integer id, Double valor, Date dataHora, Status status, Usuario usuario,
+	public Registro(Integer id, Double valor, Date dataHora, TipoRegistro tipoRegistro, Usuario usuario,
 			Item item) {
 		this.id = id;
 		this.valor = valor;
 		this.dataHora = dataHora;
-		this.status = status;
+		this.tipoRegistro = tipoRegistro;
 		this.usuario = usuario;
 		this.item = item;
 	}
@@ -72,12 +72,12 @@ public class Registro implements Serializable {
 		this.dataHora = dataHora;
 	}
 
-	public Status getStatus() {
-		return status;
+	public TipoRegistro getStatus() {
+		return tipoRegistro;
 	}
 
-	public void setStatus(Status status) {
-		this.status = status;
+	public void setStatus(TipoRegistro tipoRegistro) {
+		this.tipoRegistro = tipoRegistro;
 	}
 
 	public Usuario getUsuario() {
