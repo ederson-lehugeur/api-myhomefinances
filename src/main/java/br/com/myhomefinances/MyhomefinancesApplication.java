@@ -51,12 +51,15 @@ public class MyhomefinancesApplication implements CommandLineRunner {
 
 		Categoria categoria1 = new Categoria(null, "Operação Bancária",
 				"Operações de Saque, Depósito, Transferências, etc.");
+		Categoria categoria2 = new Categoria(null, "Compras no mercado", null);
+		Categoria categoria3 = new Categoria(null, "Compras na farmácia", null);
+		Categoria categoria4 = new Categoria(null, "Viagens", null);
 
 		Item item1 = new Item(null, "Saque", null, categoria1);
 		Item item2 = new Item(null, "Depósito", null, categoria1);
 		Item item3 = new Item(null, "Transferência", null, categoria1);
 
-		categoriaRepository.saveAll(Arrays.asList(categoria1));
+		categoriaRepository.saveAll(Arrays.asList(categoria1, categoria2, categoria3, categoria4));
 		itemRepository.saveAll(Arrays.asList(item1, item2, item3));
 
 		TipoRegistro tipoRegistro1 = new TipoRegistro(null, "Pagamento");
