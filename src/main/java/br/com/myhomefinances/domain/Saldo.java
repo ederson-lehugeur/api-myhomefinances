@@ -13,39 +13,28 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-public class Registro implements Serializable {
+public class Saldo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-	private Double valor;
+	private Double saldo;
 
 	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
 	private Date dataHora;
 
 	@ManyToOne
-	@JoinColumn(name="status_id")
-	private Status status;
-
-	@ManyToOne
 	@JoinColumn(name="usuario_id")
 	private Usuario usuario;
 
-	@ManyToOne
-	@JoinColumn(name="item_id")
-	private Item item;
+	public Saldo() {}
 
-	public Registro() {}
-
-	public Registro(Integer id, Double valor, Date dataHora, Status status, Usuario usuario,
-			Item item) {
+	public Saldo(Integer id, Double saldo, Date dataHora, Usuario usuario) {
 		this.id = id;
-		this.valor = valor;
+		this.saldo = saldo;
 		this.dataHora = dataHora;
-		this.status = status;
 		this.usuario = usuario;
-		this.item = item;
 	}
 
 	public Integer getId() {
@@ -56,12 +45,12 @@ public class Registro implements Serializable {
 		this.id = id;
 	}
 
-	public Double getValor() {
-		return valor;
+	public Double getSaldo() {
+		return saldo;
 	}
 
-	public void setValor(Double valor) {
-		this.valor = valor;
+	public void setSaldo(Double saldo) {
+		this.saldo = saldo;
 	}
 
 	public Date getDataHora() {
@@ -72,28 +61,12 @@ public class Registro implements Serializable {
 		this.dataHora = dataHora;
 	}
 
-	public Status getStatus() {
-		return status;
-	}
-
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-
 	public Usuario getUsuario() {
 		return usuario;
 	}
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
-	}
-
-	public Item getItem() {
-		return item;
-	}
-
-	public void setItem(Item item) {
-		this.item = item;
 	}
 
 	@Override
@@ -112,7 +85,7 @@ public class Registro implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Registro other = (Registro) obj;
+		Saldo other = (Saldo) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

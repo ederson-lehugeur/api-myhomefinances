@@ -11,11 +11,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import br.com.myhomefinances.domain.Categoria;
 import br.com.myhomefinances.domain.Item;
 import br.com.myhomefinances.domain.Registro;
+import br.com.myhomefinances.domain.Saldo;
 import br.com.myhomefinances.domain.Status;
 import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.repositories.CategoriaRepository;
 import br.com.myhomefinances.repositories.ItemRepository;
 import br.com.myhomefinances.repositories.RegistroRepository;
+import br.com.myhomefinances.repositories.SaldoRepository;
 import br.com.myhomefinances.repositories.StatusRepository;
 import br.com.myhomefinances.repositories.UsuarioRepository;
 
@@ -36,6 +38,9 @@ public class MyhomefinancesApplication implements CommandLineRunner {
 
 	@Autowired
 	RegistroRepository registroRepository;
+
+	@Autowired
+	SaldoRepository saldoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MyhomefinancesApplication.class, args);
@@ -65,12 +70,17 @@ public class MyhomefinancesApplication implements CommandLineRunner {
 
 		usuarioRepository.saveAll(Arrays.asList(usuario1));
 
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS");
 
-		Registro registro1 = new Registro(null, 100.00, sdf.parse("22/11/2019 16:00:00"), status3, usuario1,
+		Registro registro1 = new Registro(null, 100.00, sdf.parse("22/11/2019 16:00:00.000"), status3, usuario1,
 				item1);
 
 		registroRepository.saveAll(Arrays.asList(registro1));
+
+		Saldo saldo1 = new Saldo(null, 1000.00, sdf.parse("21/11/2019 14:00:00.000"), usuario1);
+		Saldo saldo2 = new Saldo(null, 900.00, sdf.parse("22/11/2019 16:00:01.000"), usuario1);
+
+		saldoRepository.saveAll(Arrays.asList(saldo1, saldo2));
 
 	}
 
