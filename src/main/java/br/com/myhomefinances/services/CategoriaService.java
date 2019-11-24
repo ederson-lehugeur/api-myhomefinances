@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.myhomefinances.domain.Categoria;
+import br.com.myhomefinances.dto.CategoriaDTO;
 import br.com.myhomefinances.repositories.CategoriaRepository;
 import br.com.myhomefinances.services.exception.DataIntegrityException;
 import br.com.myhomefinances.services.exception.ObjectNotFoundException;
@@ -60,5 +61,9 @@ public class CategoriaService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir uma categoria que possui itens.");
 		}
+	}
+
+	public Categoria fromDTO(CategoriaDTO categoriaDTO) {
+		return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome(), categoriaDTO.getComplemento());
 	}
 }

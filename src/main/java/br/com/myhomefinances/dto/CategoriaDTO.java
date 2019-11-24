@@ -2,13 +2,22 @@ package br.com.myhomefinances.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
 import br.com.myhomefinances.domain.Categoria;
 
 public class CategoriaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
+
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(max=255, message="O tamanho máximo é de 255 caracteres")
 	private String nome;
+
+	@Length(max=255, message="O tamanho máxima é de 255 caracteres")
 	private String complemento;
 
 	public CategoriaDTO() {}
