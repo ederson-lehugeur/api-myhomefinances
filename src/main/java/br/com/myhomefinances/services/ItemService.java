@@ -21,6 +21,9 @@ public class ItemService {
 	@Autowired
 	ItemRepository itemRepository;
 
+	@Autowired
+	CategoriaService categoriaService;
+
 	public List<Item> findAll() {
 		List<Item> listaItens = itemRepository.findAll();
 
@@ -63,7 +66,7 @@ public class ItemService {
 	}
 
 	public Item fromDTO(ItemDTO itemDto) {
-		Categoria categoria = new Categoria(itemDto.getCategoriaId(), null, null);
+		Categoria categoria = categoriaService.find(itemDto.getCategoriaId());
 
 		return new Item(itemDto.getId(), itemDto.getNome(), itemDto.getComplemento(), categoria);
 	}
