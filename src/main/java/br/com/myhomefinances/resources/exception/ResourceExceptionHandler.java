@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import br.com.myhomefinances.services.exception.DataIntegrityException;
+import br.com.myhomefinances.services.exception.NegativeBalanceException;
 import br.com.myhomefinances.services.exception.ObjectNotFoundException;
 
 @ControllerAdvice
@@ -45,6 +46,16 @@ public class ResourceExceptionHandler {
 		for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
 			err.addError(fieldError.getField(), fieldError.getDefaultMessage());
 		}
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+
+	@ExceptionHandler(NegativeBalanceException.class)
+	public ResponseEntity<StandardError> objectNotFound(NegativeBalanceException e,
+			HttpServletRequest request) {
+
+		StandardError err = new NegativeBalanceError(HttpStatus.BAD_REQUEST.value(),
+				e.getMessage(), System.currentTimeMillis());
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}

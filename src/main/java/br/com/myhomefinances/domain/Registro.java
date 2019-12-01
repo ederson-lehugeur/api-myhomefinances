@@ -24,6 +24,9 @@ public class Registro implements Serializable {
 	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
 	private Date dataHora;
 
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
+	private Date dataHoraCriacao;
+
 	@ManyToOne
 	@JoinColumn(name="tiporegistro_id")
 	private TipoRegistro tipoRegistro;
@@ -72,11 +75,19 @@ public class Registro implements Serializable {
 		this.dataHora = dataHora;
 	}
 
-	public TipoRegistro getStatus() {
+	public Date getDataHoraCriacao() {
+		return dataHoraCriacao;
+	}
+
+	public void setDataHoraCriacao(Date dataHoraCriacao) {
+		this.dataHoraCriacao = dataHoraCriacao;
+	}
+
+	public TipoRegistro getTipoRegistro() {
 		return tipoRegistro;
 	}
 
-	public void setStatus(TipoRegistro tipoRegistro) {
+	public void setTipoRegistro(TipoRegistro tipoRegistro) {
 		this.tipoRegistro = tipoRegistro;
 	}
 
