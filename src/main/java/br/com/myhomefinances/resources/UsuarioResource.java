@@ -1,15 +1,23 @@
 package br.com.myhomefinances.resources;
 
+import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.myhomefinances.domain.Usuario;
+import br.com.myhomefinances.dto.UsuarioDTO;
 import br.com.myhomefinances.services.UsuarioService;
 
 @RestController
@@ -20,7 +28,7 @@ public class UsuarioResource {
 	UsuarioService usuarioService;
 
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<?> findAll() {
+	public ResponseEntity<List<Usuario>> findAll() {
 
 		List<Usuario> listaUsuarios = usuarioService.findAll();
 
@@ -28,11 +36,56 @@ public class UsuarioResource {
 	}
 
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<Usuario> find(@PathVariable Integer id) {
 
 		Usuario usuario = usuarioService.find(id);
 
 		return ResponseEntity.ok().body(usuario);
+	}
+
+	@RequestMapping(value="/page", method=RequestMethod.GET)
+	public ResponseEntity<Page<Usuario>> findPage(
+			@RequestParam(value="page", defaultValue="0") Integer page,
+			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage,
+			@RequestParam(value="orderBy", defaultValue="nome") String orderBy,
+			@RequestParam(value="direction", defaultValue="ASC") String direction) {
+
+		Page<Usuario> listaUsuarios = usuarioService.findPage(page, linesPerPage, orderBy, direction);
+
+		return ResponseEntity.ok().body(listaUsuarios);
+	}
+
+	@RequestMapping(method=RequestMethod.POST)
+	public ResponseEntity<Void> insert(@Valid @RequestBody UsuarioDTO usuarioDto) {
+
+		Usuario usuario = usuarioService.fromDTO(usuarioDto);
+
+		usuario = usuarioService.insert(usuario);
+
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().
+				path("/{id}").buildAndExpand(usuario.getId()).toUri();
+
+		return ResponseEntity.created(uri).build();
+	}
+
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<Void> update(@PathVariable Integer id,
+			@Valid @RequestBody UsuarioDTO usuarioDto) {
+
+		Usuario usuario = usuarioService.fromDTO(usuarioDto);
+
+		usuario.setId(id);
+		usuario = usuarioService.update(usuario);
+
+		return ResponseEntity.noContent().build();
+	}
+
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+
+		usuarioService.delete(id);
+
+		return ResponseEntity.noContent().build();
 	}
 
 }
