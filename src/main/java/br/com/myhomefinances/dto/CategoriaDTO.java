@@ -23,7 +23,6 @@ public class CategoriaDTO implements Serializable {
 	public CategoriaDTO() {}
 
 	public CategoriaDTO(Categoria categoria) {
-		// Quando houver necessidade, fazer o filtro de atributos aqui.
 		id = categoria.getId();
 		nome = categoria.getNome();
 		complemento = categoria.getComplemento();

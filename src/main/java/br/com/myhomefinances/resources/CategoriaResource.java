@@ -2,7 +2,6 @@ package br.com.myhomefinances.resources;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -29,12 +28,11 @@ public class CategoriaResource {
 	CategoriaService categoriaService;
 
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<CategoriaDTO>> findAll() {
+	public ResponseEntity<List<Categoria>> findAll() {
 
 		List<Categoria> listaCategoria = categoriaService.findAll();
-		List<CategoriaDTO> listaCategoriaDTO = listaCategoria.stream().map(categoria -> new CategoriaDTO(categoria)).collect(Collectors.toList());
 
-		return ResponseEntity.ok().body(listaCategoriaDTO);
+		return ResponseEntity.ok().body(listaCategoria);
 	}
 
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
@@ -46,16 +44,15 @@ public class CategoriaResource {
 	}
 
 	@RequestMapping(value="/page", method=RequestMethod.GET)
-	public ResponseEntity<Page<CategoriaDTO>> findPage(
+	public ResponseEntity<Page<Categoria>> findPage(
 			@RequestParam(value="page", defaultValue="0") Integer page,
 			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage,
 			@RequestParam(value="orderBy", defaultValue="nome") String orderBy,
 			@RequestParam(value="direction", defaultValue="ASC") String direction) {
 
 		Page<Categoria> listaCategoria = categoriaService.findPage(page, linesPerPage, orderBy, direction);
-		Page<CategoriaDTO> listaCategoriaDTO = listaCategoria.map(categoria -> new CategoriaDTO(categoria));
 
-		return ResponseEntity.ok().body(listaCategoriaDTO);
+		return ResponseEntity.ok().body(listaCategoria);
 	}
 
 	@RequestMapping(method=RequestMethod.POST)
@@ -72,7 +69,7 @@ public class CategoriaResource {
 	}
 
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<Void> insert(@PathVariable Integer id,
+	public ResponseEntity<Void> update(@PathVariable Integer id,
 			@Valid @RequestBody CategoriaDTO categoriaDTO) {
 
 		Categoria categoria = categoriaService.fromDTO(categoriaDTO);
