@@ -6,7 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.myhomefinances.domain.Categoria;
 import br.com.myhomefinances.domain.Item;
+import br.com.myhomefinances.dto.ItemDTO;
 import br.com.myhomefinances.repositories.ItemRepository;
 import br.com.myhomefinances.services.exception.ObjectNotFoundException;
 
@@ -27,6 +29,40 @@ public class ItemService {
 
 		return item.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
 				id, Item.class.getName()));
+	}
+
+	public Item insert(Item item) {
+		item.setId(null);
+
+		item = itemRepository.save(item);
+
+		return item;
+	}
+
+	public Item update(Item item) {
+		Item novoItem = find(item.getId());
+
+		updateData(novoItem, item);
+
+		return itemRepository.save(novoItem);
+	}
+
+	public void delete(Integer id) {
+		find(id);
+
+		itemRepository.deleteById(id);
+	}
+
+	public Item fromDTO(ItemDTO itemDto) {
+		Categoria categoria = new Categoria(itemDto.getCategoriaId(), null, null);
+
+		return new Item(itemDto.getId(), itemDto.getNome(), itemDto.getComplemento(), categoria);
+	}
+
+	private void updateData(Item novoItem, Item item) {
+		novoItem.setNome(item.getNome());
+		novoItem.setComplemento(item.getComplemento());
+		novoItem.setCategoria(item.getCategoria());
 	}
 
 }

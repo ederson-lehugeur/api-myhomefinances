@@ -1,15 +1,21 @@
 package br.com.myhomefinances.resources;
 
+import java.net.URI;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.myhomefinances.domain.Item;
+import br.com.myhomefinances.dto.ItemDTO;
 import br.com.myhomefinances.services.ItemService;
 
 @RestController
@@ -20,7 +26,7 @@ public class ItemResource {
 	ItemService itemService;
 
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<?> findAll() {
+	public ResponseEntity<List<Item>> findAll() {
 
 		List<Item> listaItens = itemService.findAll();
 
@@ -28,11 +34,44 @@ public class ItemResource {
 	}
 
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<Item> find(@PathVariable Integer id) {
 
 		Item item = itemService.find(id);
 
 		return ResponseEntity.ok().body(item);
+	}
+
+	@RequestMapping(method=RequestMethod.POST)
+	public ResponseEntity<Void> insert(@Valid @RequestBody ItemDTO itemDto) {
+
+		Item item = itemService.fromDTO(itemDto);
+
+		item = itemService.insert(item);
+
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().
+				path("/{id}").buildAndExpand(item.getId()).toUri();
+
+		return ResponseEntity.created(uri).build();
+	}
+
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<Void> update(@PathVariable Integer id,
+			@Valid @RequestBody ItemDTO itemDto) {
+
+		Item item = itemService.fromDTO(itemDto);
+
+		item.setId(id);
+		item = itemService.update(item);
+
+		return ResponseEntity.noContent().build();
+	}
+
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+
+		itemService.delete(id);
+
+		return ResponseEntity.noContent().build();
 	}
 
 }
