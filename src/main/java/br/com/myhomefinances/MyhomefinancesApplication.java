@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.com.myhomefinances.domain.Banco;
 import br.com.myhomefinances.domain.Categoria;
+import br.com.myhomefinances.domain.Conta;
 import br.com.myhomefinances.domain.Item;
 import br.com.myhomefinances.domain.Registro;
 import br.com.myhomefinances.domain.Saldo;
@@ -18,6 +19,7 @@ import br.com.myhomefinances.domain.TipoRegistro;
 import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.repositories.BancoRepository;
 import br.com.myhomefinances.repositories.CategoriaRepository;
+import br.com.myhomefinances.repositories.ContaRepository;
 import br.com.myhomefinances.repositories.ItemRepository;
 import br.com.myhomefinances.repositories.RegistroRepository;
 import br.com.myhomefinances.repositories.SaldoRepository;
@@ -51,6 +53,9 @@ public class MyhomefinancesApplication implements CommandLineRunner {
 
 	@Autowired
 	TipoContaRepository tipoContaRepository;
+
+	@Autowired
+	ContaRepository contaRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MyhomefinancesApplication.class, args);
@@ -108,6 +113,10 @@ public class MyhomefinancesApplication implements CommandLineRunner {
 		TipoConta tipoConta3 = new TipoConta(null, "Conta Poupança");
 
 		tipoContaRepository.saveAll(Arrays.asList(tipoConta1, tipoConta2, tipoConta3));
+
+		Conta conta1 = new Conta(null, banco1, tipoConta1, usuario1);
+
+		contaRepository.saveAll(Arrays.asList(conta1));
 	}
 
 }
