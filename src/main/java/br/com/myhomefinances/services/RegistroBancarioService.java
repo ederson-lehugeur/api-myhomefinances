@@ -16,6 +16,7 @@ import br.com.myhomefinances.domain.Item;
 import br.com.myhomefinances.domain.Registro;
 import br.com.myhomefinances.domain.RegistroBancario;
 import br.com.myhomefinances.domain.SaldoBancario;
+import br.com.myhomefinances.domain.TipoRegistro;
 import br.com.myhomefinances.dto.RegistroBancarioDTO;
 import br.com.myhomefinances.repositories.RegistroBancarioRepository;
 import br.com.myhomefinances.services.exception.NegativeBalanceException;
@@ -26,6 +27,12 @@ public class RegistroBancarioService {
 
 	@Autowired
 	RegistroBancarioRepository registroBancarioRepository;
+
+	@Autowired
+	RegistroService registroService;
+
+	@Autowired
+	TipoRegistroService tipoRegistroService;
 
 	@Autowired
 	SaldoBancarioService saldoBancarioService;
@@ -74,6 +81,15 @@ public class RegistroBancarioService {
 		SaldoBancario novoSaldoBancario = new SaldoBancario(null, valor, new Date(), registroBancario.getConta());
 
 		saldoBancarioService.insert(novoSaldoBancario);
+
+		// Adição automática de registro se a operação for uma saque.
+		if (registroBancario.getItem().getNome().equals("Saque")) {
+			TipoRegistro tipoRegistro = tipoRegistroService.findByNome("Saque");
+
+			registroService.insert(new Registro(null, registroBancario.getValor(),
+					registroBancario.getDataHora(), tipoRegistro,
+					registroBancario.getConta().getUsuario(), registroBancario.getItem()));
+		}
 
 		return registroBancario;
 	}

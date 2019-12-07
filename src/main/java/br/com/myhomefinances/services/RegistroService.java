@@ -61,7 +61,6 @@ public class RegistroService {
 	@Transactional
 	public Registro insert(Registro registro) {
 		registro.setId(null);
-		registro.setDataHoraCriacao(new Date());
 
 		registro = registroRepository.save(registro);
 

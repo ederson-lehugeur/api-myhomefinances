@@ -46,6 +46,7 @@ public class Registro implements Serializable {
 		this.id = id;
 		this.valor = valor;
 		this.dataHora = dataHora;
+		this.dataHoraCriacao = new Date();
 		this.tipoRegistro = tipoRegistro;
 		this.usuario = usuario;
 		this.item = item;
