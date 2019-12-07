@@ -14,6 +14,7 @@ import br.com.myhomefinances.domain.Conta;
 import br.com.myhomefinances.domain.Item;
 import br.com.myhomefinances.domain.Registro;
 import br.com.myhomefinances.domain.Saldo;
+import br.com.myhomefinances.domain.SaldoBancario;
 import br.com.myhomefinances.domain.TipoConta;
 import br.com.myhomefinances.domain.TipoRegistro;
 import br.com.myhomefinances.domain.Usuario;
@@ -22,6 +23,7 @@ import br.com.myhomefinances.repositories.CategoriaRepository;
 import br.com.myhomefinances.repositories.ContaRepository;
 import br.com.myhomefinances.repositories.ItemRepository;
 import br.com.myhomefinances.repositories.RegistroRepository;
+import br.com.myhomefinances.repositories.SaldoBancarioRepository;
 import br.com.myhomefinances.repositories.SaldoRepository;
 import br.com.myhomefinances.repositories.TipoContaRepository;
 import br.com.myhomefinances.repositories.TipoRegistroRepository;
@@ -56,6 +58,9 @@ public class MyhomefinancesApplication implements CommandLineRunner {
 
 	@Autowired
 	ContaRepository contaRepository;
+
+	@Autowired
+	SaldoBancarioRepository saldoBancarioRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MyhomefinancesApplication.class, args);
@@ -117,6 +122,10 @@ public class MyhomefinancesApplication implements CommandLineRunner {
 		Conta conta1 = new Conta(null, banco1, tipoConta1, usuario1);
 
 		contaRepository.saveAll(Arrays.asList(conta1));
+
+		SaldoBancario saldoBancario1 = new SaldoBancario(null, 500.00, sdf.parse("06/12/2019 10:00:00.000"), conta1);
+
+		saldoBancarioRepository.saveAll(Arrays.asList(saldoBancario1));
 	}
 
 }
