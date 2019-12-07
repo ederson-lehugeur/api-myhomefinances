@@ -8,12 +8,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import br.com.myhomefinances.domain.Banco;
 import br.com.myhomefinances.domain.Categoria;
 import br.com.myhomefinances.domain.Item;
 import br.com.myhomefinances.domain.Registro;
 import br.com.myhomefinances.domain.Saldo;
 import br.com.myhomefinances.domain.TipoRegistro;
 import br.com.myhomefinances.domain.Usuario;
+import br.com.myhomefinances.repositories.BancoRepository;
 import br.com.myhomefinances.repositories.CategoriaRepository;
 import br.com.myhomefinances.repositories.ItemRepository;
 import br.com.myhomefinances.repositories.RegistroRepository;
@@ -41,6 +43,9 @@ public class MyhomefinancesApplication implements CommandLineRunner {
 
 	@Autowired
 	SaldoRepository saldoRepository;
+
+	@Autowired
+	BancoRepository bancoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MyhomefinancesApplication.class, args);
@@ -89,6 +94,9 @@ public class MyhomefinancesApplication implements CommandLineRunner {
 
 		saldoRepository.saveAll(Arrays.asList(saldo1, saldo2));
 
+		Banco banco1 = new Banco(null, "NuBank");
+
+		bancoRepository.saveAll(Arrays.asList(banco1));
 	}
 
 }
