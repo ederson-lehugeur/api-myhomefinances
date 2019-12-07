@@ -13,6 +13,7 @@ import br.com.myhomefinances.domain.Categoria;
 import br.com.myhomefinances.domain.Item;
 import br.com.myhomefinances.domain.Registro;
 import br.com.myhomefinances.domain.Saldo;
+import br.com.myhomefinances.domain.TipoConta;
 import br.com.myhomefinances.domain.TipoRegistro;
 import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.repositories.BancoRepository;
@@ -20,6 +21,7 @@ import br.com.myhomefinances.repositories.CategoriaRepository;
 import br.com.myhomefinances.repositories.ItemRepository;
 import br.com.myhomefinances.repositories.RegistroRepository;
 import br.com.myhomefinances.repositories.SaldoRepository;
+import br.com.myhomefinances.repositories.TipoContaRepository;
 import br.com.myhomefinances.repositories.TipoRegistroRepository;
 import br.com.myhomefinances.repositories.UsuarioRepository;
 
@@ -46,6 +48,9 @@ public class MyhomefinancesApplication implements CommandLineRunner {
 
 	@Autowired
 	BancoRepository bancoRepository;
+
+	@Autowired
+	TipoContaRepository tipoContaRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MyhomefinancesApplication.class, args);
@@ -97,6 +102,12 @@ public class MyhomefinancesApplication implements CommandLineRunner {
 		Banco banco1 = new Banco(null, "NuBank");
 
 		bancoRepository.saveAll(Arrays.asList(banco1));
+
+		TipoConta tipoConta1 = new TipoConta(null, "Conta Digital");
+		TipoConta tipoConta2 = new TipoConta(null, "Conta Corrente");
+		TipoConta tipoConta3 = new TipoConta(null, "Conta Poupança");
+
+		tipoContaRepository.saveAll(Arrays.asList(tipoConta1, tipoConta2, tipoConta3));
 	}
 
 }
