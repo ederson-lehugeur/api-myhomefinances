@@ -19,7 +19,6 @@ import br.com.myhomefinances.domain.SaldoBancario;
 import br.com.myhomefinances.domain.TipoRegistro;
 import br.com.myhomefinances.dto.RegistroBancarioDTO;
 import br.com.myhomefinances.repositories.RegistroBancarioRepository;
-import br.com.myhomefinances.services.exception.NegativeBalanceException;
 import br.com.myhomefinances.services.exception.ObjectNotFoundException;
 
 @Service
@@ -73,10 +72,6 @@ public class RegistroBancarioService {
 		SaldoBancario saldoBancario = saldoBancarioService.findFirstByContaOrderByDataHoraDesc(registroBancario.getConta());
 
 		Double valor = saldoBancario.getSaldo() + registroBancario.getValor();
-
-		if (valor < 0) {
-			throw new NegativeBalanceException("Saldo com valor negativo");
-		}
 
 		SaldoBancario novoSaldoBancario = new SaldoBancario(null, valor, new Date(), registroBancario.getConta());
 
