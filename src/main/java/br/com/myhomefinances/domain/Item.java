@@ -23,14 +23,19 @@ public class Item implements Serializable {
 	@JoinColumn(name="categoria_id")
 	private Categoria categoria;
 
+	@ManyToOne
+	@JoinColumn(name="usuario_id")
+	private Usuario usuario;
+
 	public Item() {}
 
-	public Item(Integer id, String nome, String complemento, Categoria categoria) {
+	public Item(Integer id, String nome, String complemento, Categoria categoria, Usuario usuario) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.complemento = complemento;
 		this.categoria = categoria;
+		this.usuario = usuario;
 	}
 
 	public Integer getId() {
@@ -63,6 +68,14 @@ public class Item implements Serializable {
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	@Override
