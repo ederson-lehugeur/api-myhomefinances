@@ -22,6 +22,7 @@ import br.com.myhomefinances.repositories.BancoRepository;
 import br.com.myhomefinances.repositories.CategoriaRepository;
 import br.com.myhomefinances.repositories.ContaRepository;
 import br.com.myhomefinances.repositories.ItemRepository;
+import br.com.myhomefinances.repositories.RegistroBancarioRepository;
 import br.com.myhomefinances.repositories.RegistroRepository;
 import br.com.myhomefinances.repositories.SaldoBancarioRepository;
 import br.com.myhomefinances.repositories.SaldoRepository;
@@ -61,6 +62,9 @@ public class MyhomefinancesApplication implements CommandLineRunner {
 
 	@Autowired
 	SaldoBancarioRepository saldoBancarioRepository;
+
+	@Autowired
+	RegistroBancarioRepository registroBancarioRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MyhomefinancesApplication.class, args);
