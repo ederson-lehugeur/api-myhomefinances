@@ -24,6 +24,9 @@ public class ItemDTO implements Serializable {
 	@NotNull(message="Preenchimento obrigatório")
 	private Integer categoriaId;
 
+	@NotNull(message="Preenchimento obrigatório")
+	private Integer usuarioId;
+
 	public ItemDTO() {}
 
 	public ItemDTO(Item item) {
@@ -31,6 +34,7 @@ public class ItemDTO implements Serializable {
 		nome = item.getNome();
 		complemento = item.getComplemento();
 		categoriaId = item.getCategoria().getId();
+		usuarioId = item.getUsuario().getId();
 	}
 
 	public Integer getId() {
@@ -63,6 +67,14 @@ public class ItemDTO implements Serializable {
 
 	public void setCategoriaId(Integer categoriaId) {
 		this.categoriaId = categoriaId;
+	}
+
+	public Integer getUsuarioId() {
+		return usuarioId;
+	}
+
+	public void setUsuarioId(Integer usuarioId) {
+		this.usuarioId = usuarioId;
 	}
 
 }

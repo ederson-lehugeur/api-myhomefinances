@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -11,8 +12,10 @@ import org.springframework.stereotype.Service;
 
 import br.com.myhomefinances.domain.Categoria;
 import br.com.myhomefinances.domain.Item;
+import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.dto.ItemDTO;
 import br.com.myhomefinances.repositories.ItemRepository;
+import br.com.myhomefinances.services.exception.DataIntegrityException;
 import br.com.myhomefinances.services.exception.ObjectNotFoundException;
 
 @Service
@@ -23,6 +26,9 @@ public class ItemService {
 
 	@Autowired
 	CategoriaService categoriaService;
+
+	@Autowired
+	UsuarioService usuarioService;
 
 	public List<Item> findAll() {
 		List<Item> listaItens = itemRepository.findAll();
@@ -62,13 +68,21 @@ public class ItemService {
 	public void delete(Integer id) {
 		find(id);
 
-		itemRepository.deleteById(id);
+		try {
+			itemRepository.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possível excluir um item que esteja"
+					+ " associado a algum registro.");
+		}
 	}
 
 	public Item fromDTO(ItemDTO itemDto) {
 		Categoria categoria = categoriaService.find(itemDto.getCategoriaId());
 
-		return new Item(itemDto.getId(), itemDto.getNome(), itemDto.getComplemento(), categoria);
+		Usuario usuario = usuarioService.find(itemDto.getUsuarioId());
+
+		return new Item(itemDto.getId(), itemDto.getNome(), itemDto.getComplemento(),
+				categoria, usuario);
 	}
 
 	private void updateData(Item novoItem, Item item) {
