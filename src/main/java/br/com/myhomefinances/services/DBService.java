@@ -74,7 +74,7 @@ public class DBService {
 		Categoria categoria4 = new Categoria(null, "Viagens", null);
 		Categoria categoria5 = new Categoria(null, "Variados", null);
 
-		Usuario usuario1 = new Usuario(null, "Ederson", "Lehugeur", "eder.lehugeur@gmail.com", "123456");
+		Usuario usuario1 = new Usuario(null, "Eddye", "Holmes", "eddye.holmes@gmail.com", "123456");
 
 		usuarioRepository.saveAll(Arrays.asList(usuario1));
 

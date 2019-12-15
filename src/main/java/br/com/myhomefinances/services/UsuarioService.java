@@ -20,6 +20,9 @@ public class UsuarioService {
 	@Autowired
 	UsuarioRepository usuarioRepository;
 
+	@Autowired
+	EmailService emailService;
+
 	public List<Usuario> findAll() {
 		List<Usuario> listaUsuarios = usuarioRepository.findAll();
 
@@ -43,6 +46,8 @@ public class UsuarioService {
 		usuario.setId(null);
 
 		usuario = usuarioRepository.save(usuario);
+
+		emailService.sendConfirmationHtmlEmail(usuario);
 
 		return usuario;
 	}
