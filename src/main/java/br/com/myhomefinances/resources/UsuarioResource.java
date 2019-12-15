@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.myhomefinances.domain.Usuario;
-import br.com.myhomefinances.dto.UsuarioDTO;
+import br.com.myhomefinances.dto.UsuarioNewDTO;
+import br.com.myhomefinances.dto.UsuarioUpdateDTO;
 import br.com.myhomefinances.services.UsuarioService;
 
 @RestController
@@ -56,9 +57,9 @@ public class UsuarioResource {
 	}
 
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody UsuarioDTO usuarioDto) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody UsuarioNewDTO usuarioNewDto) {
 
-		Usuario usuario = usuarioService.fromDTO(usuarioDto);
+		Usuario usuario = usuarioService.fromNewDTO(usuarioNewDto);
 
 		usuario = usuarioService.insert(usuario);
 
@@ -70,9 +71,9 @@ public class UsuarioResource {
 
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@PathVariable Integer id,
-			@Valid @RequestBody UsuarioDTO usuarioDto) {
+			@Valid @RequestBody UsuarioUpdateDTO usuarioUpdateDto) {
 
-		Usuario usuario = usuarioService.fromDTO(usuarioDto);
+		Usuario usuario = usuarioService.fromUpdateDTO(usuarioUpdateDto);
 
 		usuario.setId(id);
 		usuario = usuarioService.update(usuario);

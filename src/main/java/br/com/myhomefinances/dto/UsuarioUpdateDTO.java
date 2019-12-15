@@ -11,7 +11,7 @@ import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.services.validation.UsuarioInsert;
 
 @UsuarioInsert
-public class UsuarioDTO implements Serializable {
+public class UsuarioUpdateDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
@@ -28,18 +28,13 @@ public class UsuarioDTO implements Serializable {
 	@Email
 	private String email;
 
-	@NotEmpty(message="Preenchimento obrigatório")
-	@Length(max=255, message="O tamanho máximo é de 255 caracteres")
-	private String senha;
+	public UsuarioUpdateDTO() {}
 
-	public UsuarioDTO() {}
-
-	public UsuarioDTO(Usuario usuario) {
+	public UsuarioUpdateDTO(Usuario usuario) {
 		id = usuario.getId();
 		nome = usuario.getNome();
 		sobrenome = usuario.getSobrenome();
 		email = usuario.getEmail();
-		senha = usuario.getSenha();
 	}
 
 	public Integer getId() {
@@ -72,14 +67,6 @@ public class UsuarioDTO implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.myhomefinances.domain.Banco;
@@ -65,6 +66,9 @@ public class DBService {
 	@Autowired
 	RegistroBancarioRepository registroBancarioRepository;
 
+	@Autowired
+	BCryptPasswordEncoder bCryptPasswordEncoder;
+
 	public void instantiateTestDatabase() throws ParseException {
 
 		Categoria categoria1 = new Categoria(null, "Operação Bancária",
@@ -74,7 +78,8 @@ public class DBService {
 		Categoria categoria4 = new Categoria(null, "Viagens", null);
 		Categoria categoria5 = new Categoria(null, "Variados", null);
 
-		Usuario usuario1 = new Usuario(null, "Eddye", "Holmes", "eddye.holmes@gmail.com", "123456");
+		Usuario usuario1 = new Usuario(null, "Eddye", "Holmes", "eddye.holmes@gmail.com",
+				bCryptPasswordEncoder.encode("123456"));
 
 		usuarioRepository.saveAll(Arrays.asList(usuario1));
 

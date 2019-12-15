@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.myhomefinances.domain.Usuario;
-import br.com.myhomefinances.dto.UsuarioDTO;
+import br.com.myhomefinances.dto.UsuarioNewDTO;
+import br.com.myhomefinances.dto.UsuarioUpdateDTO;
 import br.com.myhomefinances.repositories.UsuarioRepository;
 import br.com.myhomefinances.services.exception.ObjectNotFoundException;
 
@@ -22,6 +24,9 @@ public class UsuarioService {
 
 	@Autowired
 	EmailService emailService;
+
+	@Autowired
+	BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	public List<Usuario> findAll() {
 		List<Usuario> listaUsuarios = usuarioRepository.findAll();
@@ -66,9 +71,14 @@ public class UsuarioService {
 		usuarioRepository.deleteById(id);
 	}
 
-	public Usuario fromDTO(UsuarioDTO usuarioDto) {
-		return new Usuario(usuarioDto.getId(), usuarioDto.getNome(), usuarioDto.getSobrenome(),
-				usuarioDto.getEmail(), usuarioDto.getSenha());
+	public Usuario fromNewDTO(UsuarioNewDTO usuarioNewDto) {
+		return new Usuario(usuarioNewDto.getId(), usuarioNewDto.getNome(), usuarioNewDto.getSobrenome(),
+				usuarioNewDto.getEmail(), bCryptPasswordEncoder.encode(usuarioNewDto.getSenha()));
+	}
+
+	public Usuario fromUpdateDTO(UsuarioUpdateDTO usuarioUpdateDto) {
+		return new Usuario(usuarioUpdateDto.getId(), usuarioUpdateDto.getNome(),
+				usuarioUpdateDto.getSobrenome(), usuarioUpdateDto.getEmail());
 	}
 
 	private void updateData(Usuario novoUsuario, Usuario usuario) {
