@@ -1,11 +1,16 @@
 package br.com.myhomefinances.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,6 +27,14 @@ public class Usuario implements Serializable {
 
 	@JsonIgnore
 	private String senha;
+
+	@ManyToMany
+    @JoinTable(
+        name = "USUARIO_PERFIL",
+        joinColumns = { @JoinColumn(name = "usuario_id") },
+        inverseJoinColumns = { @JoinColumn(name = "perfil_id") }
+    )
+    private List<Perfil> perfis = new ArrayList<>();
 
 	public Usuario() {}
 
@@ -78,6 +91,14 @@ public class Usuario implements Serializable {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public List<Perfil> getPerfis() {
+		return perfis;
+	}
+
+	public void setPerfis(List<Perfil> perfis) {
+		this.perfis = perfis;
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import br.com.myhomefinances.services.exception.DataIntegrityException;
+import br.com.myhomefinances.services.exception.InvalidPerfilException;
 import br.com.myhomefinances.services.exception.NegativeBalanceException;
 import br.com.myhomefinances.services.exception.ObjectNotFoundException;
 
@@ -55,6 +56,16 @@ public class ResourceExceptionHandler {
 			HttpServletRequest request) {
 
 		StandardError err = new NegativeBalanceError(HttpStatus.BAD_REQUEST.value(),
+				e.getMessage(), System.currentTimeMillis());
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+
+	@ExceptionHandler(InvalidPerfilException.class)
+	public ResponseEntity<StandardError> invalidPerfil(InvalidPerfilException e,
+			HttpServletRequest request) {
+
+		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(),
 				e.getMessage(), System.currentTimeMillis());
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);

@@ -12,6 +12,7 @@ import br.com.myhomefinances.domain.Banco;
 import br.com.myhomefinances.domain.Categoria;
 import br.com.myhomefinances.domain.Conta;
 import br.com.myhomefinances.domain.Item;
+import br.com.myhomefinances.domain.Perfil;
 import br.com.myhomefinances.domain.Registro;
 import br.com.myhomefinances.domain.Saldo;
 import br.com.myhomefinances.domain.SaldoBancario;
@@ -22,6 +23,7 @@ import br.com.myhomefinances.repositories.BancoRepository;
 import br.com.myhomefinances.repositories.CategoriaRepository;
 import br.com.myhomefinances.repositories.ContaRepository;
 import br.com.myhomefinances.repositories.ItemRepository;
+import br.com.myhomefinances.repositories.PerfilRepository;
 import br.com.myhomefinances.repositories.RegistroBancarioRepository;
 import br.com.myhomefinances.repositories.RegistroRepository;
 import br.com.myhomefinances.repositories.SaldoBancarioRepository;
@@ -67,6 +69,9 @@ public class DBService {
 	RegistroBancarioRepository registroBancarioRepository;
 
 	@Autowired
+	PerfilRepository perfilRepository;
+
+	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	public void instantiateTestDatabase() throws ParseException {
@@ -81,7 +86,20 @@ public class DBService {
 		Usuario usuario1 = new Usuario(null, "Eddye", "Holmes", "eddye.holmes@gmail.com",
 				bCryptPasswordEncoder.encode("123456"));
 
-		usuarioRepository.saveAll(Arrays.asList(usuario1));
+		Usuario usuario2 = new Usuario(null, "Ederson", "Lehugeur", "eder.lehugeur@gmail.com",
+				bCryptPasswordEncoder.encode("123456"));
+
+		Perfil perfil1 = new Perfil(null, "ROLE_CLIENTE");
+		Perfil perfil2 = new Perfil(null, "ROLE_ADMIN");
+
+		usuario1.getPerfis().addAll(Arrays.asList(perfil1));
+		usuario2.getPerfis().addAll(Arrays.asList(perfil1, perfil2));
+
+		perfil1.getUsuarios().addAll(Arrays.asList(usuario1, usuario2));
+		perfil2.getUsuarios().addAll(Arrays.asList(usuario2));
+
+		perfilRepository.saveAll(Arrays.asList(perfil1, perfil2));
+		usuarioRepository.saveAll(Arrays.asList(usuario1, usuario2));
 
 		Item item1 = new Item(null, "Saque", null, categoria1, usuario1);
 		Item item2 = new Item(null, "Depósito", null, categoria1, usuario1);
