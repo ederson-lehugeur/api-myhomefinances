@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,7 +29,7 @@ public class Usuario implements Serializable {
 	@JsonIgnore
 	private String senha;
 
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
         name = "USUARIO_PERFIL",
         joinColumns = { @JoinColumn(name = "usuario_id") },
