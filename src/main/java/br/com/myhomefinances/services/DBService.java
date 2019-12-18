@@ -13,7 +13,6 @@ import br.com.myhomefinances.domain.Categoria;
 import br.com.myhomefinances.domain.Conta;
 import br.com.myhomefinances.domain.Item;
 import br.com.myhomefinances.domain.Perfil;
-import br.com.myhomefinances.domain.Registro;
 import br.com.myhomefinances.domain.Saldo;
 import br.com.myhomefinances.domain.SaldoBancario;
 import br.com.myhomefinances.domain.TipoConta;
@@ -120,20 +119,15 @@ public class DBService {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS");
 
-		Registro registro1 = new Registro(null, 100.00, sdf.parse("22/11/2019 16:00:00.000"), tipoRegistro3, usuario1,
-				item1);
+		Saldo saldo1 = new Saldo(null, 0.00, sdf.parse("20/11/2019 14:00:00.000"), usuario1);
+		Saldo saldo2 = new Saldo(null, 0.00, sdf.parse("18/12/2019 12:00:01.000"), usuario2);
 
-		registroRepository.saveAll(Arrays.asList(registro1));
-
-		Saldo saldo1 = new Saldo(null, 1000.00, sdf.parse("21/11/2019 14:00:00.000"), usuario1);
-		Saldo saldo2 = new Saldo(null, 900.00, sdf.parse("22/11/2019 16:00:01.000"), usuario1);
-		Saldo saldo3 = new Saldo(null, 0.00, sdf.parse("18/12/2019 12:00:01.000"), usuario2);
-
-		saldoRepository.saveAll(Arrays.asList(saldo1, saldo2, saldo3));
+		saldoRepository.saveAll(Arrays.asList(saldo1, saldo2));
 
 		Banco banco1 = new Banco(null, "NuBank");
+		Banco banco2 = new Banco(null, "Caixa Econômica Federal");
 
-		bancoRepository.saveAll(Arrays.asList(banco1));
+		bancoRepository.saveAll(Arrays.asList(banco1, banco2));
 
 		TipoConta tipoConta1 = new TipoConta(null, "Conta Digital");
 		TipoConta tipoConta2 = new TipoConta(null, "Conta Corrente");
@@ -141,12 +135,14 @@ public class DBService {
 
 		tipoContaRepository.saveAll(Arrays.asList(tipoConta1, tipoConta2, tipoConta3));
 
-		Conta conta1 = new Conta(null, banco1, tipoConta1, usuario1);
+		Conta conta1 = new Conta(null, banco1, tipoConta1, usuario2);
+		Conta conta2 = new Conta(null, banco2, tipoConta2, usuario1);
 
-		contaRepository.saveAll(Arrays.asList(conta1));
+		contaRepository.saveAll(Arrays.asList(conta1, conta2));
 
-		SaldoBancario saldoBancario1 = new SaldoBancario(null, 500.00, sdf.parse("06/12/2019 10:00:00.000"), conta1);
+		SaldoBancario saldoBancario1 = new SaldoBancario(null, 0.00, sdf.parse("06/12/2019 10:00:00.000"), conta1);
+		SaldoBancario saldoBancario2 = new SaldoBancario(null, 0.00, sdf.parse("18/12/2019 10:00:00.000"), conta2);
 
-		saldoBancarioRepository.saveAll(Arrays.asList(saldoBancario1));
+		saldoBancarioRepository.saveAll(Arrays.asList(saldoBancario1, saldoBancario2));
 	}
 }

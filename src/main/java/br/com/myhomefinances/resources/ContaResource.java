@@ -19,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.com.myhomefinances.domain.Conta;
 import br.com.myhomefinances.dto.ContaDTO;
 import br.com.myhomefinances.services.ContaService;
+import br.com.myhomefinances.services.UsuarioService;
 
 @RestController
 @RequestMapping(value="contas")
@@ -27,18 +28,19 @@ public class ContaResource {
 	@Autowired
 	ContaService contaService;
 
-	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<Conta>> findAll() {
+	@Autowired
+	UsuarioService usuarioService;
 
-		List<Conta> listaContas = contaService.findAll();
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<List<Conta>> findAllByUsuario() {
+		List<Conta> listaContas = contaService.findAllByUsuario();
 
 		return ResponseEntity.ok().body(listaContas);
 	}
 
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<Conta> find(@PathVariable Integer id) {
-
-		Conta conta = contaService.find(id);
+	public ResponseEntity<Conta> findByIdAndUsuario(@PathVariable Integer id) {
+		Conta conta = contaService.findByIdAndUsuario(id);
 
 		return ResponseEntity.ok().body(conta);
 	}
@@ -47,7 +49,7 @@ public class ContaResource {
 	public ResponseEntity<Page<Conta>> findPage(
 			@RequestParam(value="page", defaultValue="0") Integer page,
 			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage,
-			@RequestParam(value="orderBy", defaultValue="nome") String orderBy,
+			@RequestParam(value="orderBy", defaultValue="id") String orderBy,
 			@RequestParam(value="direction", defaultValue="ASC") String direction) {
 
 		Page<Conta> listaContas = contaService.findPage(page, linesPerPage, orderBy, direction);

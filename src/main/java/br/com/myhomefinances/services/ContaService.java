@@ -15,6 +15,8 @@ import br.com.myhomefinances.domain.TipoConta;
 import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.dto.ContaDTO;
 import br.com.myhomefinances.repositories.ContaRepository;
+import br.com.myhomefinances.security.UserDetailsSpringSecurity;
+import br.com.myhomefinances.services.exception.AuthorizationException;
 import br.com.myhomefinances.services.exception.ObjectNotFoundException;
 
 @Service
@@ -32,26 +34,56 @@ public class ContaService {
 	@Autowired
 	UsuarioService usuarioService;
 
-	public List<Conta> findAll() {
-		List<Conta> listaContas = contaRepository.findAll();
+	public List<Conta> findAllByUsuario() {
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		Usuario usuario = usuarioService.find(user.getId());
+
+		List<Conta> listaContas = contaRepository.findAllByUsuario(usuario);
 
 		return listaContas;
 	}
 
-	public Conta find(Integer id) {
-		Optional<Conta> conta = contaRepository.findById(id);
+	public Conta findByIdAndUsuario(Integer idConta) {
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		Usuario usuario = usuarioService.find(user.getId());
+
+		Optional<Conta> conta = contaRepository.findByIdAndUsuario(idConta, usuario);
 
 		return conta.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
-				id, Conta.class.getName()));
+				idConta, Conta.class.getName()));
 	}
 
 	public Page<Conta> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 
-		return contaRepository.findAll(pageRequest);
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		Usuario usuario = usuarioService.find(user.getId());
+
+		return contaRepository.findAllByUsuario(usuario, pageRequest);
 	}
 
 	public Conta insert(Conta conta) {
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null || user.getId() != conta.getUsuario().getId()) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
 		conta.setId(null);
 
 		conta = contaRepository.save(conta);
@@ -60,7 +92,7 @@ public class ContaService {
 	}
 
 	public Conta update(Conta conta) {
-		Conta novaConta = find(conta.getId());
+		Conta novaConta = findByIdAndUsuario(conta.getId());
 
 		updateData(novaConta, conta);
 
@@ -68,7 +100,7 @@ public class ContaService {
 	}
 
 	public void delete(Integer id) {
-		find(id);
+		findByIdAndUsuario(id);
 
 		contaRepository.deleteById(id);
 	}

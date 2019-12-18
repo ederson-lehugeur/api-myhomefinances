@@ -17,17 +17,24 @@ public class SaldoBancarioService {
 	@Autowired
 	SaldoBancarioRepository saldoBancarioRepository;
 
-	public List<SaldoBancario> findAll() {
-		List<SaldoBancario> listaSaldoBancarios = saldoBancarioRepository.findAll();
+	@Autowired
+	ContaService contaService;
+
+	public List<SaldoBancario> findByContaOrderByDataHoraDesc(Integer idConta) {
+		Conta conta = contaService.findByIdAndUsuario(idConta);
+
+		List<SaldoBancario> listaSaldoBancarios = saldoBancarioRepository.findByContaOrderByDataHoraDesc(conta);
 
 		return listaSaldoBancarios;
 	}
 
-	public SaldoBancario find(Integer id) {
-		Optional<SaldoBancario> saldoBancario = saldoBancarioRepository.findById(id);
+	public SaldoBancario findByIdAndConta(Integer idSaldoBancario, Integer idConta) {
+		Conta conta = contaService.findByIdAndUsuario(idConta);
+
+		Optional<SaldoBancario> saldoBancario = saldoBancarioRepository.findByIdAndConta(idSaldoBancario, conta);
 
 		return saldoBancario.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
-				id, SaldoBancario.class.getName()));
+				idSaldoBancario, SaldoBancario.class.getName()));
 	}
 
 	public SaldoBancario findFirstByContaOrderByDataHoraDesc(Conta conta) {

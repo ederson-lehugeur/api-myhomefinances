@@ -19,6 +19,8 @@ import br.com.myhomefinances.domain.SaldoBancario;
 import br.com.myhomefinances.domain.TipoRegistro;
 import br.com.myhomefinances.dto.RegistroBancarioDTO;
 import br.com.myhomefinances.repositories.RegistroBancarioRepository;
+import br.com.myhomefinances.security.UserDetailsSpringSecurity;
+import br.com.myhomefinances.services.exception.AuthorizationException;
 import br.com.myhomefinances.services.exception.ObjectNotFoundException;
 
 @Service
@@ -42,30 +44,45 @@ public class RegistroBancarioService {
 	@Autowired
 	ItemService itemService;
 
-	public List<RegistroBancario> findAll() {
-		List<RegistroBancario> listaRegistrosBancarios = registroBancarioRepository.findAll();
+	@Autowired
+	UsuarioService usuarioService;
+
+	public List<RegistroBancario> findByConta(Integer idConta) {
+		Conta conta = contaService.findByIdAndUsuario(idConta);
+
+		List<RegistroBancario> listaRegistrosBancarios = registroBancarioRepository.findByConta(conta);
 
 		return listaRegistrosBancarios;
 	}
 
-	public RegistroBancario find(Integer id) {
-		Optional<RegistroBancario> registroBancario = registroBancarioRepository.findById(id);
+	public RegistroBancario findByIdAndConta(Integer idRegistroBancario, Integer idConta) {
+		Conta conta = contaService.findByIdAndUsuario(idConta);
+
+		Optional<RegistroBancario> registroBancario = registroBancarioRepository.findByIdAndConta(idRegistroBancario, conta);
 
 		return registroBancario.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
-				id, Registro.class.getName()));
+				idRegistroBancario, Registro.class.getName()));
 	}
 
-	public Page<RegistroBancario> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+	public Page<RegistroBancario> findPageByConta(Integer page, Integer linesPerPage,
+			String orderBy, String direction, Integer idConta) {
+
+		Conta conta = contaService.findByIdAndUsuario(idConta);
+
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 
-		return registroBancarioRepository.findAll(pageRequest);
+		return registroBancarioRepository.findAllByConta(conta, pageRequest);
 	}
 
 	@Transactional
 	public RegistroBancario insert(RegistroBancario registroBancario) {
-		registroBancario.setId(null);
+		UserDetailsSpringSecurity user = UserService.authenticated();
 
-		// Validação: verificar se a conta pertence ao usuário logado.
+		if (user == null || user.getId() != registroBancario.getConta().getUsuario().getId()) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		registroBancario.setId(null);
 
 		registroBancario = registroBancarioRepository.save(registroBancario);
 
@@ -90,7 +107,7 @@ public class RegistroBancarioService {
 	}
 
 	public RegistroBancario fromDTO(RegistroBancarioDTO registroBancarioDto) {
-		Conta conta = contaService.find(registroBancarioDto.getContaId());
+		Conta conta = contaService.findByIdAndUsuario(registroBancarioDto.getContaId());
 
 		Item item = itemService.find(registroBancarioDto.getItemId());
 

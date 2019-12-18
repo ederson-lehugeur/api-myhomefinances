@@ -27,30 +27,34 @@ public class RegistroBancarioResource {
 	@Autowired
 	RegistroBancarioService registroBancarioService;
 
-	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<RegistroBancario>> findAll() {
+	@RequestMapping(value="/conta/{idConta}", method=RequestMethod.GET)
+	public ResponseEntity<List<RegistroBancario>> findByConta(@PathVariable Integer idConta) {
 
-		List<RegistroBancario> listaRegistroBancarios = registroBancarioService.findAll();
+		List<RegistroBancario> listaRegistroBancarios = registroBancarioService.findByConta(idConta);
 
 		return ResponseEntity.ok().body(listaRegistroBancarios);
 	}
 
-	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<RegistroBancario> find(@PathVariable Integer id) {
+	@RequestMapping(value="/{idRegistroBancario}/conta/{idConta}", method=RequestMethod.GET)
+	public ResponseEntity<RegistroBancario> find(@PathVariable Integer idRegistroBancario,
+			@PathVariable Integer idConta) {
 
-		RegistroBancario registroBancario = registroBancarioService.find(id);
+		RegistroBancario registroBancario = registroBancarioService.findByIdAndConta(idRegistroBancario,
+				idConta);
 
 		return ResponseEntity.ok().body(registroBancario);
 	}
 
-	@RequestMapping(value="/page", method=RequestMethod.GET)
-	public ResponseEntity<Page<RegistroBancario>> findPage(
+	@RequestMapping(value="/page/conta/{idConta}", method=RequestMethod.GET)
+	public ResponseEntity<Page<RegistroBancario>> findPageByConta(
+			@PathVariable Integer idConta,
 			@RequestParam(value="page", defaultValue="0") Integer page,
 			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage,
 			@RequestParam(value="orderBy", defaultValue="nome") String orderBy,
 			@RequestParam(value="direction", defaultValue="ASC") String direction) {
 
-		Page<RegistroBancario> listaRegistroBancarios = registroBancarioService.findPage(page, linesPerPage, orderBy, direction);
+		Page<RegistroBancario> listaRegistroBancarios = registroBancarioService.findPageByConta(page,
+				linesPerPage, orderBy, direction, idConta);
 
 		return ResponseEntity.ok().body(listaRegistroBancarios);
 	}

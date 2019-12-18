@@ -19,18 +19,19 @@ public class SaldoBancarioResource {
 	@Autowired
 	SaldoBancarioService saldoBancarioService;
 
-	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<SaldoBancario>> findAll() {
+	@RequestMapping(value="/conta/{idConta}", method=RequestMethod.GET)
+	public ResponseEntity<List<SaldoBancario>> findByContaOrderByDataHoraDesc(@PathVariable Integer idConta) {
 
-		List<SaldoBancario> listaSaldosBancarios = saldoBancarioService.findAll();
+		List<SaldoBancario> listaSaldosBancarios = saldoBancarioService.findByContaOrderByDataHoraDesc(idConta);
 
 		return ResponseEntity.ok().body(listaSaldosBancarios);
 	}
 
-	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<SaldoBancario> find(@PathVariable Integer id) {
+	@RequestMapping(value="/{idSaldoBancario}/conta/{idConta}", method=RequestMethod.GET)
+	public ResponseEntity<SaldoBancario> findByIdAndConta(@PathVariable Integer idSaldoBancario,
+			@PathVariable Integer idConta) {
 
-		SaldoBancario saldoBancario = saldoBancarioService.find(id);
+		SaldoBancario saldoBancario = saldoBancarioService.findByIdAndConta(idSaldoBancario, idConta);
 
 		return ResponseEntity.ok().body(saldoBancario);
 	}
