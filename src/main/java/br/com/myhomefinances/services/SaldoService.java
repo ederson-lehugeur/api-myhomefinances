@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import br.com.myhomefinances.domain.Saldo;
 import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.repositories.SaldoRepository;
+import br.com.myhomefinances.security.UserDetailsSpringSecurity;
+import br.com.myhomefinances.services.exception.AuthorizationException;
 import br.com.myhomefinances.services.exception.ObjectNotFoundException;
 
 @Service
@@ -17,14 +19,33 @@ public class SaldoService {
 	@Autowired
 	SaldoRepository saldoRepository;
 
-	public List<Saldo> findAll() {
-		List<Saldo> listaSaldos = saldoRepository.findAll();
+	@Autowired
+	UsuarioService usuarioService;
+
+	public List<Saldo> findByUsuario() {
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		Usuario usuario = usuarioService.find(user.getId());
+
+		List<Saldo> listaSaldos = saldoRepository.findByUsuario(usuario);
 
 		return listaSaldos;
 	}
 
-	public Saldo find(Integer id) {
-		Optional<Saldo> saldo = saldoRepository.findById(id);
+	public Saldo findByIdAndUsuario(Integer id) {
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		Usuario usuario = usuarioService.find(user.getId());
+
+		Optional<Saldo> saldo = saldoRepository.findByIdAndUsuario(id, usuario);
 
 		return saldo.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
 				id, Saldo.class.getName()));

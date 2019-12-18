@@ -12,11 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerMapping;
 
 import br.com.myhomefinances.domain.Usuario;
-import br.com.myhomefinances.dto.UsuarioNewDTO;
+import br.com.myhomefinances.dto.UsuarioUpdateDTO;
 import br.com.myhomefinances.repositories.UsuarioRepository;
 import br.com.myhomefinances.resources.exception.FieldMessage;
 
-public class UsuarioUpdateValidator implements ConstraintValidator<UsuarioUpdate, UsuarioNewDTO> {
+public class UsuarioUpdateValidator implements ConstraintValidator<UsuarioUpdate, UsuarioUpdateDTO> {
 
 	@Autowired
 	private HttpServletRequest request;
@@ -28,7 +28,7 @@ public class UsuarioUpdateValidator implements ConstraintValidator<UsuarioUpdate
 	public void initialize(UsuarioUpdate ann) {}
 
 	@Override
-	public boolean isValid(UsuarioNewDTO objDto, ConstraintValidatorContext context) {
+	public boolean isValid(UsuarioUpdateDTO objDto, ConstraintValidatorContext context) {
 		@SuppressWarnings("unchecked")
 		Map<String, String> map = (Map<String, String>)request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 

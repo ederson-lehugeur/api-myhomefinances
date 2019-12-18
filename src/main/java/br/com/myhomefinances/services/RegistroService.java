@@ -18,6 +18,8 @@ import br.com.myhomefinances.domain.TipoRegistro;
 import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.dto.RegistroDTO;
 import br.com.myhomefinances.repositories.RegistroRepository;
+import br.com.myhomefinances.security.UserDetailsSpringSecurity;
+import br.com.myhomefinances.services.exception.AuthorizationException;
 import br.com.myhomefinances.services.exception.NegativeBalanceException;
 import br.com.myhomefinances.services.exception.ObjectNotFoundException;
 
@@ -39,14 +41,30 @@ public class RegistroService {
 	@Autowired
 	ItemService itemService;
 
-	public List<Registro> findAll() {
-		List<Registro> listaRegistros = registroRepository.findAll();
+	public List<Registro> findByUsuario() {
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		Usuario usuario = usuarioService.find(user.getId());
+
+		List<Registro> listaRegistros = registroRepository.findByUsuario(usuario);
 
 		return listaRegistros;
 	}
 
-	public Registro find(Integer id) {
-		Optional<Registro> registro = registroRepository.findById(id);
+	public Registro findByIdAndUsuario(Integer id) {
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		Usuario usuario = usuarioService.find(user.getId());
+
+		Optional<Registro> registro = registroRepository.findByIdAndUsuario(id, usuario);
 
 		return registro.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
 				id, Registro.class.getName()));
@@ -55,11 +73,25 @@ public class RegistroService {
 	public Page<Registro> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 
-		return registroRepository.findAll(pageRequest);
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		Usuario usuario = usuarioService.find(user.getId());
+
+		return registroRepository.findByUsuario(usuario, pageRequest);
 	}
 
 	@Transactional
 	public Registro insert(Registro registro) {
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null || !registro.getUsuario().getId().equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
 		registro.setId(null);
 
 		registro = registroRepository.save(registro);
@@ -89,6 +121,5 @@ public class RegistroService {
 		return new Registro(registroDto.getId(), registroDto.getValor(), registroDto.getDataHora(),
 				tipoRegistro, usuario, item);
 	}
-
 
 }

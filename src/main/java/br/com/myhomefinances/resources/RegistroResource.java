@@ -28,17 +28,17 @@ public class RegistroResource {
 	RegistroService registroService;
 
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<Registro>> findAll() {
+	public ResponseEntity<List<Registro>> findByUsuario() {
 
-		List<Registro> listaRegistros = registroService.findAll();
+		List<Registro> listaRegistros = registroService.findByUsuario();
 
 		return ResponseEntity.ok().body(listaRegistros);
 	}
 
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<Registro> find(@PathVariable Integer id) {
+	public ResponseEntity<Registro> findByIdAndUsuario(@PathVariable Integer id) {
 
-		Registro registro = registroService.find(id);
+		Registro registro = registroService.findByIdAndUsuario(id);
 
 		return ResponseEntity.ok().body(registro);
 	}
@@ -47,8 +47,8 @@ public class RegistroResource {
 	public ResponseEntity<Page<Registro>> findPage(
 			@RequestParam(value="page", defaultValue="0") Integer page,
 			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage,
-			@RequestParam(value="orderBy", defaultValue="nome") String orderBy,
-			@RequestParam(value="direction", defaultValue="ASC") String direction) {
+			@RequestParam(value="orderBy", defaultValue="dataHora") String orderBy,
+			@RequestParam(value="direction", defaultValue="DESC") String direction) {
 
 		Page<Registro> listaRegistros = registroService.findPage(page, linesPerPage, orderBy, direction);
 

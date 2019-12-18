@@ -1,5 +1,6 @@
 package br.com.myhomefinances.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +10,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import br.com.myhomefinances.domain.Saldo;
 import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.dto.UsuarioNewDTO;
 import br.com.myhomefinances.dto.UsuarioUpdateDTO;
@@ -31,6 +34,9 @@ public class UsuarioService {
 	PerfilService perfilService;
 
 	@Autowired
+	SaldoService saldoService;
+
+	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	public List<Usuario> findAll() {
@@ -40,13 +46,11 @@ public class UsuarioService {
 	}
 
 	public Usuario find(Integer id) {
-		/* Implementar essa regra para os outros services - Início */
 		UserDetailsSpringSecurity user = UserService.authenticated();
 
-		if (user == null || !user.hasRole("ROLE_ADMIN") && !id.equals(user.getId())) {
+		if (user == null || (!user.hasRole("ROLE_ADMIN") && !id.equals(user.getId()))) {
 			throw new AuthorizationException("Acesso negado");
 		}
-		/* Fim */
 
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
 
@@ -60,10 +64,15 @@ public class UsuarioService {
 		return usuarioRepository.findAll(pageRequest);
 	}
 
+	@Transactional
 	public Usuario insert(Usuario usuario) {
 		usuario.setId(null);
 
 		usuario = usuarioRepository.save(usuario);
+
+		Saldo saldo = new Saldo(null, 0.0, new Date(), usuario);
+
+		saldoService.insert(saldo);
 
 		emailService.sendConfirmationHtmlEmail(usuario);
 
@@ -71,6 +80,12 @@ public class UsuarioService {
 	}
 
 	public Usuario update(Usuario usuario) {
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null || !usuario.getId().equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
 		Usuario novoUsuario = find(usuario.getId());
 
 		updateData(novoUsuario, usuario);

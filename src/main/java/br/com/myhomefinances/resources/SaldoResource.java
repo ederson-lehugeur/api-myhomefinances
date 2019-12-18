@@ -20,17 +20,17 @@ public class SaldoResource {
 	SaldoService saldoService;
 
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<?> findAll() {
+	public ResponseEntity<?> findByUsuario() {
 
-		List<Saldo> listaSaldos = saldoService.findAll();
+		List<Saldo> listaSaldos = saldoService.findByUsuario();
 
 		return ResponseEntity.ok().body(listaSaldos);
 	}
 
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<?> findByIdAndUsuario(@PathVariable Integer id) {
 
-		Saldo saldo = saldoService.find(id);
+		Saldo saldo = saldoService.findByIdAndUsuario(id);
 
 		return ResponseEntity.ok().body(saldo);
 	}

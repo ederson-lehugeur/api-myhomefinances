@@ -127,8 +127,9 @@ public class DBService {
 
 		Saldo saldo1 = new Saldo(null, 1000.00, sdf.parse("21/11/2019 14:00:00.000"), usuario1);
 		Saldo saldo2 = new Saldo(null, 900.00, sdf.parse("22/11/2019 16:00:01.000"), usuario1);
+		Saldo saldo3 = new Saldo(null, 0.00, sdf.parse("18/12/2019 12:00:01.000"), usuario2);
 
-		saldoRepository.saveAll(Arrays.asList(saldo1, saldo2));
+		saldoRepository.saveAll(Arrays.asList(saldo1, saldo2, saldo3));
 
 		Banco banco1 = new Banco(null, "NuBank");
 
