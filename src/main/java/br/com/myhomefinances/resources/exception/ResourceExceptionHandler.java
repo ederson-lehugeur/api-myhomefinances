@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import br.com.myhomefinances.services.exception.AuthorizationException;
 import br.com.myhomefinances.services.exception.DataIntegrityException;
 import br.com.myhomefinances.services.exception.InvalidPerfilException;
 import br.com.myhomefinances.services.exception.NegativeBalanceException;
@@ -69,6 +70,16 @@ public class ResourceExceptionHandler {
 				e.getMessage(), System.currentTimeMillis());
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<StandardError> objectNotFound(AuthorizationException e,
+			HttpServletRequest request) {
+
+		StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(),
+				e.getMessage(), System.currentTimeMillis());
+
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
 	}
 
 }

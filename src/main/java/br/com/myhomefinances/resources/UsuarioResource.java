@@ -29,6 +29,7 @@ public class UsuarioResource {
 	@Autowired
 	UsuarioService usuarioService;
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<Usuario>> findAll() {
 
@@ -45,6 +46,7 @@ public class UsuarioResource {
 		return ResponseEntity.ok().body(usuario);
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value="/page", method=RequestMethod.GET)
 	public ResponseEntity<Page<Usuario>> findPage(
 			@RequestParam(value="page", defaultValue="0") Integer page,

@@ -14,6 +14,8 @@ import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.dto.UsuarioNewDTO;
 import br.com.myhomefinances.dto.UsuarioUpdateDTO;
 import br.com.myhomefinances.repositories.UsuarioRepository;
+import br.com.myhomefinances.security.UserDetailsSpringSecurity;
+import br.com.myhomefinances.services.exception.AuthorizationException;
 import br.com.myhomefinances.services.exception.ObjectNotFoundException;
 
 @Service
@@ -26,6 +28,9 @@ public class UsuarioService {
 	EmailService emailService;
 
 	@Autowired
+	PerfilService perfilService;
+
+	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	public List<Usuario> findAll() {
@@ -35,6 +40,14 @@ public class UsuarioService {
 	}
 
 	public Usuario find(Integer id) {
+		/* Implementar essa regra para os outros services - Início */
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null || !user.hasRole("ROLE_ADMIN") && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		/* Fim */
+
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
 
 		return usuario.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",

@@ -67,4 +67,8 @@ public class UserDetailsSpringSecurity implements UserDetails {
 		return true;
 	}
 
+	public boolean hasRole(String perfil) {
+		return getAuthorities().contains(new SimpleGrantedAuthority(perfil));
+	}
+
 }
