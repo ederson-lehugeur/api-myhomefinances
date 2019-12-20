@@ -54,8 +54,18 @@ public class UsuarioService {
 
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
 
-		return usuario.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
+		return usuario.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado",
 				id, Usuario.class.getName()));
+	}
+
+	public Usuario findByEmail(String email) {
+		Usuario usuario = usuarioRepository.findByEmail(email);
+
+		if (usuario == null) {
+			new ObjectNotFoundException("E-mail não encontrado");
+		}
+
+		return usuario;
 	}
 
 	public Page<Usuario> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
@@ -91,6 +101,10 @@ public class UsuarioService {
 		updateData(novoUsuario, usuario);
 
 		return usuarioRepository.save(novoUsuario);
+	}
+
+	public Usuario updatePasswordForgot(Usuario usuario) {
+		return usuarioRepository.save(usuario);
 	}
 
 	public void delete(Integer id) {

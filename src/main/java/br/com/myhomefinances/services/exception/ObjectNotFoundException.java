@@ -6,14 +6,18 @@ public class ObjectNotFoundException extends RuntimeException {
 	private Integer id;
 	private String entidade;
 
-	public ObjectNotFoundException(String msg, Integer id, String entidade) {
+	public ObjectNotFoundException(String msg) {
 		super(msg);
-		this.id = id;
-		this.entidade = entidade;
 	}
 
 	public ObjectNotFoundException(String msg, Throwable cause) {
 		super(msg, cause);
+	}
+
+	public ObjectNotFoundException(String msg, Integer id, String entidade) {
+		super(msg);
+		this.id = id;
+		this.entidade = entidade;
 	}
 
 	public Integer getId() {
