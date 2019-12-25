@@ -48,7 +48,7 @@ public class SaldoService {
 		Optional<Saldo> saldo = saldoRepository.findByIdAndUsuario(id, usuario);
 
 		return saldo.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
-				id, Saldo.class.getName()));
+				Saldo.class.getName()));
 	}
 
 	public Saldo findFirstByUsuarioOrderByDataHoraDesc(Usuario usuario) {

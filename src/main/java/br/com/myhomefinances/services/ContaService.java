@@ -60,7 +60,7 @@ public class ContaService {
 		Optional<Conta> conta = contaRepository.findByIdAndUsuario(idConta, usuario);
 
 		return conta.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
-				idConta, Conta.class.getName()));
+				Conta.class.getName()));
 	}
 
 	public Page<Conta> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {

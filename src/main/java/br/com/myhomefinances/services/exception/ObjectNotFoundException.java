@@ -3,8 +3,7 @@ package br.com.myhomefinances.services.exception;
 public class ObjectNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
-	private Integer id;
-	private String entidade;
+	private String entity;
 
 	public ObjectNotFoundException(String msg) {
 		super(msg);
@@ -14,26 +13,17 @@ public class ObjectNotFoundException extends RuntimeException {
 		super(msg, cause);
 	}
 
-	public ObjectNotFoundException(String msg, Integer id, String entidade) {
+	public ObjectNotFoundException(String msg, String entity) {
 		super(msg);
-		this.id = id;
-		this.entidade = entidade;
+		this.entity = entity;
 	}
 
-	public Integer getId() {
-		return id;
+	public String getEntity() {
+		return entity;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getEntidade() {
-		return entidade;
-	}
-
-	public void setEntidade(String entidade) {
-		this.entidade = entidade;
+	public void setEntity(String entity) {
+		this.entity = entity;
 	}
 
 }

@@ -31,7 +31,7 @@ public class BancoService {
 		Optional<Banco> banco = bancoRepository.findById(id);
 
 		return banco.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
-				id, Banco.class.getName()));
+				Banco.class.getName()));
 	}
 
 	public Page<Banco> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {

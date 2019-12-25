@@ -22,42 +22,46 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e,
 			HttpServletRequest request) {
 
-		StandardError err = new ObjectNotFoundError(HttpStatus.NOT_FOUND.value(),
-				e.getMessage(), System.currentTimeMillis(), e.getId(), e.getEntidade());
+		StandardError err = new ObjectNotFoundError(System.currentTimeMillis(),
+				HttpStatus.NOT_FOUND.value(), "Object not found", e.getMessage(),
+				request.getRequestURI(), e.getEntity());
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
 	}
 
 	@ExceptionHandler(DataIntegrityException.class)
-	public ResponseEntity<StandardError> objectNotFound(DataIntegrityException e,
+	public ResponseEntity<StandardError> dataIntegrity(DataIntegrityException e,
 			HttpServletRequest request) {
 
-		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(),
-				e.getMessage(), System.currentTimeMillis());
+		StandardError err = new StandardError(System.currentTimeMillis(),
+				HttpStatus.BAD_REQUEST.value(), "Data integrity", e.getMessage(),
+				request.getRequestURI());
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<StandardError> objectNotFound(MethodArgumentNotValidException e,
+	public ResponseEntity<StandardError> methodArgumentNotValid(MethodArgumentNotValidException e,
 			HttpServletRequest request) {
 
-		ValidationError err = new ValidationError(HttpStatus.BAD_REQUEST.value(),
-				"Erro de validação", System.currentTimeMillis());
+		ValidationError err = new ValidationError(System.currentTimeMillis(),
+				HttpStatus.UNPROCESSABLE_ENTITY.value(), "Validation error", e.getMessage(),
+				request.getRequestURI());
 
 		for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
 			err.addError(fieldError.getField(), fieldError.getDefaultMessage());
 		}
 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
 	}
 
 	@ExceptionHandler(NegativeBalanceException.class)
-	public ResponseEntity<StandardError> objectNotFound(NegativeBalanceException e,
+	public ResponseEntity<StandardError> negativeBalance(NegativeBalanceException e,
 			HttpServletRequest request) {
 
-		StandardError err = new NegativeBalanceError(HttpStatus.BAD_REQUEST.value(),
-				e.getMessage(), System.currentTimeMillis());
+		StandardError err = new NegativeBalanceError(System.currentTimeMillis(),
+				HttpStatus.BAD_REQUEST.value(), "Negative balance error", e.getMessage(),
+				request.getRequestURI());
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
@@ -66,18 +70,20 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<StandardError> invalidPerfil(InvalidPerfilException e,
 			HttpServletRequest request) {
 
-		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(),
-				e.getMessage(), System.currentTimeMillis());
+		StandardError err = new StandardError(System.currentTimeMillis(),
+				HttpStatus.BAD_REQUEST.value(), "Invalid perfil", e.getMessage(),
+				request.getRequestURI());
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
 
 	@ExceptionHandler(AuthorizationException.class)
-	public ResponseEntity<StandardError> objectNotFound(AuthorizationException e,
+	public ResponseEntity<StandardError> authorization(AuthorizationException e,
 			HttpServletRequest request) {
 
-		StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(),
-				e.getMessage(), System.currentTimeMillis());
+		StandardError err = new StandardError(System.currentTimeMillis(),
+				HttpStatus.FORBIDDEN.value(), "Authorization error", e.getMessage(),
+				request.getRequestURI());
 
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
 	}

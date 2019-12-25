@@ -5,8 +5,10 @@ import java.io.Serializable;
 public class NegativeBalanceError extends StandardError implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public NegativeBalanceError(Integer status, String message, Long timestamp) {
-		super(status, message, timestamp);
+	public NegativeBalanceError(Long timestamp, Integer status, String error,
+			String message, String path) {
+
+		super(timestamp, status, error, message, path);
 	}
 
 }

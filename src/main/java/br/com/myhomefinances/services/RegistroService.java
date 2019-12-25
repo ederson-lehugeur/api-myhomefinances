@@ -67,7 +67,7 @@ public class RegistroService {
 		Optional<Registro> registro = registroRepository.findByIdAndUsuario(id, usuario);
 
 		return registro.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
-				id, Registro.class.getName()));
+				Registro.class.getName()));
 	}
 
 	public Page<Registro> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {

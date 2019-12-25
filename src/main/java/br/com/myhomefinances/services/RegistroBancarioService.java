@@ -61,7 +61,7 @@ public class RegistroBancarioService {
 		Optional<RegistroBancario> registroBancario = registroBancarioRepository.findByIdAndConta(idRegistroBancario, conta);
 
 		return registroBancario.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
-				idRegistroBancario, Registro.class.getName()));
+				Registro.class.getName()));
 	}
 
 	public Page<RegistroBancario> findPageByConta(Integer page, Integer linesPerPage,

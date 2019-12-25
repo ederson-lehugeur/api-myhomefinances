@@ -55,7 +55,7 @@ public class UsuarioService {
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
 
 		return usuario.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado",
-				id, Usuario.class.getName()));
+				Usuario.class.getName()));
 	}
 
 	public Usuario findByEmail(String email) {

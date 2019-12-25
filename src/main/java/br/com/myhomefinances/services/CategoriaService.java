@@ -32,7 +32,7 @@ public class CategoriaService {
 		Optional<Categoria> categoria = categoriaRepository.findById(id);
 
 		return categoria.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
-				id, Categoria.class.getName()));
+				Categoria.class.getName()));
 	}
 
 	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {

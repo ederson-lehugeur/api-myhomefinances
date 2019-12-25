@@ -26,7 +26,7 @@ public class TipoContaService {
 		Optional<TipoConta> tipoConta = tipoContaRepository.findById(id);
 
 		return tipoConta.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
-				id, TipoConta.class.getName()));
+				TipoConta.class.getName()));
 	}
 
 	public TipoConta insert(TipoConta tipoConta) {

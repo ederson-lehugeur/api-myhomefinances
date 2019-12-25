@@ -27,14 +27,14 @@ public class TipoRegistroService {
 		Optional<TipoRegistro> tipoRegistro = tipoRegistroRepository.findById(id);
 
 		return tipoRegistro.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
-				id, TipoRegistro.class.getName()));
+				TipoRegistro.class.getName()));
 	}
 
 	public TipoRegistro findByNome(String nome) {
 		Optional<TipoRegistro> tipoRegistro = tipoRegistroRepository.findByNome(nome);
 
 		return tipoRegistro.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
-				null, TipoRegistro.class.getName()));
+				TipoRegistro.class.getName()));
 	}
 
 	public TipoRegistro insert(TipoRegistro tipoRegistro) {

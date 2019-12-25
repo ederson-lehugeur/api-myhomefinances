@@ -5,30 +5,21 @@ import java.io.Serializable;
 public class ObjectNotFoundError extends StandardError implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Integer id;
-	private String entidade;
+	private String entity;
 
-	public ObjectNotFoundError(Integer status, String message, Long timestamp,
-			Integer id, String entidade) {
-		super(status, message, timestamp);
-		this.id = id;
-		this.entidade = entidade;
+	public ObjectNotFoundError(Long timestamp, Integer status, String error,
+			String message, String path, String entity) {
+
+		super(timestamp, status, error, message, path);
+		this.entity = entity;
 	}
 
-	public Integer getId() {
-		return id;
+	public String getEntity() {
+		return entity;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getEntidade() {
-		return entidade;
-	}
-
-	public void setEntidade(String entidade) {
-		this.entidade = entidade;
+	public void setEntity(String entity) {
+		this.entity = entity;
 	}
 
 }

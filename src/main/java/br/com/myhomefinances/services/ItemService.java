@@ -40,7 +40,7 @@ public class ItemService {
 		Optional<Item> item = itemRepository.findById(id);
 
 		return item.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
-				id, Item.class.getName()));
+				Item.class.getName()));
 	}
 
 	public Page<Item> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {

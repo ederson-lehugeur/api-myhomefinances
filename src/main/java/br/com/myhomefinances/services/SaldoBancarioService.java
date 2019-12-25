@@ -34,7 +34,7 @@ public class SaldoBancarioService {
 		Optional<SaldoBancario> saldoBancario = saldoBancarioRepository.findByIdAndConta(idSaldoBancario, conta);
 
 		return saldoBancario.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
-				idSaldoBancario, SaldoBancario.class.getName()));
+				SaldoBancario.class.getName()));
 	}
 
 	public SaldoBancario findFirstByContaOrderByDataHoraDesc(Conta conta) {
