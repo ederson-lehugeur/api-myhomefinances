@@ -20,6 +20,7 @@ import br.com.myhomefinances.repositories.UsuarioRepository;
 import br.com.myhomefinances.security.UserDetailsSpringSecurity;
 import br.com.myhomefinances.services.exception.AuthorizationException;
 import br.com.myhomefinances.services.exception.ObjectNotFoundException;
+import br.com.myhomefinances.services.exception.ResetTokenNotFoundException;
 
 @Service
 public class UsuarioService {
@@ -66,6 +67,12 @@ public class UsuarioService {
 		}
 
 		return usuario;
+	}
+
+	public Usuario findByResetToken(String token) {
+		Optional<Usuario> usuario = usuarioRepository.findByResetToken(token);
+
+		return usuario.orElseThrow(() -> new ResetTokenNotFoundException("Token não encontrado"));
 	}
 
 	public Page<Usuario> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {

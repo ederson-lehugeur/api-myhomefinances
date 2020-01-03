@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import br.com.myhomefinances.services.exception.AuthorizationException;
 import br.com.myhomefinances.services.exception.DataIntegrityException;
+import br.com.myhomefinances.services.exception.IncorrectPasswordException;
 import br.com.myhomefinances.services.exception.InvalidPerfilException;
 import br.com.myhomefinances.services.exception.NegativeBalanceException;
 import br.com.myhomefinances.services.exception.ObjectNotFoundException;
+import br.com.myhomefinances.services.exception.ResetTokenNotFoundException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
@@ -88,4 +90,25 @@ public class ResourceExceptionHandler {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
 	}
 
+	@ExceptionHandler(ResetTokenNotFoundException.class)
+	public ResponseEntity<StandardError> objectNotFound(ResetTokenNotFoundException e,
+			HttpServletRequest request) {
+
+		StandardError err = new ResetTokenNotFoundError(System.currentTimeMillis(),
+				HttpStatus.NOT_FOUND.value(), "Token not found", e.getMessage(),
+				request.getRequestURI());
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+	}
+
+	@ExceptionHandler(IncorrectPasswordException.class)
+	public ResponseEntity<StandardError> invalidPerfil(IncorrectPasswordException e,
+			HttpServletRequest request) {
+
+		StandardError err = new StandardError(System.currentTimeMillis(),
+				HttpStatus.BAD_REQUEST.value(), "Incorrect password", e.getMessage(),
+				request.getRequestURI());
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
 }

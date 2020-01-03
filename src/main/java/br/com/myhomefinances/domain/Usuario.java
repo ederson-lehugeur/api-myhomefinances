@@ -2,6 +2,7 @@ package br.com.myhomefinances.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -28,6 +30,17 @@ public class Usuario implements Serializable {
 
 	@JsonIgnore
 	private String senha;
+
+	@JsonIgnore
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
+	private Date dataHoraCriacao;
+
+	@JsonIgnore
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
+	private Date ultimoLogin;
+
+	@JsonIgnore
+	private String resetToken;
 
 	@ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
@@ -45,6 +58,9 @@ public class Usuario implements Serializable {
 		this.sobrenome = sobrenome;
 		this.email = email;
 		this.senha = senha;
+		this.dataHoraCriacao = new Date();
+		this.ultimoLogin = null;
+		this.resetToken = null;
 	}
 
 	public Usuario(Integer id, String nome, String sobrenome, String email) {
@@ -92,6 +108,30 @@ public class Usuario implements Serializable {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public Date getDataHoraCriacao() {
+		return dataHoraCriacao;
+	}
+
+	public void setDataHoraCriacao(Date dataHoraCriacao) {
+		this.dataHoraCriacao = dataHoraCriacao;
+	}
+
+	public Date getUltimoLogin() {
+		return ultimoLogin;
+	}
+
+	public void setUltimoLogin(Date ultimoLogin) {
+		this.ultimoLogin = ultimoLogin;
+	}
+
+	public String getResetToken() {
+		return resetToken;
+	}
+
+	public void setResetToken(String resetToken) {
+		this.resetToken = resetToken;
 	}
 
 	public List<Perfil> getPerfis() {

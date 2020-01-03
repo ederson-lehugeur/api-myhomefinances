@@ -1,5 +1,6 @@
 package br.com.myhomefinances.services;
 
+import java.net.URI;
 import java.util.Date;
 
 import javax.mail.MessagingException;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
@@ -88,6 +90,27 @@ public abstract class AbstractEmailService implements EmailService {
 		simpleMailMessage.setSubject("Solicitação de nova senha");
 		simpleMailMessage.setSentDate(new Date(System.currentTimeMillis()));
 		simpleMailMessage.setText("Nova senha: " + newPassword);
+
+		return simpleMailMessage;
+	}
+
+	@Override
+	public void sendResetTokenEmail(Usuario usuario) {
+		SimpleMailMessage simpleMailMessage = prepareResetTokenEmail(usuario);
+		sendEmail(simpleMailMessage);
+	}
+
+	protected SimpleMailMessage prepareResetTokenEmail(Usuario usuario) {
+		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+
+		URI appUri = ServletUriComponentsBuilder.fromCurrentServletMapping()
+				.path("/auth/resetPassword").query("token={token}").buildAndExpand(usuario.getResetToken()).toUri();
+
+		simpleMailMessage.setTo(usuario.getEmail());
+		simpleMailMessage.setFrom(sender);
+		simpleMailMessage.setSubject("Solicitação de nova senha");
+		simpleMailMessage.setSentDate(new Date(System.currentTimeMillis()));
+		simpleMailMessage.setText("Para resetar sua senha, clique no link: " + appUri);
 
 		return simpleMailMessage;
 	}

@@ -13,5 +13,6 @@ public interface EmailService {
 	void sendConfirmationHtmlEmail(Usuario usuario);
 	void sendHtmlEmail(MimeMessage mimeMessage);
 	void sendNewPasswordEmail(Usuario usuario, String newPassword);
+	void sendResetTokenEmail(Usuario usuario);
 
 }

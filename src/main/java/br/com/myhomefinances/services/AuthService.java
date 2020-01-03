@@ -1,12 +1,13 @@
 package br.com.myhomefinances.services;
 
-import java.util.Random;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.myhomefinances.domain.Usuario;
+import br.com.myhomefinances.services.exception.IncorrectPasswordException;
 
 @Service
 public class AuthService {
@@ -20,37 +21,26 @@ public class AuthService {
 	@Autowired
 	EmailService emailService;
 
-	private Random rand = new Random();
-
-	public void sendNewPassword(String email) {
+	public void forgotPassword(String email) {
 		Usuario usuario = usuarioService.findByEmail(email);
 
-		String newPass = newPassword();
-
-		usuario.setSenha(bCryptPasswordEncoder.encode(newPass));
+		usuario.setResetToken(UUID.randomUUID().toString());
 
 		usuarioService.updatePasswordForgot(usuario);
 
-		emailService.sendNewPasswordEmail(usuario, newPass);
+		emailService.sendResetTokenEmail(usuario);
 	}
 
-	private String newPassword() {
-		char[] vet = new char[16];
-		for (int i = 0; i < 16; i++) {
-			vet[i] = randomChar();
+	public void resetPassword(String token, String senha, String confirmacaoSenha) {
+		if (!senha.equals(confirmacaoSenha)) {
+			throw new IncorrectPasswordException("As senhas não conferem");
 		}
-		return new String(vet);
-	}
 
-	private char randomChar() {
-		int opt = rand.nextInt(3);
+		Usuario usuario = usuarioService.findByResetToken(token);
 
-		if (opt == 0) {	// 0-9
-			return (char) (rand.nextInt(10) + 48);
-		} else if (opt == 1) { // A-Z
-			return (char) (rand.nextInt(26) + 65);
-		} else { // a-z
-			return (char) (rand.nextInt(26) + 97);
-		}
+		usuario.setSenha(bCryptPasswordEncoder.encode(senha));
+		usuario.setResetToken(null);
+
+		usuarioService.updatePasswordForgot(usuario);
 	}
 }
