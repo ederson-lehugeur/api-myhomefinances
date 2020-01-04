@@ -36,11 +36,11 @@ public class Usuario implements Serializable {
 	private Date dataHoraCriacao;
 
 	@JsonIgnore
-	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
-	private Date ultimoLogin;
+	private String resetToken;
 
 	@JsonIgnore
-	private String resetToken;
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
+	private Date tokenExpirationDatetime;
 
 	@ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
@@ -59,8 +59,8 @@ public class Usuario implements Serializable {
 		this.email = email;
 		this.senha = senha;
 		this.dataHoraCriacao = new Date();
-		this.ultimoLogin = null;
 		this.resetToken = null;
+		this.tokenExpirationDatetime = null;
 	}
 
 	public Usuario(Integer id, String nome, String sobrenome, String email) {
@@ -118,20 +118,20 @@ public class Usuario implements Serializable {
 		this.dataHoraCriacao = dataHoraCriacao;
 	}
 
-	public Date getUltimoLogin() {
-		return ultimoLogin;
-	}
-
-	public void setUltimoLogin(Date ultimoLogin) {
-		this.ultimoLogin = ultimoLogin;
-	}
-
 	public String getResetToken() {
 		return resetToken;
 	}
 
 	public void setResetToken(String resetToken) {
 		this.resetToken = resetToken;
+	}
+
+	public Date getTokenExpirationDatetime() {
+		return tokenExpirationDatetime;
+	}
+
+	public void setTokenExpirationDatetime(Date tokenExpirationDatetime) {
+		this.tokenExpirationDatetime = tokenExpirationDatetime;
 	}
 
 	public List<Perfil> getPerfis() {

@@ -110,7 +110,7 @@ public class UsuarioService {
 		return usuarioRepository.save(novoUsuario);
 	}
 
-	public Usuario updatePasswordForgot(Usuario usuario) {
+	public Usuario updateUsuario(Usuario usuario) {
 		return usuarioRepository.save(usuario);
 	}
 

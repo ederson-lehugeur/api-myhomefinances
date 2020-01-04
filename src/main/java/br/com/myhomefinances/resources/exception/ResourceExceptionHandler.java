@@ -16,6 +16,7 @@ import br.com.myhomefinances.services.exception.InvalidPerfilException;
 import br.com.myhomefinances.services.exception.NegativeBalanceException;
 import br.com.myhomefinances.services.exception.ObjectNotFoundException;
 import br.com.myhomefinances.services.exception.ResetTokenNotFoundException;
+import br.com.myhomefinances.services.exception.TokenExpiredException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
@@ -107,6 +108,17 @@ public class ResourceExceptionHandler {
 
 		StandardError err = new StandardError(System.currentTimeMillis(),
 				HttpStatus.BAD_REQUEST.value(), "Incorrect password", e.getMessage(),
+				request.getRequestURI());
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+
+	@ExceptionHandler(TokenExpiredException.class)
+	public ResponseEntity<StandardError> invalidPerfil(TokenExpiredException e,
+			HttpServletRequest request) {
+
+		StandardError err = new StandardError(System.currentTimeMillis(),
+				HttpStatus.BAD_REQUEST.value(), "Token expired", e.getMessage(),
 				request.getRequestURI());
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
