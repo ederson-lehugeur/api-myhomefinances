@@ -76,11 +76,13 @@ public class DBService {
 	public void instantiateTestDatabase() throws ParseException {
 
 		Categoria categoria1 = new Categoria(null, "Operação Bancária",
-				"Operações de Saque, Depósito, Transferências, etc.");
-		Categoria categoria2 = new Categoria(null, "Compras no mercado", null);
-		Categoria categoria3 = new Categoria(null, "Compras na farmácia", null);
-		Categoria categoria4 = new Categoria(null, "Viagens", null);
-		Categoria categoria5 = new Categoria(null, "Variados", null);
+				"Operações de Saque, Depósito, Transferências, etc.", null);
+		Categoria categoria2 = new Categoria(null, "Compras no mercado", null, null);
+		Categoria categoria3 = new Categoria(null, "Compras na farmácia", null, null);
+		Categoria categoria4 = new Categoria(null, "Viagens", null, null);
+		Categoria categoria5 = new Categoria(null, "Variados", null, null);
+		Categoria categoria6 = new Categoria(null, "Operação Bancária",
+				"Operações de Saque, Depósito, Transferências, etc.", null);
 
 		Usuario usuario1 = new Usuario(null, "Eddye", "Holmes", "eddye.holmes@gmail.com",
 				bCryptPasswordEncoder.encode("123456"));
@@ -100,13 +102,20 @@ public class DBService {
 		perfilRepository.saveAll(Arrays.asList(perfil1, perfil2));
 		usuarioRepository.saveAll(Arrays.asList(usuario1, usuario2));
 
+		categoria1.setUsuario(usuario2);
+		categoria2.setUsuario(usuario2);
+		categoria3.setUsuario(usuario2);
+		categoria4.setUsuario(usuario2);
+		categoria5.setUsuario(usuario2);
+		categoria6.setUsuario(usuario1);
+
 		Item item1 = new Item(null, "Saque", null, categoria1, usuario1);
 		Item item2 = new Item(null, "Depósito", null, categoria1, usuario1);
 		Item item3 = new Item(null, "Transferência", null, categoria1, usuario1);
 		Item item4 = new Item(null, "Salário", null, categoria1, usuario1);
 
 		categoriaRepository.saveAll(Arrays.asList(categoria1, categoria2, categoria3, categoria4,
-				categoria5));
+				categoria5, categoria6));
 		itemRepository.saveAll(Arrays.asList(item1, item2, item3, item4));
 
 		TipoRegistro tipoRegistro1 = new TipoRegistro(null, "Pagamento");

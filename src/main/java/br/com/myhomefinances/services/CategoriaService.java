@@ -9,10 +9,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.myhomefinances.domain.Categoria;
+import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.dto.CategoriaDTO;
 import br.com.myhomefinances.repositories.CategoriaRepository;
+import br.com.myhomefinances.security.UserDetailsSpringSecurity;
+import br.com.myhomefinances.services.exception.AuthorizationException;
 import br.com.myhomefinances.services.exception.DataIntegrityException;
 import br.com.myhomefinances.services.exception.ObjectNotFoundException;
 
@@ -22,14 +26,29 @@ public class CategoriaService {
 	@Autowired
 	CategoriaRepository categoriaRepository;
 
-	public List<Categoria> findAll() {
-		List<Categoria> listaCategorias = categoriaRepository.findAll();
+	@Autowired
+	UsuarioService usuarioService;
+
+	public List<Categoria> findByUsuario() {
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		List<Categoria> listaCategorias = categoriaRepository.findByUsuario(user.getId());
 
 		return listaCategorias;
 	}
 
 	public Categoria find(Integer id) {
-		Optional<Categoria> categoria = categoriaRepository.findById(id);
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		Optional<Categoria> categoria = categoriaRepository.findByIdAndUsuario(id, user.getId());
 
 		return categoria.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
 				Categoria.class.getName()));
@@ -38,7 +57,13 @@ public class CategoriaService {
 	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 
-		return categoriaRepository.findAll(pageRequest);
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		return categoriaRepository.findByUsuario(user.getId(), pageRequest);
 	}
 
 	public Categoria insert(Categoria categoria) {
@@ -55,23 +80,40 @@ public class CategoriaService {
 		return categoriaRepository.save(novaCategoria);
 	}
 
+	@Transactional
 	public void delete(Integer id) {
 		find(id);
 
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
 		try {
-			categoriaRepository.deleteById(id);
+			categoriaRepository.deleteByIdAndUsuarioId(id, user.getId());
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir uma categoria que possui itens.");
 		}
 	}
 
-	public Categoria fromDTO(CategoriaDTO categoriaDTO) {
-		return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome(), categoriaDTO.getComplemento());
+	public Categoria fromDTO(CategoriaDTO categoriaDto) {
+		Usuario usuario = usuarioService.find(categoriaDto.getUsuarioId());
+
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null || usuario.getId() != user.getId()) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		return new Categoria(categoriaDto.getId(), categoriaDto.getNome(), categoriaDto.getComplemento(),
+				usuario);
 	}
 
 	private void updateData(Categoria novaCategoria, Categoria categoria) {
 		novaCategoria.setNome(categoria.getNome());
 		novaCategoria.setComplemento(categoria.getComplemento());
+		novaCategoria.setUsuario(categoria.getUsuario());
 	}
 
 }

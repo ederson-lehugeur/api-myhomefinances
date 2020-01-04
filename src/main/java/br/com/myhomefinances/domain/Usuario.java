@@ -16,8 +16,10 @@ import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
+@JsonIgnoreProperties({ "dataHoraCriacao", "tokenExpirationDatetime" })
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -31,14 +33,12 @@ public class Usuario implements Serializable {
 	@JsonIgnore
 	private String senha;
 
-	@JsonIgnore
 	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
 	private Date dataHoraCriacao;
 
 	@JsonIgnore
 	private String resetToken;
 
-	@JsonIgnore
 	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
 	private Date tokenExpirationDatetime;
 

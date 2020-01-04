@@ -3,6 +3,7 @@ package br.com.myhomefinances.dto;
 import java.io.Serializable;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -20,12 +21,16 @@ public class CategoriaDTO implements Serializable {
 	@Length(max=255, message="O tamanho máxima é de 255 caracteres")
 	private String complemento;
 
+	@NotNull(message="Preenchimento obrigatório")
+	private Integer usuarioId;
+
 	public CategoriaDTO() {}
 
 	public CategoriaDTO(Categoria categoria) {
 		id = categoria.getId();
 		nome = categoria.getNome();
 		complemento = categoria.getComplemento();
+		usuarioId = categoria.getUsuario().getId();
 	}
 
 	public Integer getId() {
@@ -50,6 +55,14 @@ public class CategoriaDTO implements Serializable {
 
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
+	}
+
+	public Integer getUsuarioId() {
+		return usuarioId;
+	}
+
+	public void setUsuarioId(Integer usuarioId) {
+		this.usuarioId = usuarioId;
 	}
 
 }
