@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,15 +29,15 @@ public class Registro implements Serializable {
 	private Date dataHoraCriacao;
 
 	@ManyToOne
-	@JoinColumn(name="tiporegistro_id")
+	@JoinColumn(name="tiporegistro_id", foreignKey=@ForeignKey(name="FK_REGISTRO_TIPOREGISTRO"))
 	private TipoRegistro tipoRegistro;
 
 	@ManyToOne
-	@JoinColumn(name="usuario_id")
+	@JoinColumn(name="usuario_id", foreignKey=@ForeignKey(name="FK_REGISTRO_USUARIO"))
 	private Usuario usuario;
 
 	@ManyToOne
-	@JoinColumn(name="item_id")
+	@JoinColumn(name="item_id", foreignKey=@ForeignKey(name="FK_REGISTRO_ITEM"))
 	private Item item;
 
 	public Registro() {}

@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -45,8 +46,10 @@ public class Usuario implements Serializable {
 	@ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
         name = "USUARIO_PERFIL",
-        joinColumns = { @JoinColumn(name = "usuario_id") },
-        inverseJoinColumns = { @JoinColumn(name = "perfil_id") }
+        joinColumns = { @JoinColumn(name = "usuario_id",
+        	foreignKey=@ForeignKey(name="FK_USUARIOPERFIL_USUARIO")) },
+        inverseJoinColumns = { @JoinColumn(name = "perfil_id",
+        	foreignKey=@ForeignKey(name="FK_USUARIOPERFIL_PERFIL")) }
     )
     private List<Perfil> perfis = new ArrayList<>();
 

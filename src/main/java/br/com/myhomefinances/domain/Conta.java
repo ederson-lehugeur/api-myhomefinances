@@ -3,6 +3,7 @@ package br.com.myhomefinances.domain;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,15 +19,15 @@ public class Conta implements Serializable {
 	private Integer id;
 
 	@ManyToOne
-	@JoinColumn(name="banco_id")
+	@JoinColumn(name="banco_id", foreignKey=@ForeignKey(name="FK_CONTA_BANCO"))
 	private Banco banco;
 
 	@ManyToOne
-	@JoinColumn(name="tipoConta_id")
+	@JoinColumn(name="tipoConta_id", foreignKey=@ForeignKey(name="FK_CONTA_TIPOCONTA"))
 	private TipoConta tipoConta;
 
 	@ManyToOne
-	@JoinColumn(name="usuario_id")
+	@JoinColumn(name="usuario_id", foreignKey=@ForeignKey(name="FK_CONTA_USUARIO"))
 	private Usuario usuario;
 
 	public Conta() {}

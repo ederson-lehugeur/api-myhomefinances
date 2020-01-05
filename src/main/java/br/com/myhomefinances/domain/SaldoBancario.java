@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,7 +26,7 @@ public class SaldoBancario implements Serializable {
 	private Date dataHora;
 
 	@ManyToOne
-	@JoinColumn(name="conta_id")
+	@JoinColumn(name="conta_id", foreignKey=@ForeignKey(name="FK_SALDOBANCARIO_CONTA"))
 	private Conta conta;
 
 	public SaldoBancario() {}

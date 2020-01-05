@@ -3,6 +3,7 @@ package br.com.myhomefinances.domain;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,11 +21,11 @@ public class Item implements Serializable {
 	private String complemento;
 
 	@ManyToOne
-	@JoinColumn(name="categoria_id")
+	@JoinColumn(name="categoria_id", foreignKey=@ForeignKey(name="FK_ITEM_CATEGORIA"))
 	private Categoria categoria;
 
 	@ManyToOne
-	@JoinColumn(name="usuario_id")
+	@JoinColumn(name="usuario_id", foreignKey=@ForeignKey(name="FK_ITEM_USUARIO"))
 	private Usuario usuario;
 
 	public Item() {}
