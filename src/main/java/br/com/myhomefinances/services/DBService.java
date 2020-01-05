@@ -3,6 +3,7 @@ package br.com.myhomefinances.services;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -81,41 +82,34 @@ public class DBService {
 		Categoria categoria3 = new Categoria(null, "Compras na farmácia", null, null);
 		Categoria categoria4 = new Categoria(null, "Viagens", null, null);
 		Categoria categoria5 = new Categoria(null, "Variados", null, null);
-		Categoria categoria6 = new Categoria(null, "Operação Bancária",
-				"Operações de Saque, Depósito, Transferências, etc.", null);
 
-		Usuario usuario1 = new Usuario(null, "Eddye", "Holmes", "eddye.holmes@gmail.com",
-				bCryptPasswordEncoder.encode("123456"));
-
-		Usuario usuario2 = new Usuario(null, "Ederson", "Lehugeur", "eder.lehugeur@gmail.com",
-				bCryptPasswordEncoder.encode("123456"));
+		Usuario usuario1 = new Usuario(null, "Ederson", "Lehugeur", "eder.lehugeur@gmail.com",
+				bCryptPasswordEncoder.encode("Q1W2E3"));
 
 		Perfil perfil1 = new Perfil(null, "ROLE_CLIENTE");
 		Perfil perfil2 = new Perfil(null, "ROLE_ADMIN");
 
-		usuario1.getPerfis().addAll(Arrays.asList(perfil1));
-		usuario2.getPerfis().addAll(Arrays.asList(perfil1, perfil2));
+		usuario1.getPerfis().addAll(Arrays.asList(perfil1, perfil2));
 
-		perfil1.getUsuarios().addAll(Arrays.asList(usuario1, usuario2));
-		perfil2.getUsuarios().addAll(Arrays.asList(usuario2));
+		perfil1.getUsuarios().addAll(Arrays.asList(usuario1));
+		perfil2.getUsuarios().addAll(Arrays.asList(usuario1));
 
 		perfilRepository.saveAll(Arrays.asList(perfil1, perfil2));
-		usuarioRepository.saveAll(Arrays.asList(usuario1, usuario2));
+		usuarioRepository.saveAll(Arrays.asList(usuario1));
 
-		categoria1.setUsuario(usuario2);
-		categoria2.setUsuario(usuario2);
-		categoria3.setUsuario(usuario2);
-		categoria4.setUsuario(usuario2);
-		categoria5.setUsuario(usuario2);
-		categoria6.setUsuario(usuario1);
+		categoria1.setUsuario(usuario1);
+		categoria2.setUsuario(usuario1);
+		categoria3.setUsuario(usuario1);
+		categoria4.setUsuario(usuario1);
+		categoria5.setUsuario(usuario1);
 
 		Item item1 = new Item(null, "Saque", null, categoria1, usuario1);
 		Item item2 = new Item(null, "Depósito", null, categoria1, usuario1);
 		Item item3 = new Item(null, "Transferência", null, categoria1, usuario1);
 		Item item4 = new Item(null, "Salário", null, categoria1, usuario1);
 
-		categoriaRepository.saveAll(Arrays.asList(categoria1, categoria2, categoria3, categoria4,
-				categoria5, categoria6));
+		categoriaRepository.saveAll(Arrays.asList(categoria1, categoria2, categoria3,
+				categoria4, categoria5));
 		itemRepository.saveAll(Arrays.asList(item1, item2, item3, item4));
 
 		TipoRegistro tipoRegistro1 = new TipoRegistro(null, "Pagamento");
@@ -124,14 +118,16 @@ public class DBService {
 		TipoRegistro tipoRegistro4 = new TipoRegistro(null, "Ganho");
 		TipoRegistro tipoRegistro5 = new TipoRegistro(null, "Salário");
 
-		tipoRegistroRepository.saveAll(Arrays.asList(tipoRegistro1, tipoRegistro2, tipoRegistro3, tipoRegistro4, tipoRegistro5));
+		tipoRegistroRepository.saveAll(Arrays.asList(tipoRegistro1, tipoRegistro2,
+				tipoRegistro3, tipoRegistro4, tipoRegistro5));
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS");
 
-		Saldo saldo1 = new Saldo(null, 0.00, sdf.parse("20/11/2019 14:00:00.000"), usuario1);
-		Saldo saldo2 = new Saldo(null, 0.00, sdf.parse("18/12/2019 12:00:01.000"), usuario2);
+		String now = sdf.format(new Date());
 
-		saldoRepository.saveAll(Arrays.asList(saldo1, saldo2));
+		Saldo saldo1 = new Saldo(null, 0.00, sdf.parse(now), usuario1);
+
+		saldoRepository.saveAll(Arrays.asList(saldo1));
 
 		Banco banco1 = new Banco(null, "NuBank");
 		Banco banco2 = new Banco(null, "Caixa Econômica Federal");
@@ -144,14 +140,12 @@ public class DBService {
 
 		tipoContaRepository.saveAll(Arrays.asList(tipoConta1, tipoConta2, tipoConta3));
 
-		Conta conta1 = new Conta(null, banco1, tipoConta1, usuario2);
-		Conta conta2 = new Conta(null, banco2, tipoConta2, usuario1);
+		Conta conta1 = new Conta(null, banco1, tipoConta1, usuario1);
 
-		contaRepository.saveAll(Arrays.asList(conta1, conta2));
+		contaRepository.saveAll(Arrays.asList(conta1));
 
-		SaldoBancario saldoBancario1 = new SaldoBancario(null, 0.00, sdf.parse("06/12/2019 10:00:00.000"), conta1);
-		SaldoBancario saldoBancario2 = new SaldoBancario(null, 0.00, sdf.parse("18/12/2019 10:00:00.000"), conta2);
+		SaldoBancario saldoBancario1 = new SaldoBancario(null, 0.00, sdf.parse(now), conta1);
 
-		saldoBancarioRepository.saveAll(Arrays.asList(saldoBancario1, saldoBancario2));
+		saldoBancarioRepository.saveAll(Arrays.asList(saldoBancario1));
 	}
 }
