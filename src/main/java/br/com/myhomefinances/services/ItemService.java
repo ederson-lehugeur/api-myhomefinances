@@ -15,6 +15,8 @@ import br.com.myhomefinances.domain.Item;
 import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.dto.ItemDTO;
 import br.com.myhomefinances.repositories.ItemRepository;
+import br.com.myhomefinances.security.UserDetailsSpringSecurity;
+import br.com.myhomefinances.services.exception.AuthorizationException;
 import br.com.myhomefinances.services.exception.DataIntegrityException;
 import br.com.myhomefinances.services.exception.ObjectNotFoundException;
 
@@ -30,23 +32,41 @@ public class ItemService {
 	@Autowired
 	UsuarioService usuarioService;
 
-	public List<Item> findAll() {
-		List<Item> listaItens = itemRepository.findAll();
-
-		return listaItens;
-	}
-
 	public Item find(Integer id) {
-		Optional<Item> item = itemRepository.findById(id);
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		Optional<Item> item = itemRepository.findByIdAndUsuarioId(id, user.getId());
 
 		return item.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
 				Item.class.getName()));
 	}
 
+	public List<Item> findByUsuario() {
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		List<Item> listaItens = itemRepository.findByUsuarioId(user.getId());
+
+		return listaItens;
+	}
+
 	public Page<Item> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 
-		return itemRepository.findAll(pageRequest);
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		return itemRepository.findByUsuarioId(user.getId(), pageRequest);
 	}
 
 	public Item insert(Item item) {

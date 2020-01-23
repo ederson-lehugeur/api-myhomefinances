@@ -27,20 +27,20 @@ public class ItemResource {
 	@Autowired
 	ItemService itemService;
 
-	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<Item>> findAll() {
-
-		List<Item> listaItens = itemService.findAll();
-
-		return ResponseEntity.ok().body(listaItens);
-	}
-
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Item> find(@PathVariable Integer id) {
 
 		Item item = itemService.find(id);
 
 		return ResponseEntity.ok().body(item);
+	}
+
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<List<Item>> findByUsuario() {
+
+		List<Item> listaItens = itemService.findByUsuario();
+
+		return ResponseEntity.ok().body(listaItens);
 	}
 
 	@RequestMapping(value="/page", method=RequestMethod.GET)
