@@ -24,7 +24,6 @@ public class ItemDTO implements Serializable {
 	@NotNull(message="Preenchimento obrigatório")
 	private Integer categoriaId;
 
-	@NotNull(message="Preenchimento obrigatório")
 	private Integer usuarioId;
 
 	public ItemDTO() {}

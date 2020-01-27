@@ -99,7 +99,13 @@ public class ItemService {
 	public Item fromDTO(ItemDTO itemDto) {
 		Categoria categoria = categoriaService.find(itemDto.getCategoriaId());
 
-		Usuario usuario = usuarioService.find(itemDto.getUsuarioId());
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		Usuario usuario = usuarioService.find(user.getId());
 
 		return new Item(itemDto.getId(), itemDto.getNome(), itemDto.getComplemento(),
 				categoria, usuario);
