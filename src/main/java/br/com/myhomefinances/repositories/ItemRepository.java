@@ -21,6 +21,9 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	List<Item> findByUsuarioId(Integer idUsuario);
 
 	@Transactional(readOnly=true)
+	List<Item> findByUsuarioIdOrderByCategoriaNomeAscNomeAsc(Integer idUsuario);
+
+	@Transactional(readOnly=true)
 	Page<Item> findByUsuarioId(Integer idUsuario, Pageable pageRequest);
 
 }

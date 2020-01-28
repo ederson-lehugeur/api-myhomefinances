@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Categoria implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -20,6 +22,7 @@ public class Categoria implements Serializable {
 	private String nome;
 	private String complemento;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="usuario_id", foreignKey=@ForeignKey(name="FK_CATEGORIA_USUARIO"))
 	private Usuario usuario;

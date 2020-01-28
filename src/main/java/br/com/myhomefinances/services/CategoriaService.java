@@ -98,16 +98,16 @@ public class CategoriaService {
 	}
 
 	public Categoria fromDTO(CategoriaDTO categoriaDto) {
-		Usuario usuario = usuarioService.find(categoriaDto.getUsuarioId());
-
 		UserDetailsSpringSecurity user = UserService.authenticated();
 
-		if (user == null || usuario.getId() != user.getId()) {
+		if (user == null) {
 			throw new AuthorizationException("Acesso negado");
 		}
 
-		return new Categoria(categoriaDto.getId(), categoriaDto.getNome(), categoriaDto.getComplemento(),
-				usuario);
+		Usuario usuario = usuarioService.find(user.getId());
+
+		return new Categoria(categoriaDto.getId(), categoriaDto.getNome(),
+				categoriaDto.getComplemento(), usuario);
 	}
 
 	private void updateData(Categoria novaCategoria, Categoria categoria) {
