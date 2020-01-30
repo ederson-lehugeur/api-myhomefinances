@@ -1,6 +1,7 @@
 package br.com.myhomefinances.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -21,6 +23,9 @@ public class Item implements Serializable {
 	private Integer id;
 	private String nome;
 	private String complemento;
+
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
+	private Date dataHora;
 
 	@ManyToOne
 	@JoinColumn(name="categoria_id", foreignKey=@ForeignKey(name="FK_ITEM_CATEGORIA"))
@@ -38,6 +43,7 @@ public class Item implements Serializable {
 		this.id = id;
 		this.nome = nome;
 		this.complemento = complemento;
+		this.dataHora = new Date();
 		this.categoria = categoria;
 		this.usuario = usuario;
 	}
@@ -64,6 +70,14 @@ public class Item implements Serializable {
 
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
+	}
+
+	public Date getDataHora() {
+		return dataHora;
+	}
+
+	public void setDataHora(Date dataHora) {
+		this.dataHora = dataHora;
 	}
 
 	public Categoria getCategoria() {

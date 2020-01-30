@@ -57,7 +57,7 @@ public class ItemService {
 		return listaItens;
 	}
 
-	public Page<Item> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+	public Page<Item> findPageByUsuario(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 
 		UserDetailsSpringSecurity user = UserService.authenticated();
@@ -114,6 +114,7 @@ public class ItemService {
 	private void updateData(Item novoItem, Item item) {
 		novoItem.setNome(item.getNome());
 		novoItem.setComplemento(item.getComplemento());
+		novoItem.setDataHora(item.getDataHora());
 		novoItem.setCategoria(item.getCategoria());
 	}
 

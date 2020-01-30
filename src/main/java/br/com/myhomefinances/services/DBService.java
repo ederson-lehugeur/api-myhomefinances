@@ -107,10 +107,35 @@ public class DBService {
 		Item item2 = new Item(null, "Depósito", null, categoria1, usuario1);
 		Item item3 = new Item(null, "Transferência", null, categoria1, usuario1);
 		Item item4 = new Item(null, "Salário", null, categoria1, usuario1);
+		Item item5 = new Item(null, "Item", null, categoria2, usuario1);
+		Item item6 = new Item(null, "Item", null, categoria4, usuario1);
+		Item item7 = new Item(null, "Item", null, categoria5, usuario1);
+		Item item8 = new Item(null, "Item", null, categoria3, usuario1);
+		Item item9 = new Item(null, "Item", null, categoria2, usuario1);
+		Item item10 = new Item(null, "Item", null, categoria1, usuario1);
+		Item item11 = new Item(null, "Item", null, categoria3, usuario1);
+		Item item12 = new Item(null, "Item", null, categoria3, usuario1);
+		Item item13 = new Item(null, "Item", null, categoria4, usuario1);
+		Item item14 = new Item(null, "Item", null, categoria5, usuario1);
+		Item item15 = new Item(null, "Item", null, categoria5, usuario1);
+		Item item16 = new Item(null, "Item", null, categoria4, usuario1);
+		Item item17 = new Item(null, "Item", null, categoria3, usuario1);
+		Item item18 = new Item(null, "Item", null, categoria4, usuario1);
+		Item item19 = new Item(null, "Item", null, categoria2, usuario1);
+		Item item20 = new Item(null, "Item", null, categoria2, usuario1);
+		Item item21 = new Item(null, "Item", null, categoria4, usuario1);
+		Item item22 = new Item(null, "Item", null, categoria5, usuario1);
+		Item item23 = new Item(null, "Item", null, categoria1, usuario1);
+		Item item24 = new Item(null, "Item", null, categoria1, usuario1);
+		Item item25 = new Item(null, "Item", null, categoria3, usuario1);
+		Item item26 = new Item(null, "Item", null, categoria4, usuario1);
 
 		categoriaRepository.saveAll(Arrays.asList(categoria1, categoria2, categoria3,
 				categoria4, categoria5));
-		itemRepository.saveAll(Arrays.asList(item1, item2, item3, item4));
+		itemRepository.saveAll(Arrays.asList(item1, item2, item3, item4,
+				item5, item6, item7, item8, item9, item10, item11, item12,
+				item13, item14, item15, item16, item17, item18, item19, item20,
+				item21, item22, item23, item24, item25, item26));
 
 		TipoRegistro tipoRegistro1 = new TipoRegistro(null, "Pagamento");
 		TipoRegistro tipoRegistro2 = new TipoRegistro(null, "Pendencia");
