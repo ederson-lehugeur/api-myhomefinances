@@ -109,7 +109,7 @@ public class RegistroBancarioService {
 	public RegistroBancario fromDTO(RegistroBancarioDTO registroBancarioDto) {
 		Conta conta = contaService.findByIdAndUsuario(registroBancarioDto.getContaId());
 
-		Item item = itemService.find(registroBancarioDto.getItemId());
+		Item item = itemService.findById(registroBancarioDto.getItemId());
 
 		return new RegistroBancario(registroBancarioDto.getId(), registroBancarioDto.getValor(),
 				registroBancarioDto.getDataHora(), conta, item);

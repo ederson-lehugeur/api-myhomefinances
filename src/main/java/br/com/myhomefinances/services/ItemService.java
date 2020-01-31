@@ -32,7 +32,7 @@ public class ItemService {
 	@Autowired
 	UsuarioService usuarioService;
 
-	public Item find(Integer id) {
+	public Item findById(Integer id) {
 		UserDetailsSpringSecurity user = UserService.authenticated();
 
 		if (user == null) {
@@ -45,7 +45,7 @@ public class ItemService {
 				Item.class.getName()));
 	}
 
-	public List<Item> findByUsuario() {
+	public List<Item> find() {
 		UserDetailsSpringSecurity user = UserService.authenticated();
 
 		if (user == null) {
@@ -57,7 +57,7 @@ public class ItemService {
 		return listaItens;
 	}
 
-	public Page<Item> findPageByUsuario(Integer page, Integer linesPerPage, String orderBy, String direction) {
+	public Page<Item> find(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 
 		UserDetailsSpringSecurity user = UserService.authenticated();
@@ -78,7 +78,7 @@ public class ItemService {
 	}
 
 	public Item update(Item item) {
-		Item novoItem = find(item.getId());
+		Item novoItem = findById(item.getId());
 
 		updateData(novoItem, item);
 
@@ -86,7 +86,7 @@ public class ItemService {
 	}
 
 	public void delete(Integer id) {
-		find(id);
+		findById(id);
 
 		try {
 			itemRepository.deleteById(id);
@@ -97,7 +97,7 @@ public class ItemService {
 	}
 
 	public Item fromDTO(ItemDTO itemDto) {
-		Categoria categoria = categoriaService.find(itemDto.getCategoriaId());
+		Categoria categoria = categoriaService.findById(itemDto.getCategoriaId());
 
 		UserDetailsSpringSecurity user = UserService.authenticated();
 

@@ -116,7 +116,7 @@ public class RegistroService {
 
 		Usuario usuario = usuarioService.find(registroDto.getUsuarioId());
 
-		Item item = itemService.find(registroDto.getItemId());
+		Item item = itemService.findById(registroDto.getItemId());
 
 		return new Registro(registroDto.getId(), registroDto.getValor(), registroDto.getDataHora(),
 				tipoRegistro, usuario, item);

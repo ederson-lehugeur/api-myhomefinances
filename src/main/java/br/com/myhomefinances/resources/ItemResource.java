@@ -1,6 +1,7 @@
 package br.com.myhomefinances.resources;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -29,29 +30,26 @@ public class ItemResource {
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Item> findById(@PathVariable Integer id) {
 
-		Item item = itemService.find(id);
+		Item item = itemService.findById(id);
 
 		return ResponseEntity.ok().body(item);
 	}
 
-	/*
-	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<Item>> findByUsuario() {
+	public ResponseEntity<List<Item>> find() {
 
-		List<Item> listaItens = itemService.findByUsuario();
+		List<Item> listaItens = itemService.find();
 
 		return ResponseEntity.ok().body(listaItens);
 	}
-	*/
 
-	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<Page<Item>> findByUsuario(
+	@RequestMapping(value="/pageable", method=RequestMethod.GET)
+	public ResponseEntity<Page<Item>> find(
 			@RequestParam(value="page", defaultValue="0") Integer page,
 			@RequestParam(value="linesPerPage", defaultValue="12") Integer linesPerPage,
 			@RequestParam(value="orderBy", defaultValue="nome") String orderBy,
 			@RequestParam(value="direction", defaultValue="ASC") String direction) {
 
-		Page<Item> listaItens = itemService.findPageByUsuario(page, linesPerPage, orderBy, direction);
+		Page<Item> listaItens = itemService.find(page, linesPerPage, orderBy, direction);
 
 		return ResponseEntity.ok().body(listaItens);
 	}

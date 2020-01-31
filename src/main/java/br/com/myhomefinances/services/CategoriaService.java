@@ -29,32 +29,19 @@ public class CategoriaService {
 	@Autowired
 	UsuarioService usuarioService;
 
-	public List<Categoria> findByUsuario() {
+	public List<Categoria> find() {
 		UserDetailsSpringSecurity user = UserService.authenticated();
 
 		if (user == null) {
 			throw new AuthorizationException("Acesso negado");
 		}
 
-		List<Categoria> listaCategorias = categoriaRepository.findByUsuario(user.getId());
+		List<Categoria> listaCategorias = categoriaRepository.findByUsuarioId(user.getId());
 
 		return listaCategorias;
 	}
 
-	public Categoria find(Integer id) {
-		UserDetailsSpringSecurity user = UserService.authenticated();
-
-		if (user == null) {
-			throw new AuthorizationException("Acesso negado");
-		}
-
-		Optional<Categoria> categoria = categoriaRepository.findByIdAndUsuario(id, user.getId());
-
-		return categoria.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
-				Categoria.class.getName()));
-	}
-
-	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+	public Page<Categoria> find(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 
 		UserDetailsSpringSecurity user = UserService.authenticated();
@@ -63,7 +50,20 @@ public class CategoriaService {
 			throw new AuthorizationException("Acesso negado");
 		}
 
-		return categoriaRepository.findByUsuario(user.getId(), pageRequest);
+		return categoriaRepository.findByUsuarioId(user.getId(), pageRequest);
+	}
+
+	public Categoria findById(Integer id) {
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		Optional<Categoria> categoria = categoriaRepository.findByIdAndUsuarioId(id, user.getId());
+
+		return categoria.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
+				Categoria.class.getName()));
 	}
 
 	public Categoria insert(Categoria categoria) {
@@ -73,7 +73,7 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria categoria) {
-		Categoria novaCategoria = find(categoria.getId());
+		Categoria novaCategoria = findById(categoria.getId());
 
 		updateData(novaCategoria, categoria);
 
@@ -82,7 +82,7 @@ public class CategoriaService {
 
 	@Transactional
 	public void delete(Integer id) {
-		find(id);
+		findById(id);
 
 		UserDetailsSpringSecurity user = UserService.authenticated();
 
