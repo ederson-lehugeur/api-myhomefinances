@@ -35,6 +35,7 @@ public class ItemResource {
 		return ResponseEntity.ok().body(item);
 	}
 
+	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<Item>> find() {
 
 		List<Item> listaItens = itemService.find();

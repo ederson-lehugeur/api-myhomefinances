@@ -27,7 +27,6 @@ public class RegistroDTO implements Serializable {
 	@NotNull(message="Preenchimento obrigatório")
 	private Integer itemId;
 
-	@NotNull(message="Preenchimento obrigatório")
 	private Integer usuarioId;
 
 	public RegistroDTO() {}

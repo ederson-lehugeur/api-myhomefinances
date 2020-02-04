@@ -16,11 +16,14 @@ public class TipoRegistro implements Serializable {
 	private Integer id;
 	private String nome;
 
+	private Integer ehRegistroDeSaida;
+
 	public TipoRegistro() {}
 
-	public TipoRegistro(Integer id, String nome) {
+	public TipoRegistro(Integer id, String nome, Integer registroDeSaida) {
 		this.id = id;
 		this.nome = nome;
+		this.ehRegistroDeSaida = registroDeSaida;
 	}
 
 	public Integer getId() {
@@ -37,6 +40,14 @@ public class TipoRegistro implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public Integer getEhRegistroDeSaida() {
+		return ehRegistroDeSaida;
+	}
+
+	public void setEhRegistroDeSaida(Integer ehRegistroDeSaida) {
+		this.ehRegistroDeSaida = ehRegistroDeSaida;
 	}
 
 	@Override

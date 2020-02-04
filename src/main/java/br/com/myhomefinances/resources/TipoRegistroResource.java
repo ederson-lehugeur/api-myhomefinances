@@ -27,17 +27,17 @@ public class TipoRegistroResource {
 	TipoRegistroService tipoRegistroService;
 
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<TipoRegistro>> findAll() {
+	public ResponseEntity<List<TipoRegistro>> find() {
 
-		List<TipoRegistro> listaTipoRegistro = tipoRegistroService.findAll();
+		List<TipoRegistro> listaTipoRegistro = tipoRegistroService.find();
 
 		return ResponseEntity.ok().body(listaTipoRegistro);
 	}
 
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<TipoRegistro> find(@PathVariable Integer id) {
+	public ResponseEntity<TipoRegistro> findById(@PathVariable Integer id) {
 
-		TipoRegistro tipoRegistro = tipoRegistroService.find(id);
+		TipoRegistro tipoRegistro = tipoRegistroService.findById(id);
 
 		return ResponseEntity.ok().body(tipoRegistro);
 	}

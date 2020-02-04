@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.myhomefinances.domain.Saldo;
 import br.com.myhomefinances.domain.Usuario;
+import br.com.myhomefinances.dto.SaldoDTO;
 import br.com.myhomefinances.repositories.SaldoRepository;
 import br.com.myhomefinances.security.UserDetailsSpringSecurity;
 import br.com.myhomefinances.services.exception.AuthorizationException;
@@ -22,7 +23,7 @@ public class SaldoService {
 	@Autowired
 	UsuarioService usuarioService;
 
-	public List<Saldo> findByUsuario() {
+	public List<Saldo> find() {
 		UserDetailsSpringSecurity user = UserService.authenticated();
 
 		if (user == null) {
@@ -36,7 +37,7 @@ public class SaldoService {
 		return listaSaldos;
 	}
 
-	public Saldo findByIdAndUsuario(Integer id) {
+	public Saldo findById(Integer id) {
 		UserDetailsSpringSecurity user = UserService.authenticated();
 
 		if (user == null) {
@@ -51,7 +52,15 @@ public class SaldoService {
 				Saldo.class.getName()));
 	}
 
-	public Saldo findFirstByUsuarioOrderByDataHoraDesc(Usuario usuario) {
+	public Saldo findFirstOrderByDataHoraDesc() {
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		Usuario usuario = usuarioService.find(user.getId());
+
 		return saldoRepository.findFirstByUsuarioOrderByDataHoraDesc(usuario);
 	}
 
@@ -63,4 +72,7 @@ public class SaldoService {
 		return saldo;
 	}
 
+	public SaldoDTO toDTO(Saldo saldo) {
+		return new SaldoDTO(saldo);
+	}
 }

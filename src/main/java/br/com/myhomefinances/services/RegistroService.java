@@ -41,7 +41,7 @@ public class RegistroService {
 	@Autowired
 	ItemService itemService;
 
-	public List<Registro> findByUsuario() {
+	public List<Registro> find() {
 		UserDetailsSpringSecurity user = UserService.authenticated();
 
 		if (user == null) {
@@ -55,7 +55,21 @@ public class RegistroService {
 		return listaRegistros;
 	}
 
-	public Registro findByIdAndUsuario(Integer id) {
+	public Page<Registro> find(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		Usuario usuario = usuarioService.find(user.getId());
+
+		return registroRepository.findByUsuario(usuario, pageRequest);
+	}
+
+	public Registro findById(Integer id) {
 		UserDetailsSpringSecurity user = UserService.authenticated();
 
 		if (user == null) {
@@ -70,25 +84,11 @@ public class RegistroService {
 				Registro.class.getName()));
 	}
 
-	public Page<Registro> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-
-		UserDetailsSpringSecurity user = UserService.authenticated();
-
-		if (user == null) {
-			throw new AuthorizationException("Acesso negado");
-		}
-
-		Usuario usuario = usuarioService.find(user.getId());
-
-		return registroRepository.findByUsuario(usuario, pageRequest);
-	}
-
 	@Transactional
 	public Registro insert(Registro registro) {
 		UserDetailsSpringSecurity user = UserService.authenticated();
 
-		if (user == null || !registro.getUsuario().getId().equals(user.getId())) {
+		if (user == null) {
 			throw new AuthorizationException("Acesso negado");
 		}
 
@@ -96,9 +96,15 @@ public class RegistroService {
 
 		registro = registroRepository.save(registro);
 
-		Saldo saldo = saldoService.findFirstByUsuarioOrderByDataHoraDesc(registro.getUsuario());
+		Saldo saldo = saldoService.findFirstOrderByDataHoraDesc();
 
-		Double valor = saldo.getSaldo() + registro.getValor();
+		Double valor;
+
+		if (registro.getTipoRegistro().getEhRegistroDeSaida() == 1) {
+			valor = saldo.getSaldo() - registro.getValor();
+		} else {
+			valor = saldo.getSaldo() + registro.getValor();
+		}
 
 		if (valor < 0) {
 			throw new NegativeBalanceException("Saldo com valor negativo");
@@ -111,10 +117,41 @@ public class RegistroService {
 		return registro;
 	}
 
-	public Registro fromDTO(RegistroDTO registroDto) {
-		TipoRegistro tipoRegistro = tipoRegistroService.find(registroDto.getTipoRegistroId());
+	@Transactional
+	public void delete(Integer id) {
+		Registro registro = findById(id);
 
-		Usuario usuario = usuarioService.find(registroDto.getUsuarioId());
+		Saldo saldo = saldoService.findFirstOrderByDataHoraDesc();
+
+		Double valor;
+
+		if (registro.getTipoRegistro().getEhRegistroDeSaida() == 1) {
+			valor = saldo.getSaldo() + registro.getValor();
+		} else {
+			valor = saldo.getSaldo() - registro.getValor();
+		}
+
+		if (valor < 0) {
+			throw new NegativeBalanceException("Saldo com valor negativo");
+		}
+
+		Saldo novoSaldo = new Saldo(null, valor, new Date(), registro.getUsuario());
+
+		saldoService.insert(novoSaldo);
+
+		registroRepository.deleteById(id);
+	}
+
+	public Registro fromDTO(RegistroDTO registroDto) {
+		UserDetailsSpringSecurity user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		Usuario usuario = usuarioService.find(user.getId());
+
+		TipoRegistro tipoRegistro = tipoRegistroService.findById(registroDto.getTipoRegistroId());
 
 		Item item = itemService.findById(registroDto.getItemId());
 

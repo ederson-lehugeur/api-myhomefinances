@@ -28,9 +28,9 @@ public class RegistroResource {
 	RegistroService registroService;
 
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<Registro>> findByUsuario() {
+	public ResponseEntity<List<Registro>> find() {
 
-		List<Registro> listaRegistros = registroService.findByUsuario();
+		List<Registro> listaRegistros = registroService.find();
 
 		return ResponseEntity.ok().body(listaRegistros);
 	}
@@ -38,19 +38,19 @@ public class RegistroResource {
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Registro> findByIdAndUsuario(@PathVariable Integer id) {
 
-		Registro registro = registroService.findByIdAndUsuario(id);
+		Registro registro = registroService.findById(id);
 
 		return ResponseEntity.ok().body(registro);
 	}
 
-	@RequestMapping(value="/page", method=RequestMethod.GET)
-	public ResponseEntity<Page<Registro>> findPage(
+	@RequestMapping(value="/pageable", method=RequestMethod.GET)
+	public ResponseEntity<Page<Registro>> find(
 			@RequestParam(value="page", defaultValue="0") Integer page,
 			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage,
 			@RequestParam(value="orderBy", defaultValue="dataHora") String orderBy,
 			@RequestParam(value="direction", defaultValue="DESC") String direction) {
 
-		Page<Registro> listaRegistros = registroService.findPage(page, linesPerPage, orderBy, direction);
+		Page<Registro> listaRegistros = registroService.find(page, linesPerPage, orderBy, direction);
 
 		return ResponseEntity.ok().body(listaRegistros);
 	}
@@ -66,6 +66,14 @@ public class RegistroResource {
 				path("/{id}").buildAndExpand(registro.getId()).toUri();
 
 		return ResponseEntity.created(uri).build();
+	}
+
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+
+		registroService.delete(id);
+
+		return ResponseEntity.noContent().build();
 	}
 
 }

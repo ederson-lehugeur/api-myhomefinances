@@ -17,13 +17,13 @@ public class TipoRegistroService {
 	@Autowired
 	TipoRegistroRepository tipoRegistroRepository;
 
-	public List<TipoRegistro> findAll() {
+	public List<TipoRegistro> find() {
 		List<TipoRegistro> listaTipoRegistro = tipoRegistroRepository.findAll();
 
 		return listaTipoRegistro;
 	}
 
-	public TipoRegistro find(Integer id) {
+	public TipoRegistro findById(Integer id) {
 		Optional<TipoRegistro> tipoRegistro = tipoRegistroRepository.findById(id);
 
 		return tipoRegistro.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
@@ -46,7 +46,7 @@ public class TipoRegistroService {
 	}
 
 	public TipoRegistro update(TipoRegistro tipoRegistro) {
-		TipoRegistro novoTipoRegistro = find(tipoRegistro.getId());
+		TipoRegistro novoTipoRegistro = findById(tipoRegistro.getId());
 
 		updateData(novoTipoRegistro, tipoRegistro);
 
@@ -54,13 +54,14 @@ public class TipoRegistroService {
 	}
 
 	public void delete(Integer id) {
-		find(id);
+		findById(id);
 
 		tipoRegistroRepository.deleteById(id);
 	}
 
 	public TipoRegistro fromDTO(TipoRegistroDTO tipoRegistroDto) {
-		return new TipoRegistro(tipoRegistroDto.getId(), tipoRegistroDto.getNome());
+		return new TipoRegistro(tipoRegistroDto.getId(), tipoRegistroDto.getNome(),
+				tipoRegistroDto.getRegistroDeSaida());
 	}
 
 	private void updateData(TipoRegistro novoTipoRegistro, TipoRegistro tipoRegistro) {

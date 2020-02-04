@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Registro implements Serializable {
@@ -32,6 +33,7 @@ public class Registro implements Serializable {
 	@JoinColumn(name="tiporegistro_id", foreignKey=@ForeignKey(name="FK_REGISTRO_TIPOREGISTRO"))
 	private TipoRegistro tipoRegistro;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="usuario_id", foreignKey=@ForeignKey(name="FK_REGISTRO_USUARIO"))
 	private Usuario usuario;

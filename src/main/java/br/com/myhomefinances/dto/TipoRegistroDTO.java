@@ -3,6 +3,7 @@ package br.com.myhomefinances.dto;
 import java.io.Serializable;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -16,6 +17,10 @@ public class TipoRegistroDTO implements Serializable {
 	@NotEmpty(message="Preenchimento obrigatório")
 	@Length(max=255, message="O tamanho máximo é de 255 caracteres")
 	private String nome;
+
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Pattern(regexp = "^[01]{1}$", message="Valor inválido")
+	private Integer registroDeSaida;
 
 	public TipoRegistroDTO() {}
 
@@ -38,6 +43,14 @@ public class TipoRegistroDTO implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public Integer getRegistroDeSaida() {
+		return registroDeSaida;
+	}
+
+	public void setRegistroDeSaida(Integer registroDeSaida) {
+		this.registroDeSaida = registroDeSaida;
 	}
 
 }

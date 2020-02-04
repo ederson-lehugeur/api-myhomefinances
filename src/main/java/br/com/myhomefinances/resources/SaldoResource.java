@@ -1,15 +1,16 @@
 package br.com.myhomefinances.resources;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.myhomefinances.domain.Saldo;
+import br.com.myhomefinances.dto.SaldoDTO;
 import br.com.myhomefinances.services.SaldoService;
 
 @RestController
@@ -20,19 +21,25 @@ public class SaldoResource {
 	SaldoService saldoService;
 
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<?> findByUsuario() {
+	public ResponseEntity<List<SaldoDTO>> find() {
 
-		List<Saldo> listaSaldos = saldoService.findByUsuario();
+		List<Saldo> listaSaldos = saldoService.find();
 
-		return ResponseEntity.ok().body(listaSaldos);
+		List<SaldoDTO> listaSaldosDto = listaSaldos.stream()
+				.map(saldo -> new SaldoDTO(saldo))
+				.collect(Collectors.toList());
+
+		return ResponseEntity.ok().body(listaSaldosDto);
 	}
 
-	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> findByIdAndUsuario(@PathVariable Integer id) {
+	@RequestMapping(value="/last", method=RequestMethod.GET)
+	public ResponseEntity<SaldoDTO> findFirstOrderByDataHoraDesc() {
 
-		Saldo saldo = saldoService.findByIdAndUsuario(id);
+		Saldo saldo = saldoService.findFirstOrderByDataHoraDesc();
 
-		return ResponseEntity.ok().body(saldo);
+		SaldoDTO saldoDto = saldoService.toDTO(saldo);
+
+		return ResponseEntity.ok().body(saldoDto);
 	}
 
 }
