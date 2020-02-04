@@ -20,7 +20,7 @@ public class TipoRegistroDTO implements Serializable {
 
 	@NotEmpty(message="Preenchimento obrigatório")
 	@Pattern(regexp = "^[01]{1}$", message="Valor inválido")
-	private Integer registroDeSaida;
+	private Integer ehRegistroDeSaida;
 
 	public TipoRegistroDTO() {}
 
@@ -45,12 +45,12 @@ public class TipoRegistroDTO implements Serializable {
 		this.nome = nome;
 	}
 
-	public Integer getRegistroDeSaida() {
-		return registroDeSaida;
+	public Integer getEhRegistroDeSaida() {
+		return ehRegistroDeSaida;
 	}
 
-	public void setRegistroDeSaida(Integer registroDeSaida) {
-		this.registroDeSaida = registroDeSaida;
+	public void setEhRegistroDeSaida(Integer ehRegistroDeSaida) {
+		this.ehRegistroDeSaida = ehRegistroDeSaida;
 	}
 
 }
