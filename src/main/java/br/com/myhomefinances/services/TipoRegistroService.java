@@ -61,7 +61,7 @@ public class TipoRegistroService {
 
 	public TipoRegistro fromDTO(TipoRegistroDTO tipoRegistroDto) {
 		return new TipoRegistro(tipoRegistroDto.getId(), tipoRegistroDto.getNome(),
-				tipoRegistroDto.getRegistroDeSaida());
+				tipoRegistroDto.getEhRegistroDeSaida());
 	}
 
 	private void updateData(TipoRegistro novoTipoRegistro, TipoRegistro tipoRegistro) {
