@@ -13,22 +13,21 @@ import br.com.myhomefinances.domain.Perfil;
 public class UserDetailsSpringSecurity implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
-	private Integer id;
+	private Long id;
 	private String email;
 	private String senha;
 	private Collection<? extends GrantedAuthority> authorities;
 
 	public UserDetailsSpringSecurity() {}
 
-	public UserDetailsSpringSecurity(Integer id, String email, String senha, List<Perfil> perfis) {
-		super();
+	public UserDetailsSpringSecurity(Long id, String email, String senha, List<Perfil> perfis) {
 		this.id = id;
 		this.email = email;
 		this.senha = senha;
 		this.authorities = perfis.stream().map(x -> new SimpleGrantedAuthority(x.getNome())).collect(Collectors.toList());
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 

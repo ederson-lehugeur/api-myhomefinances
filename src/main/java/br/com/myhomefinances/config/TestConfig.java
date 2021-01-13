@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import br.com.myhomefinances.services.DBService;
-import br.com.myhomefinances.services.EmailService;
-import br.com.myhomefinances.services.MockEmailService;
+import br.com.myhomefinances.service.DBService;
+import br.com.myhomefinances.service.EmailService;
+import br.com.myhomefinances.service.MockEmailService;
 
 @Configuration
 @Profile("test")

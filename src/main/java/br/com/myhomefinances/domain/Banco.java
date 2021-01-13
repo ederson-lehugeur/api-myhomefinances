@@ -13,22 +13,20 @@ public class Banco implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	private String nome;
 
 	public Banco() {}
 
-	public Banco(Integer id, String nome) {
-		super();
-		this.id = id;
+	public Banco(String nome) {
 		this.nome = nome;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

@@ -9,11 +9,11 @@ import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.myhomefinances.domain.Usuario;
-import br.com.myhomefinances.dto.UsuarioNewDTO;
-import br.com.myhomefinances.repositories.UsuarioRepository;
+import br.com.myhomefinances.form.UsuarioNewForm;
+import br.com.myhomefinances.repository.UsuarioRepository;
 import br.com.myhomefinances.resources.exception.FieldMessage;
 
-public class UsuarioInsertValidator implements ConstraintValidator<UsuarioInsert, UsuarioNewDTO> {
+public class UsuarioInsertValidator implements ConstraintValidator<UsuarioInsert, UsuarioNewForm> {
 
 	@Autowired
 	UsuarioRepository usuarioRepository;
@@ -22,7 +22,7 @@ public class UsuarioInsertValidator implements ConstraintValidator<UsuarioInsert
 	public void initialize(UsuarioInsert ann) {}
 
 	@Override
-	public boolean isValid(UsuarioNewDTO objDto, ConstraintValidatorContext context) {
+	public boolean isValid(UsuarioNewForm objDto, ConstraintValidatorContext context) {
 		List<FieldMessage> list = new ArrayList<>();
 
 		Usuario usuario = usuarioRepository.findByEmail(objDto.getEmail());

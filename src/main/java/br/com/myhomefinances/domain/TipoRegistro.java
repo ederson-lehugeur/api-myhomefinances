@@ -13,24 +13,23 @@ public class TipoRegistro implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	private String nome;
-
 	private Integer ehRegistroDeSaida;
 
 	public TipoRegistro() {}
 
-	public TipoRegistro(Integer id, String nome, Integer registroDeSaida) {
+	public TipoRegistro(Long id, String nome, Integer registroDeSaida) {
 		this.id = id;
 		this.nome = nome;
 		this.ehRegistroDeSaida = registroDeSaida;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

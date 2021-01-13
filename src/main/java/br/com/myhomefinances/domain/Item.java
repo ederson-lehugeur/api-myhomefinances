@@ -11,48 +11,39 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 public class Item implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	private String nome;
 	private String complemento;
-
-	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
-	private Date dataHora;
+	private Date dataHora = new Date();
 
 	@ManyToOne
 	@JoinColumn(name="categoria_id", foreignKey=@ForeignKey(name="FK_ITEM_CATEGORIA"))
 	private Categoria categoria;
 
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="usuario_id", foreignKey=@ForeignKey(name="FK_ITEM_USUARIO"))
 	private Usuario usuario;
 
 	public Item() {}
 
-	public Item(Integer id, String nome, String complemento, Categoria categoria, Usuario usuario) {
-		super();
-		this.id = id;
+	public Item(String nome, String complemento, Categoria categoria, Usuario usuario) {
 		this.nome = nome;
 		this.complemento = complemento;
-		this.dataHora = new Date();
 		this.categoria = categoria;
 		this.usuario = usuario;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

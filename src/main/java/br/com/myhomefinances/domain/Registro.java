@@ -11,29 +11,21 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 public class Registro implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	private Double valor;
-
-	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
 	private Date dataHora;
-
-	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
 	private Date dataHoraCriacao;
 
 	@ManyToOne
 	@JoinColumn(name="tiporegistro_id", foreignKey=@ForeignKey(name="FK_REGISTRO_TIPOREGISTRO"))
 	private TipoRegistro tipoRegistro;
 
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="usuario_id", foreignKey=@ForeignKey(name="FK_REGISTRO_USUARIO"))
 	private Usuario usuario;
@@ -44,8 +36,9 @@ public class Registro implements Serializable {
 
 	public Registro() {}
 
-	public Registro(Integer id, Double valor, Date dataHora, TipoRegistro tipoRegistro, Usuario usuario,
-			Item item) {
+	public Registro(Long id, Double valor, Date dataHora, TipoRegistro tipoRegistro,
+			Usuario usuario, Item item) {
+
 		this.id = id;
 		this.valor = valor;
 		this.dataHora = dataHora;
@@ -55,11 +48,11 @@ public class Registro implements Serializable {
 		this.item = item;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

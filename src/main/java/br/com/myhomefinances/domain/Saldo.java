@@ -11,18 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 @Entity
 public class Saldo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	private Double saldo;
-
-	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
 	private Date dataHora;
 
 	@ManyToOne
@@ -31,18 +27,18 @@ public class Saldo implements Serializable {
 
 	public Saldo() {}
 
-	public Saldo(Integer id, Double saldo, Date dataHora, Usuario usuario) {
+	public Saldo(Long id, Double saldo, Date dataHora, Usuario usuario) {
 		this.id = id;
 		this.saldo = saldo;
 		this.dataHora = dataHora;
 		this.usuario = usuario;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

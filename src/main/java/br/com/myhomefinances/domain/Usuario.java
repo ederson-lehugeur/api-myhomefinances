@@ -15,32 +15,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 @Entity
-@JsonIgnoreProperties({ "dataHoraCriacao", "tokenExpirationDatetime" })
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	private String nome;
 	private String sobrenome;
 	private String email;
-
-	@JsonIgnore
 	private String senha;
-
-	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
 	private Date dataHoraCriacao;
-
-	@JsonIgnore
 	private String resetToken;
-
-	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
 	private Date tokenExpirationDatetime;
 
 	@ManyToMany(fetch=FetchType.EAGER)
@@ -55,7 +42,7 @@ public class Usuario implements Serializable {
 
 	public Usuario() {}
 
-	public Usuario(Integer id, String nome, String sobrenome, String email, String senha) {
+	public Usuario(Long id, String nome, String sobrenome, String email, String senha) {
 		this.id = id;
 		this.nome = nome;
 		this.sobrenome = sobrenome;
@@ -66,18 +53,18 @@ public class Usuario implements Serializable {
 		this.tokenExpirationDatetime = null;
 	}
 
-	public Usuario(Integer id, String nome, String sobrenome, String email) {
+	public Usuario(Long id, String nome, String sobrenome, String email) {
 		this.id = id;
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.email = email;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

@@ -11,21 +11,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 @Entity
 public class RegistroBancario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	private Double valor;
-
-	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
 	private Date dataHora;
-
-	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
 	private Date dataHoraCriacao;
 
 	@ManyToOne
@@ -38,7 +32,7 @@ public class RegistroBancario implements Serializable {
 
 	public RegistroBancario() {}
 
-	public RegistroBancario(Integer id, Double valor, Date dataHora, Conta conta, Item item) {
+	public RegistroBancario(Long id, Double valor, Date dataHora, Conta conta, Item item) {
 		this.id = id;
 		this.valor = valor;
 		this.dataHora = dataHora;
@@ -47,11 +41,11 @@ public class RegistroBancario implements Serializable {
 		this.item = item;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

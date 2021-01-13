@@ -16,7 +16,7 @@ public class Conta implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 
 	@ManyToOne
 	@JoinColumn(name="banco_id", foreignKey=@ForeignKey(name="FK_CONTA_BANCO"))
@@ -32,19 +32,18 @@ public class Conta implements Serializable {
 
 	public Conta() {}
 
-	public Conta(Integer id, Banco banco, TipoConta tipoConta, Usuario usuario) {
-		super();
+	public Conta(Long id, Banco banco, TipoConta tipoConta, Usuario usuario) {
 		this.id = id;
 		this.banco = banco;
 		this.tipoConta = tipoConta;
 		this.usuario = usuario;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
