@@ -7,8 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.myhomefinances.domain.Categoria;
@@ -34,12 +33,10 @@ public class ItemService {
 	@Autowired
 	UsuarioService usuarioService;
 
-	public List<Item> findAll() {
+	public Page<Item> findAll(Pageable paginacao) {
 		UserDetailsSpringSecurity user = getUserAuthenticated();
 
-		List<Item> listaItens = itemRepository.findByUsuarioId(user.getId());
-
-		return listaItens;
+		return itemRepository.findByUsuarioId(user.getId(), paginacao);
 	}
 
 	public Item findById(Long id) {
@@ -49,14 +46,6 @@ public class ItemService {
 
 		return item.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
 				Item.class.getName()));
-	}
-
-	public Page<Item> findPageable(Integer page, Integer linesPerPage, String orderBy, String direction) {
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-
-		UserDetailsSpringSecurity user = getUserAuthenticated();
-
-		return itemRepository.findByUsuarioId(user.getId(), pageRequest);
 	}
 
 	public Item insert(Item item) {
