@@ -17,9 +17,9 @@ import br.com.myhomefinances.domain.Perfil;
 import br.com.myhomefinances.dto.PerfilDto;
 import br.com.myhomefinances.form.PerfilForm;
 import br.com.myhomefinances.repository.PerfilRepository;
-import br.com.myhomefinances.services.exception.DataIntegrityException;
-import br.com.myhomefinances.services.exception.InvalidPerfilException;
-import br.com.myhomefinances.services.exception.ObjectNotFoundException;
+import br.com.myhomefinances.service.exception.DataIntegrityException;
+import br.com.myhomefinances.service.exception.InvalidPerfilException;
+import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
 @Service
 public class PerfilService {
@@ -30,9 +30,9 @@ public class PerfilService {
 	PerfilRepository perfilRepository;
 
 	public List<Perfil> findAll() {
-		List<Perfil> listaPerfis = perfilRepository.findAll();
+		List<Perfil> perfis = perfilRepository.findAll();
 
-		return listaPerfis;
+		return perfis;
 	}
 
 	public Perfil findById(Long id) {
@@ -80,11 +80,11 @@ public class PerfilService {
 		}
 	}
 
-	public Perfil convertToPerfil(PerfilForm perfilForm) {
+	public Perfil convertToEntity(PerfilForm perfilForm) {
 		return new Perfil(null, perfilForm.getNome());
 	}
 
-	public List<PerfilDto> convertToPerfilDto(List<Perfil> perfis) {
+	public List<PerfilDto> convertToDto(List<Perfil> perfis) {
 		return perfis.stream().map(PerfilDto::new).collect(Collectors.toList());
 	}
 

@@ -2,6 +2,7 @@ package br.com.myhomefinances.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,9 +11,8 @@ import br.com.myhomefinances.domain.Saldo;
 import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.dto.SaldoDto;
 import br.com.myhomefinances.repository.SaldoRepository;
-import br.com.myhomefinances.security.UserDetailsSpringSecurity;
-import br.com.myhomefinances.services.exception.AuthorizationException;
-import br.com.myhomefinances.services.exception.ObjectNotFoundException;
+import br.com.myhomefinances.service.exception.AuthorizationException;
+import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
 @Service
 public class SaldoService {
@@ -23,28 +23,24 @@ public class SaldoService {
 	@Autowired
 	UsuarioService usuarioService;
 
-	public List<Saldo> find() {
-		UserDetailsSpringSecurity user = UserService.authenticated();
+	public List<Saldo> findAll() {
+		Usuario usuario = UsuarioService.authenticated();
 
-		if (user == null) {
+		if (usuario == null) {
 			throw new AuthorizationException("Acesso negado");
 		}
 
-		Usuario usuario = usuarioService.find(user.getId());
+		List<Saldo> saldos = saldoRepository.findByUsuario(usuario);
 
-		List<Saldo> listaSaldos = saldoRepository.findByUsuario(usuario);
-
-		return listaSaldos;
+		return saldos;
 	}
 
 	public Saldo findById(Long id) {
-		UserDetailsSpringSecurity user = UserService.authenticated();
+		Usuario usuario = UsuarioService.authenticated();
 
-		if (user == null) {
+		if (usuario == null) {
 			throw new AuthorizationException("Acesso negado");
 		}
-
-		Usuario usuario = usuarioService.find(user.getId());
 
 		Optional<Saldo> saldo = saldoRepository.findByIdAndUsuario(id, usuario);
 
@@ -53,13 +49,11 @@ public class SaldoService {
 	}
 
 	public Saldo findFirstOrderByDataHoraDesc() {
-		UserDetailsSpringSecurity user = UserService.authenticated();
+		Usuario usuario = UsuarioService.authenticated();
 
-		if (user == null) {
+		if (usuario == null) {
 			throw new AuthorizationException("Acesso negado");
 		}
-
-		Usuario usuario = usuarioService.find(user.getId());
 
 		return saldoRepository.findFirstByUsuarioOrderByDataHoraDesc(usuario);
 	}
@@ -72,7 +66,8 @@ public class SaldoService {
 		return saldo;
 	}
 
-	public SaldoDto toDTO(Saldo saldo) {
-		return new SaldoDto(saldo);
+	public List<SaldoDto> convertToDto(List<Saldo> saldos) {
+		return saldos.stream().map(SaldoDto::new).collect(Collectors.toList());
 	}
+
 }

@@ -9,8 +9,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.myhomefinances.domain.Usuario;
-import br.com.myhomefinances.services.exception.IncorrectPasswordException;
-import br.com.myhomefinances.services.exception.TokenExpiredException;
+import br.com.myhomefinances.service.email.EmailService;
+import br.com.myhomefinances.service.exception.IncorrectPasswordException;
+import br.com.myhomefinances.service.exception.TokenExpiredException;
 
 @Service
 public class AuthService {
@@ -22,7 +23,7 @@ public class AuthService {
 	private UsuarioService usuarioService;
 
 	@Autowired
-	BCryptPasswordEncoder bCryptPasswordEncoder;
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Autowired
 	EmailService emailService;
@@ -57,4 +58,5 @@ public class AuthService {
 
 		usuarioService.updateUsuario(usuario);
 	}
+
 }

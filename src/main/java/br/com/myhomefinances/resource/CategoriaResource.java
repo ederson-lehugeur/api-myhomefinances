@@ -7,7 +7,6 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -36,7 +34,7 @@ public class CategoriaResource {
 	public ResponseEntity<List<CategoriaDto>> findAll() {
 		List<Categoria> categorias = categoriaService.findAll();
 
-		return ResponseEntity.ok().body(categoriaService.convertToCategoriaDto(categorias));
+		return ResponseEntity.ok().body(categoriaService.convertToDto(categorias));
 	}
 
 	@GetMapping(value="/{id}")
@@ -46,23 +44,12 @@ public class CategoriaResource {
 		return ResponseEntity.ok().body(new CategoriaDto(categoria));
 	}
 
-	@GetMapping(value="/pageable")
-	public ResponseEntity<Page<CategoriaDto>> findPegeable(
-			@RequestParam(value="page", defaultValue="0") Integer page,
-			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage,
-			@RequestParam(value="orderBy", defaultValue="nome") String orderBy,
-			@RequestParam(value="direction", defaultValue="ASC") String direction) {
-
-		Page<Categoria> categoriasPage = categoriaService.findPageable(page, linesPerPage, orderBy, direction);
-
-		return ResponseEntity.ok().body(categoriaService.convertToCategoriaDto(categoriasPage));
-	}
-
 	@PostMapping
+	@Transactional
 	public ResponseEntity<CategoriaDto> insert(@Valid @RequestBody CategoriaForm categoriaForm,
 			UriComponentsBuilder uriBuilder) {
 
-		Categoria categoria = categoriaService.convertToCategoria(categoriaForm);
+		Categoria categoria = categoriaService.convertToEntity(categoriaForm);
 
 		categoria = categoriaService.insert(categoria);
 
@@ -76,7 +63,7 @@ public class CategoriaResource {
 	public ResponseEntity<CategoriaDto> update(@PathVariable Long id,
 			@Valid @RequestBody CategoriaForm categoriaForm) {
 
-		Categoria categoria = categoriaService.convertToCategoria(categoriaForm);
+		Categoria categoria = categoriaService.convertToEntity(categoriaForm);
 
 		categoria.setId(id);
 		categoria = categoriaService.update(categoria);

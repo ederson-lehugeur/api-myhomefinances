@@ -19,9 +19,14 @@ public class JWTUtil {
 	private Long expiration;
 
 	public String generateToken(String email) {
+		Date now = new Date();
+		Date dateExpiration = new Date(now.getTime() + expiration);
+
 		return Jwts.builder()
+				.setIssuer("API-MyHomeFinances")
 				.setSubject(email)
-				.setExpiration(new Date(System.currentTimeMillis() + expiration))
+				.setIssuedAt(now)
+				.setExpiration(dateExpiration)
 				.signWith(SignatureAlgorithm.HS512, secret.getBytes())
 				.compact();
 	}

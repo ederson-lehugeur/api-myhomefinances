@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
-import br.com.myhomefinances.services.validation.UsuarioUpdate;
+import br.com.myhomefinances.service.validation.UsuarioUpdate;
 
 @UsuarioUpdate
 public class UsuarioUpdateForm implements Serializable {

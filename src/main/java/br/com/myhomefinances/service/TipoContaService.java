@@ -2,13 +2,16 @@ package br.com.myhomefinances.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.myhomefinances.domain.TipoConta;
+import br.com.myhomefinances.dto.TipoContaDto;
+import br.com.myhomefinances.form.TipoContaForm;
 import br.com.myhomefinances.repository.TipoContaRepository;
-import br.com.myhomefinances.services.exception.ObjectNotFoundException;
+import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
 @Service
 public class TipoContaService {
@@ -17,12 +20,12 @@ public class TipoContaService {
 	TipoContaRepository tipoContaRepository;
 
 	public List<TipoConta> findAll() {
-		List<TipoConta> listaTiposContas = tipoContaRepository.findAll();
+		List<TipoConta> tiposContas = tipoContaRepository.findAll();
 
-		return listaTiposContas;
+		return tiposContas;
 	}
 
-	public TipoConta find(Long id) {
+	public TipoConta findById(Long id) {
 		Optional<TipoConta> tipoConta = tipoContaRepository.findById(id);
 
 		return tipoConta.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
@@ -38,7 +41,7 @@ public class TipoContaService {
 	}
 
 	public TipoConta update(TipoConta tipoConta) {
-		TipoConta novoTipoConta = find(tipoConta.getId());
+		TipoConta novoTipoConta = findById(tipoConta.getId());
 
 		updateData(novoTipoConta, tipoConta);
 
@@ -46,9 +49,17 @@ public class TipoContaService {
 	}
 
 	public void delete(Long id) {
-		find(id);
+		findById(id);
 
 		tipoContaRepository.deleteById(id);
+	}
+
+	public TipoConta convertToEntity(TipoContaForm tipoContaForm) {
+		return new TipoConta(null, tipoContaForm.getNome());
+	}
+
+	public List<TipoContaDto> convertToDto(List<TipoConta> tiposContas) {
+		return tiposContas.stream().map(TipoContaDto::new).collect(Collectors.toList());
 	}
 
 	private void updateData(TipoConta novoTipoConta, TipoConta tipoConta) {

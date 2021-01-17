@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.form.ForgotPasswordForm;
 import br.com.myhomefinances.form.ResetPasswordForm;
 import br.com.myhomefinances.security.JWTUtil;
-import br.com.myhomefinances.security.UserDetailsSpringSecurity;
 import br.com.myhomefinances.service.AuthService;
-import br.com.myhomefinances.service.UserService;
+import br.com.myhomefinances.service.UsuarioService;
 
 @RestController
 @RequestMapping(value="auth")
@@ -30,7 +30,7 @@ public class AuthResource {
 
 	@PostMapping(value="/refreshToken")
 	public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
-		UserDetailsSpringSecurity user = UserService.authenticated();
+		Usuario user = UsuarioService.authenticated();
 		String token = jwtUtil.generateToken(user.getUsername());
 		response.addHeader("Authorization", "Bearer " + token);
 		response.addHeader("access-control-expose-headers", "Authorization");

@@ -14,6 +14,7 @@ import br.com.myhomefinances.domain.Categoria;
 import br.com.myhomefinances.domain.Conta;
 import br.com.myhomefinances.domain.Item;
 import br.com.myhomefinances.domain.Perfil;
+import br.com.myhomefinances.domain.Registro;
 import br.com.myhomefinances.domain.Saldo;
 import br.com.myhomefinances.domain.SaldoBancario;
 import br.com.myhomefinances.domain.TipoConta;
@@ -83,19 +84,27 @@ public class DBService {
 		Categoria categoria4 = new Categoria(null, "Viagens", null, null);
 		Categoria categoria5 = new Categoria(null, "Variados", null, null);
 
+		Usuario usuario0 = new Usuario(null, "Admin", null, "admin@myhomefinances.com",
+				bCryptPasswordEncoder.encode("Q1W2E3R4"));
+
 		Usuario usuario1 = new Usuario(null, "Ederson", "Lehugeur", "eder.lehugeur@gmail.com",
+				bCryptPasswordEncoder.encode("Q1W2E3R4"));
+
+		Usuario usuario2 = new Usuario(null, "Fulano", "da Silva", "fulano@gmail.com",
 				bCryptPasswordEncoder.encode("Q1W2E3R4"));
 
 		Perfil perfil1 = new Perfil(null, "ROLE_CLIENTE");
 		Perfil perfil2 = new Perfil(null, "ROLE_ADMIN");
 
-		usuario1.getPerfis().addAll(Arrays.asList(perfil1, perfil2));
+		usuario0.getPerfis().addAll(Arrays.asList(perfil1, perfil2));
+		usuario1.getPerfis().addAll(Arrays.asList(perfil1));
+		usuario2.getPerfis().addAll(Arrays.asList(perfil1));
 
-		perfil1.getUsuarios().addAll(Arrays.asList(usuario1));
-		perfil2.getUsuarios().addAll(Arrays.asList(usuario1));
+		perfil1.getUsuarios().addAll(Arrays.asList(usuario0, usuario1, usuario2));
+		perfil2.getUsuarios().addAll(Arrays.asList(usuario0));
 
 		perfilRepository.saveAll(Arrays.asList(perfil1, perfil2));
-		usuarioRepository.saveAll(Arrays.asList(usuario1));
+		usuarioRepository.saveAll(Arrays.asList(usuario0, usuario1, usuario2));
 
 		categoria1.setUsuario(usuario1);
 		categoria2.setUsuario(usuario1);
@@ -149,5 +158,9 @@ public class DBService {
 		SaldoBancario saldoBancario1 = new SaldoBancario(null, 0.00, sdf.parse(now), conta1);
 
 		saldoBancarioRepository.saveAll(Arrays.asList(saldoBancario1));
+
+		Registro registro1 = new Registro(null, 0.00, sdf.parse(now), tipoRegistro5, usuario1, item5);
+
+		registroRepository.saveAll(Arrays.asList(registro1));
 	}
 }

@@ -1,23 +1,27 @@
 package br.com.myhomefinances.resource;
 
 import java.net.URI;
-import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.myhomefinances.domain.Registro;
 import br.com.myhomefinances.dto.RegistroDto;
+import br.com.myhomefinances.form.RegistroForm;
 import br.com.myhomefinances.service.RegistroService;
 
 @RestController
@@ -27,50 +31,37 @@ public class RegistroResource {
 	@Autowired
 	RegistroService registroService;
 
-	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<Registro>> find() {
+	@GetMapping
+	public ResponseEntity<Page<RegistroDto>> findAll(
+			@PageableDefault(page=0, size=12, sort="dataHora", direction=Direction.DESC) Pageable paginacao) {
 
-		List<Registro> listaRegistros = registroService.find();
+		Page<Registro> registrosPage = registroService.findAll(paginacao);
 
-		return ResponseEntity.ok().body(listaRegistros);
+		return ResponseEntity.ok().body(registroService.convertToDto(registrosPage));
 	}
 
-	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<Registro> findByIdAndUsuario(@PathVariable Long id) {
-
+	@GetMapping(value="/{id}")
+	public ResponseEntity<RegistroDto> findById(@PathVariable Long id) {
 		Registro registro = registroService.findById(id);
 
-		return ResponseEntity.ok().body(registro);
+		return ResponseEntity.ok().body(new RegistroDto(registro));
 	}
 
-	@RequestMapping(value="/pageable", method=RequestMethod.GET)
-	public ResponseEntity<Page<Registro>> find(
-			@RequestParam(value="page", defaultValue="0") Integer page,
-			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage,
-			@RequestParam(value="orderBy", defaultValue="dataHora") String orderBy,
-			@RequestParam(value="direction", defaultValue="DESC") String direction) {
+	@PostMapping
+	public ResponseEntity<RegistroDto> insert(@Valid @RequestBody RegistroForm registroForm,
+			UriComponentsBuilder uriBuilder) {
 
-		Page<Registro> listaRegistros = registroService.find(page, linesPerPage, orderBy, direction);
-
-		return ResponseEntity.ok().body(listaRegistros);
-	}
-
-	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody RegistroDto registroDto) {
-
-		Registro registro = registroService.fromDTO(registroDto);
+		Registro registro = registroService.convertToEntity(registroForm);
 
 		registro = registroService.insert(registro);
 
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().
-				path("/{id}").buildAndExpand(registro.getId()).toUri();
+		URI	uri = uriBuilder.path("/registros/{id}").buildAndExpand(registro.getId()).toUri();
 
-		return ResponseEntity.created(uri).build();
+		return ResponseEntity.created(uri).body(new RegistroDto(registro));
 	}
 
-	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	@DeleteMapping(value="/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
-
 		registroService.delete(id);
 
 		return ResponseEntity.noContent().build();

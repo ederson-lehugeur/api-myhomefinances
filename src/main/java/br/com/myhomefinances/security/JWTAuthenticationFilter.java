@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.form.CredenciaisForm;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -44,6 +45,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	        		creds.getEmail(), creds.getSenha(), new ArrayList<>());
 
 	        Authentication auth = authenticationManager.authenticate(authToken);
+
 	        return auth;
 		}
 		catch (IOException e) {
@@ -56,7 +58,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			HttpServletResponse res, FilterChain chain, Authentication auth)
 					throws IOException, ServletException {
 
-		String username = ((UserDetailsSpringSecurity) auth.getPrincipal()).getUsername();
+		String username = ((Usuario) auth.getPrincipal()).getUsername();
 		String token = jwtUtil.generateToken(username);
 
 		res.addHeader("Authorization", "Bearer " + token);

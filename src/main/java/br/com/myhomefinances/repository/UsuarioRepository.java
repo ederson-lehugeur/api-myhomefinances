@@ -10,7 +10,7 @@ import br.com.myhomefinances.domain.Usuario;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-	Usuario findByEmail(String email);
+	Optional<Usuario> findByEmail(String email);
 
 	Optional<Usuario> findByResetToken(String resetToken);
 

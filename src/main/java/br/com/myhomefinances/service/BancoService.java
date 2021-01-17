@@ -15,10 +15,8 @@ import br.com.myhomefinances.domain.Banco;
 import br.com.myhomefinances.dto.BancoDto;
 import br.com.myhomefinances.form.BancoForm;
 import br.com.myhomefinances.repository.BancoRepository;
-import br.com.myhomefinances.security.UserDetailsSpringSecurity;
-import br.com.myhomefinances.services.exception.AuthorizationException;
-import br.com.myhomefinances.services.exception.DataIntegrityException;
-import br.com.myhomefinances.services.exception.ObjectNotFoundException;
+import br.com.myhomefinances.service.exception.DataIntegrityException;
+import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
 @Service
 public class BancoService {
@@ -51,17 +49,15 @@ public class BancoService {
 		return bancoRepository.save(banco);
 	}
 
-	public Banco convertFormToEntity(BancoForm bancoForm) {
-		getUserAuthenticated();
-
+	public Banco convertToEntity(BancoForm bancoForm) {
 		return new Banco(bancoForm.getNome());
 	}
 
-	public List<BancoDto> convertEntityToDto(List<Banco> bancos) {
+	public List<BancoDto> convertToDto(List<Banco> bancos) {
 		return bancos.stream().map(BancoDto::new).collect(Collectors.toList());
 	}
 
-	public Page<BancoDto> convertEntityToDto(Page<Banco> bancosPage) {
+	public Page<BancoDto> convertToDto(Page<Banco> bancosPage) {
 		return bancosPage.map(BancoDto::new);
 	}
 
@@ -86,17 +82,6 @@ public class BancoService {
 
 	private void updateData(Banco novoBanco, Banco banco) {
 		novoBanco.setNome(banco.getNome());
-	}
-
-	// Criar anotação para injetar usuário logado.
-	private UserDetailsSpringSecurity getUserAuthenticated() {
-		UserDetailsSpringSecurity user = UserService.authenticated();
-
-		if (user == null) {
-			throw new AuthorizationException("Acesso negado");
-		}
-
-		return user;
 	}
 
 }

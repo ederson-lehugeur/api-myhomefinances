@@ -7,7 +7,6 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -38,35 +36,24 @@ public class ContaResource {
 
 	@GetMapping
 	public ResponseEntity<List<ContaDto>> findAllByUsuario() {
-		List<Conta> contas = contaService.findAllByUsuario();
+		List<Conta> contas = contaService.findAll();
 
-		return ResponseEntity.ok().body(contaService.convertToContaDto(contas));
+		return ResponseEntity.ok().body(contaService.convertToDto(contas));
 	}
 
 	@GetMapping(value="/{id}")
 	public ResponseEntity<ContaDto> findByIdAndUsuario(@PathVariable Long id) {
-		Conta conta = contaService.findByIdAndUsuario(id);
+		Conta conta = contaService.findById(id);
 
 		return ResponseEntity.ok().body(new ContaDto(conta));
 	}
 
-	@GetMapping(value="/pageable")
-	public ResponseEntity<Page<ContaDto>> findPage(
-			@RequestParam(value="page", defaultValue="0") Integer page,
-			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage,
-			@RequestParam(value="orderBy", defaultValue="id") String orderBy,
-			@RequestParam(value="direction", defaultValue="ASC") String direction) {
-
-		Page<Conta> contasPage = contaService.findPage(page, linesPerPage, orderBy, direction);
-
-		return ResponseEntity.ok().body(contaService.convertToContaDto(contasPage));
-	}
-
 	@PostMapping
+	@Transactional
 	public ResponseEntity<ContaDto> insert(@Valid @RequestBody ContaForm contaForm,
 			UriComponentsBuilder uriBuilder) {
 
-		Conta conta = contaService.convertToConta(contaForm);
+		Conta conta = contaService.convertToEntity(contaForm);
 
 		conta = contaService.insert(conta);
 
@@ -80,7 +67,7 @@ public class ContaResource {
 	public ResponseEntity<ContaDto> update(@PathVariable Long id,
 			@Valid @RequestBody ContaForm contaForm) {
 
-		Conta conta = contaService.convertToConta(contaForm);
+		Conta conta = contaService.convertToEntity(contaForm);
 
 		conta.setId(id);
 		conta = contaService.update(conta);

@@ -1,73 +1,60 @@
 package br.com.myhomefinances.resource;
 
 import java.net.URI;
-import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.myhomefinances.domain.RegistroBancario;
 import br.com.myhomefinances.dto.RegistroBancarioDto;
+import br.com.myhomefinances.form.RegistroBancarioForm;
 import br.com.myhomefinances.service.RegistroBancarioService;
 
 @RestController
-@RequestMapping(value="registrosBancarios")
+@RequestMapping(value="registros-bancarios")
 public class RegistroBancarioResource {
 
 	@Autowired
 	RegistroBancarioService registroBancarioService;
 
-	@RequestMapping(value="/conta/{idConta}", method=RequestMethod.GET)
-	public ResponseEntity<List<RegistroBancario>> findByConta(@PathVariable Long idConta) {
+	@GetMapping
+	public ResponseEntity<Page<RegistroBancarioDto>> findAll(
+			@PageableDefault(page=0, size=12, sort="dataHora", direction=Direction.DESC) Pageable paginacao) {
 
-		List<RegistroBancario> listaRegistroBancarios = registroBancarioService.findByConta(idConta);
+		Page<RegistroBancario> registrosBancarios = registroBancarioService.findAll(paginacao);
 
-		return ResponseEntity.ok().body(listaRegistroBancarios);
+		return ResponseEntity.ok().body(registroBancarioService.convertToDto(registrosBancarios));
 	}
 
-	@RequestMapping(value="/{idRegistroBancario}/conta/{idConta}", method=RequestMethod.GET)
-	public ResponseEntity<RegistroBancario> find(@PathVariable Long idRegistroBancario,
-			@PathVariable Long idConta) {
+	@GetMapping(value="/{idRegistroBancario}")
+	public ResponseEntity<RegistroBancarioDto> findById(@PathVariable Long idRegistroBancario) {
+		RegistroBancario registroBancario = registroBancarioService.findById(idRegistroBancario);
 
-		RegistroBancario registroBancario = registroBancarioService.findByIdAndConta(idRegistroBancario,
-				idConta);
-
-		return ResponseEntity.ok().body(registroBancario);
+		return ResponseEntity.ok().body(new RegistroBancarioDto(registroBancario));
 	}
 
-	@RequestMapping(value="/page/conta/{idConta}", method=RequestMethod.GET)
-	public ResponseEntity<Page<RegistroBancario>> findPageByConta(
-			@PathVariable Long idConta,
-			@RequestParam(value="page", defaultValue="0") Integer page,
-			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage,
-			@RequestParam(value="orderBy", defaultValue="nome") String orderBy,
-			@RequestParam(value="direction", defaultValue="ASC") String direction) {
+	@PostMapping
+	public ResponseEntity<Void> insert(@Valid @RequestBody RegistroBancarioForm registroBancarioForm,
+			UriComponentsBuilder uriBuilder) {
 
-		Page<RegistroBancario> listaRegistroBancarios = registroBancarioService.findPageByConta(page,
-				linesPerPage, orderBy, direction, idConta);
-
-		return ResponseEntity.ok().body(listaRegistroBancarios);
-	}
-
-	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody RegistroBancarioDto registroBancarioDto) {
-
-		RegistroBancario registroBancario = registroBancarioService.fromDTO(registroBancarioDto);
+		RegistroBancario registroBancario = registroBancarioService.convertToEntity(registroBancarioForm);
 
 		registroBancario = registroBancarioService.insert(registroBancario);
 
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().
-				path("/{id}").buildAndExpand(registroBancario.getId()).toUri();
+		URI	uri = uriBuilder.path("/registros-bancarios/{id}").buildAndExpand(registroBancario.getId()).toUri();
 
 		return ResponseEntity.created(uri).build();
 	}

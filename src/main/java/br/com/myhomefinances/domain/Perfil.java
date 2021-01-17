@@ -10,8 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import org.springframework.security.core.GrantedAuthority;
+
 @Entity
-public class Perfil implements Serializable {
+public class Perfil implements GrantedAuthority, Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -51,6 +54,11 @@ public class Perfil implements Serializable {
 
 	public void setUsuarios(List<Usuario> usuarios) {
 		this.usuarios = usuarios;
+	}
+
+	@Override
+	public String getAuthority() {
+		return this.nome;
 	}
 
 	@Override

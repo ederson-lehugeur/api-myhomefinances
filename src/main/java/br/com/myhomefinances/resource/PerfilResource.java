@@ -36,7 +36,7 @@ public class PerfilResource {
 	public ResponseEntity<List<PerfilDto>> findAll() {
 		List<Perfil> perfis = perfilService.findAll();
 
-		return ResponseEntity.ok().body(perfilService.convertToPerfilDto(perfis));
+		return ResponseEntity.ok().body(perfilService.convertToDto(perfis));
 	}
 
 	@PreAuthorize("hasAnyRole('ADMIN')")
@@ -49,10 +49,11 @@ public class PerfilResource {
 
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
+	@Transactional
 	public ResponseEntity<PerfilDto> insert(@Valid @RequestBody PerfilForm perfilForm,
 			UriComponentsBuilder uriBuilder) {
 
-		Perfil perfil = perfilService.convertToPerfil(perfilForm);
+		Perfil perfil = perfilService.convertToEntity(perfilForm);
 
 		perfil = perfilService.insert(perfil);
 
@@ -67,7 +68,7 @@ public class PerfilResource {
 	public ResponseEntity<PerfilDto> update(@PathVariable Long id,
 			@Valid @RequestBody PerfilForm perfilForm) {
 
-		Perfil perfil = perfilService.convertToPerfil(perfilForm);
+		Perfil perfil = perfilService.convertToEntity(perfilForm);
 
 		perfil.setId(id);
 		perfil = perfilService.update(perfil);

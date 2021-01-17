@@ -2,14 +2,16 @@ package br.com.myhomefinances.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.myhomefinances.domain.Conta;
 import br.com.myhomefinances.domain.SaldoBancario;
+import br.com.myhomefinances.dto.SaldoBancarioDto;
 import br.com.myhomefinances.repository.SaldoBancarioRepository;
-import br.com.myhomefinances.services.exception.ObjectNotFoundException;
+import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
 @Service
 public class SaldoBancarioService {
@@ -21,15 +23,15 @@ public class SaldoBancarioService {
 	ContaService contaService;
 
 	public List<SaldoBancario> findByContaOrderByDataHoraDesc(Long idConta) {
-		Conta conta = contaService.findByIdAndUsuario(idConta);
+		Conta conta = contaService.findById(idConta);
 
-		List<SaldoBancario> listaSaldoBancarios = saldoBancarioRepository.findByContaOrderByDataHoraDesc(conta);
+		List<SaldoBancario> saldosBancarios = saldoBancarioRepository.findByContaOrderByDataHoraDesc(conta);
 
-		return listaSaldoBancarios;
+		return saldosBancarios;
 	}
 
 	public SaldoBancario findByIdAndConta(Long idSaldoBancario, Long idConta) {
-		Conta conta = contaService.findByIdAndUsuario(idConta);
+		Conta conta = contaService.findById(idConta);
 
 		Optional<SaldoBancario> saldoBancario = saldoBancarioRepository.findByIdAndConta(idSaldoBancario, conta);
 
@@ -47,6 +49,10 @@ public class SaldoBancarioService {
 		saldoBancario = saldoBancarioRepository.save(saldoBancario);
 
 		return saldoBancario;
+	}
+
+	public List<SaldoBancarioDto> convertToDto(List<SaldoBancario> saldosBancarios) {
+		return saldosBancarios.stream().map(SaldoBancarioDto::new).collect(Collectors.toList());
 	}
 
 }

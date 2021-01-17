@@ -4,8 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import br.com.myhomefinances.service.EmailService;
-import br.com.myhomefinances.service.SmtpEmailService;
+import br.com.myhomefinances.service.email.EmailService;
+import br.com.myhomefinances.service.email.SmtpEmailService;
 
 @Configuration
 @Profile("prod")

@@ -39,7 +39,7 @@ public class ItemResource {
 
 		Page<Item> itensPage = itemService.findAll(paginacao);
 
-		return ResponseEntity.ok().body(itemService.convertToItemDto(itensPage));
+		return ResponseEntity.ok().body(itemService.convertToDto(itensPage));
 	}
 
 	@GetMapping(value="/{id}")
@@ -50,10 +50,11 @@ public class ItemResource {
 	}
 
 	@PostMapping
+	@Transactional
 	public ResponseEntity<ItemDto> insert(@Valid @RequestBody ItemForm itemForm,
 			UriComponentsBuilder uriBuilder) {
 
-		Item item = itemService.convertToItem(itemForm);
+		Item item = itemService.convertToEntity(itemForm);
 
 		item = itemService.insert(item);
 
@@ -67,7 +68,7 @@ public class ItemResource {
 	public ResponseEntity<ItemDto> update(@PathVariable Long id,
 			@Valid @RequestBody ItemForm itemFormDto) {
 
-		Item item = itemService.convertToItem(itemFormDto);
+		Item item = itemService.convertToEntity(itemFormDto);
 
 		item.setId(id);
 		item = itemService.update(item);

@@ -16,10 +16,8 @@ import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.dto.ItemDto;
 import br.com.myhomefinances.form.ItemForm;
 import br.com.myhomefinances.repository.ItemRepository;
-import br.com.myhomefinances.security.UserDetailsSpringSecurity;
-import br.com.myhomefinances.services.exception.AuthorizationException;
-import br.com.myhomefinances.services.exception.DataIntegrityException;
-import br.com.myhomefinances.services.exception.ObjectNotFoundException;
+import br.com.myhomefinances.service.exception.DataIntegrityException;
+import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
 @Service
 public class ItemService {
@@ -34,15 +32,15 @@ public class ItemService {
 	UsuarioService usuarioService;
 
 	public Page<Item> findAll(Pageable paginacao) {
-		UserDetailsSpringSecurity user = getUserAuthenticated();
+		Usuario usuario = UsuarioService.authenticated();
 
-		return itemRepository.findByUsuarioId(user.getId(), paginacao);
+		return itemRepository.findByUsuarioId(usuario.getId(), paginacao);
 	}
 
 	public Item findById(Long id) {
-		UserDetailsSpringSecurity user = getUserAuthenticated();
+		Usuario usuario = UsuarioService.authenticated();
 
-		Optional<Item> item = itemRepository.findByIdAndUsuarioId(id, user.getId());
+		Optional<Item> item = itemRepository.findByIdAndUsuarioId(id, usuario.getId());
 
 		return item.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
 				Item.class.getName()));
@@ -63,7 +61,6 @@ public class ItemService {
 	public void delete(Long id) {
 		findById(id);
 
-		// Melhorar essa parte
 		try {
 			itemRepository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
@@ -72,22 +69,20 @@ public class ItemService {
 		}
 	}
 
-	public Item convertToItem(ItemForm itemForm) {
-		UserDetailsSpringSecurity user = getUserAuthenticated();
+	public Item convertToEntity(ItemForm itemForm) {
+		Usuario usuario = UsuarioService.authenticated();
 
 		Categoria categoria = categoriaService.findById(itemForm.getCategoriaId());
-
-		Usuario usuario = usuarioService.find(user.getId());
 
 		return new Item(itemForm.getNome(), itemForm.getComplemento(),
 				categoria, usuario);
 	}
 
-	public List<ItemDto> convertToItemDto(List<Item> itens) {
+	public List<ItemDto> convertToDto(List<Item> itens) {
 		return itens.stream().map(ItemDto::new).collect(Collectors.toList());
 	}
 
-	public Page<ItemDto> convertToItemDto(Page<Item> itensPage) {
+	public Page<ItemDto> convertToDto(Page<Item> itensPage) {
 		return itensPage.map(ItemDto::new);
 	}
 
@@ -96,17 +91,6 @@ public class ItemService {
 		novoItem.setComplemento(item.getComplemento());
 		novoItem.setDataHora(item.getDataHora());
 		novoItem.setCategoria(item.getCategoria());
-	}
-
-	// Criar anotação para injetar usuário logado.
-	private UserDetailsSpringSecurity getUserAuthenticated() {
-		UserDetailsSpringSecurity user = UserService.authenticated();
-
-		if (user == null) {
-			throw new AuthorizationException("Acesso negado");
-		}
-
-		return user;
 	}
 
 }

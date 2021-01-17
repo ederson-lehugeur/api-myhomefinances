@@ -1,12 +1,11 @@
 package br.com.myhomefinances.resource;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.myhomefinances.domain.Saldo;
@@ -20,26 +19,18 @@ public class SaldoResource {
 	@Autowired
 	SaldoService saldoService;
 
-	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<SaldoDto>> find() {
+	@GetMapping
+	public ResponseEntity<List<SaldoDto>> findAll() {
+		List<Saldo> saldos = saldoService.findAll();
 
-		List<Saldo> listaSaldos = saldoService.find();
-
-		List<SaldoDto> listaSaldosDto = listaSaldos.stream()
-				.map(saldo -> new SaldoDto(saldo))
-				.collect(Collectors.toList());
-
-		return ResponseEntity.ok().body(listaSaldosDto);
+		return ResponseEntity.ok().body(saldoService.convertToDto(saldos));
 	}
 
-	@RequestMapping(value="/last", method=RequestMethod.GET)
-	public ResponseEntity<SaldoDto> findFirstOrderByDataHoraDesc() {
-
+	@GetMapping(value="/last")
+	public ResponseEntity<SaldoDto> findLast() {
 		Saldo saldo = saldoService.findFirstOrderByDataHoraDesc();
 
-		SaldoDto saldoDto = saldoService.toDTO(saldo);
-
-		return ResponseEntity.ok().body(saldoDto);
+		return ResponseEntity.ok().body(new SaldoDto(saldo));
 	}
 
 }

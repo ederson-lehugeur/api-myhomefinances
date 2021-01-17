@@ -18,6 +18,6 @@ public interface RegistroBancarioRepository extends JpaRepository<RegistroBancar
 
 	Optional<RegistroBancario> findByIdAndConta(Long id, Conta conta);
 
-	Page<RegistroBancario> findAllByConta(Conta conta, Pageable pageRequest);
+	Page<RegistroBancario> findByConta(Conta conta, Pageable pageRequest);
 
 }

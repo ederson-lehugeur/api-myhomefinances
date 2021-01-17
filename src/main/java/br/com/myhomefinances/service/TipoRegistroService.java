@@ -2,14 +2,16 @@ package br.com.myhomefinances.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.myhomefinances.domain.TipoRegistro;
 import br.com.myhomefinances.dto.TipoRegistroDto;
+import br.com.myhomefinances.form.TipoRegistroForm;
 import br.com.myhomefinances.repository.TipoRegistroRepository;
-import br.com.myhomefinances.services.exception.ObjectNotFoundException;
+import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
 @Service
 public class TipoRegistroService {
@@ -17,10 +19,10 @@ public class TipoRegistroService {
 	@Autowired
 	TipoRegistroRepository tipoRegistroRepository;
 
-	public List<TipoRegistro> find() {
-		List<TipoRegistro> listaTipoRegistro = tipoRegistroRepository.findAll();
+	public List<TipoRegistro> findAll() {
+		List<TipoRegistro> tiposRegistros = tipoRegistroRepository.findAll();
 
-		return listaTipoRegistro;
+		return tiposRegistros;
 	}
 
 	public TipoRegistro findById(Long id) {
@@ -59,9 +61,13 @@ public class TipoRegistroService {
 		tipoRegistroRepository.deleteById(id);
 	}
 
-	public TipoRegistro fromDTO(TipoRegistroDto tipoRegistroDto) {
-		return new TipoRegistro(tipoRegistroDto.getId(), tipoRegistroDto.getNome(),
-				tipoRegistroDto.getEhRegistroDeSaida());
+	public TipoRegistro convertToEntity(TipoRegistroForm tipoRegistroForm) {
+		return new TipoRegistro(null, tipoRegistroForm.getNome(),
+				tipoRegistroForm.getEhRegistroDeSaida());
+	}
+
+	public List<TipoRegistroDto> convertToDto(List<TipoRegistro> tiposRegistros) {
+		return tiposRegistros.stream().map(TipoRegistroDto::new).collect(Collectors.toList());
 	}
 
 	private void updateData(TipoRegistro novoTipoRegistro, TipoRegistro tipoRegistro) {

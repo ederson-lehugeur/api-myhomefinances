@@ -3,11 +3,11 @@ package br.com.myhomefinances.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,11 +17,11 @@ import br.com.myhomefinances.domain.Saldo;
 import br.com.myhomefinances.domain.TipoRegistro;
 import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.dto.RegistroDto;
+import br.com.myhomefinances.form.RegistroForm;
 import br.com.myhomefinances.repository.RegistroRepository;
-import br.com.myhomefinances.security.UserDetailsSpringSecurity;
-import br.com.myhomefinances.services.exception.AuthorizationException;
-import br.com.myhomefinances.services.exception.NegativeBalanceException;
-import br.com.myhomefinances.services.exception.ObjectNotFoundException;
+import br.com.myhomefinances.service.exception.AuthorizationException;
+import br.com.myhomefinances.service.exception.NegativeBalanceException;
+import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
 @Service
 public class RegistroService {
@@ -41,42 +41,24 @@ public class RegistroService {
 	@Autowired
 	ItemService itemService;
 
-	public List<Registro> find() {
-		UserDetailsSpringSecurity user = UserService.authenticated();
+	public Page<Registro> findAll(Pageable paginacao) {
+		Usuario usuario = UsuarioService.authenticated();
 
-		if (user == null) {
+		if (usuario == null) {
 			throw new AuthorizationException("Acesso negado");
 		}
 
-		Usuario usuario = usuarioService.find(user.getId());
+		Page<Registro> registrosPage = registroRepository.findByUsuario(usuario, paginacao);
 
-		List<Registro> listaRegistros = registroRepository.findByUsuario(usuario);
-
-		return listaRegistros;
-	}
-
-	public Page<Registro> find(Integer page, Integer linesPerPage, String orderBy, String direction) {
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-
-		UserDetailsSpringSecurity user = UserService.authenticated();
-
-		if (user == null) {
-			throw new AuthorizationException("Acesso negado");
-		}
-
-		Usuario usuario = usuarioService.find(user.getId());
-
-		return registroRepository.findByUsuario(usuario, pageRequest);
+		return registrosPage;
 	}
 
 	public Registro findById(Long id) {
-		UserDetailsSpringSecurity user = UserService.authenticated();
+		Usuario usuario = UsuarioService.authenticated();
 
-		if (user == null) {
+		if (usuario == null) {
 			throw new AuthorizationException("Acesso negado");
 		}
-
-		Usuario usuario = usuarioService.find(user.getId());
 
 		Optional<Registro> registro = registroRepository.findByIdAndUsuario(id, usuario);
 
@@ -86,9 +68,9 @@ public class RegistroService {
 
 	@Transactional
 	public Registro insert(Registro registro) {
-		UserDetailsSpringSecurity user = UserService.authenticated();
+		Usuario usuario = UsuarioService.authenticated();
 
-		if (user == null) {
+		if (usuario == null) {
 			throw new AuthorizationException("Acesso negado");
 		}
 
@@ -142,21 +124,27 @@ public class RegistroService {
 		registroRepository.deleteById(id);
 	}
 
-	public Registro fromDTO(RegistroDto registroDto) {
-		UserDetailsSpringSecurity user = UserService.authenticated();
+	public Registro convertToEntity(RegistroForm registroForm) {
+		Usuario usuario = UsuarioService.authenticated();
 
-		if (user == null) {
+		if (usuario == null) {
 			throw new AuthorizationException("Acesso negado");
 		}
 
-		Usuario usuario = usuarioService.find(user.getId());
+		TipoRegistro tipoRegistro = tipoRegistroService.findById(registroForm.getTipoRegistroId());
 
-		TipoRegistro tipoRegistro = tipoRegistroService.findById(registroDto.getTipoRegistroId());
+		Item item = itemService.findById(registroForm.getItemId());
 
-		Item item = itemService.findById(registroDto.getItemId());
-
-		return new Registro(registroDto.getId(), registroDto.getValor(), registroDto.getDataHora(),
+		return new Registro(null, registroForm.getValor(), registroForm.getDataHora(),
 				tipoRegistro, usuario, item);
+	}
+
+	public List<RegistroDto> convertToDto(List<Registro> registros) {
+		return registros.stream().map(RegistroDto::new).collect(Collectors.toList());
+	}
+
+	public Page<RegistroDto> convertToDto(Page<Registro> registrosPage) {
+		return registrosPage.map(RegistroDto::new);
 	}
 
 }

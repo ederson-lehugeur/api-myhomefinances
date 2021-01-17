@@ -37,7 +37,7 @@ public class BancoResource {
 	public ResponseEntity<List<BancoDto>> findAll() {
 		List<Banco> bancos = bancoService.findAll();
 
-		return ResponseEntity.ok().body(bancoService.convertEntityToDto(bancos));
+		return ResponseEntity.ok().body(bancoService.convertToDto(bancos));
 	}
 
 	@GetMapping(value="/{id}")
@@ -56,15 +56,16 @@ public class BancoResource {
 
 		Page<Banco> bancos = bancoService.findPage(page, linesPerPage, orderBy, direction);
 
-		return ResponseEntity.ok().body(bancoService.convertEntityToDto(bancos));
+		return ResponseEntity.ok().body(bancoService.convertToDto(bancos));
 	}
 
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
+	@Transactional
 	public ResponseEntity<BancoDto> insert(@Valid @RequestBody BancoForm bancoForm,
 			UriComponentsBuilder uriBuilder) {
 
-		Banco banco = bancoService.convertFormToEntity(bancoForm);
+		Banco banco = bancoService.convertToEntity(bancoForm);
 
 		banco = bancoService.insert(banco);
 
@@ -79,7 +80,7 @@ public class BancoResource {
 	public ResponseEntity<BancoDto> update(@PathVariable Long id,
 			@Valid @RequestBody BancoForm bancoForm) {
 
-		Banco banco = bancoService.convertFormToEntity(bancoForm);
+		Banco banco = bancoService.convertToEntity(bancoForm);
 
 		banco.setId(id);
 		banco = bancoService.update(banco);

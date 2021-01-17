@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class RegistroBancario implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
