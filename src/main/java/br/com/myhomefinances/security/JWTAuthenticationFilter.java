@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.myhomefinances.domain.Usuario;
-import br.com.myhomefinances.form.CredenciaisForm;
+import br.com.myhomefinances.form.CredentialsForm;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -38,11 +38,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			HttpServletResponse res) throws AuthenticationException {
 
 		try {
-			CredenciaisForm creds = new ObjectMapper()
-	                .readValue(req.getInputStream(), CredenciaisForm.class);
+			CredentialsForm creds = new ObjectMapper()
+	                .readValue(req.getInputStream(), CredentialsForm.class);
 
 	        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-	        		creds.getEmail(), creds.getSenha(), new ArrayList<>());
+	        		creds.getUsername(), creds.getPassword(), new ArrayList<>());
 
 	        Authentication auth = authenticationManager.authenticate(authToken);
 
@@ -83,5 +83,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 + "\"message\": \"Email ou senha inválidos\", "
                 + "\"path\": \"/login\"}";
         }
+
     }
+
 }
