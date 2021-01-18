@@ -2,6 +2,7 @@ package br.com.myhomefinances.resource.exception;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -38,6 +39,17 @@ public class ResourceExceptionHandler {
 
 		StandardError err = new StandardError(System.currentTimeMillis(),
 				HttpStatus.BAD_REQUEST.value(), "Data integrity", e.getMessage(),
+				request.getRequestURI());
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<StandardError> dataIntegrity(DataIntegrityViolationException e,
+			HttpServletRequest request) {
+
+		StandardError err = new StandardError(System.currentTimeMillis(),
+				HttpStatus.BAD_REQUEST.value(), "Data integrity violation", e.getMessage(),
 				request.getRequestURI());
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
@@ -123,4 +135,5 @@ public class ResourceExceptionHandler {
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
+
 }

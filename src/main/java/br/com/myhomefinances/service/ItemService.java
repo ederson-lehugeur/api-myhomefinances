@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.dto.ItemDto;
 import br.com.myhomefinances.form.ItemForm;
 import br.com.myhomefinances.repository.ItemRepository;
-import br.com.myhomefinances.service.exception.DataIntegrityException;
 import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
 @Service
@@ -42,7 +40,7 @@ public class ItemService {
 
 		Optional<Item> item = itemRepository.findByIdAndUsuarioId(id, usuario.getId());
 
-		return item.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
+		return item.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado",
 				Item.class.getName()));
 	}
 
@@ -61,12 +59,7 @@ public class ItemService {
 	public void delete(Long id) {
 		findById(id);
 
-		try {
-			itemRepository.deleteById(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possível excluir um item que esteja"
-					+ " associado a algum registro.");
-		}
+		itemRepository.deleteById(id);
 	}
 
 	public Item convertToEntity(ItemForm itemForm) {
