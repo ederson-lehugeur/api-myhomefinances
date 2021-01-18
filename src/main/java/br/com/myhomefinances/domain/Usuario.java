@@ -1,9 +1,9 @@
 package br.com.myhomefinances.domain;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -32,9 +32,9 @@ public class Usuario implements UserDetails, Serializable {
 	private String sobrenome;
 	private String email;
 	private String senha;
-	private Date dataHoraCriacao;
+	private LocalDateTime dataHoraCriacao = LocalDateTime.now();
 	private String resetToken;
-	private Date tokenExpirationDatetime;
+	private LocalDateTime tokenExpirationDatetime;
 
 	@ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
@@ -54,7 +54,6 @@ public class Usuario implements UserDetails, Serializable {
 		this.sobrenome = sobrenome;
 		this.email = email;
 		this.senha = senha;
-		this.dataHoraCriacao = new Date();
 		this.resetToken = null;
 		this.tokenExpirationDatetime = null;
 	}
@@ -106,12 +105,8 @@ public class Usuario implements UserDetails, Serializable {
 		this.senha = senha;
 	}
 
-	public Date getDataHoraCriacao() {
+	public LocalDateTime getDataHoraCriacao() {
 		return dataHoraCriacao;
-	}
-
-	public void setDataHoraCriacao(Date dataHoraCriacao) {
-		this.dataHoraCriacao = dataHoraCriacao;
 	}
 
 	public String getResetToken() {
@@ -122,11 +117,11 @@ public class Usuario implements UserDetails, Serializable {
 		this.resetToken = resetToken;
 	}
 
-	public Date getTokenExpirationDatetime() {
+	public LocalDateTime getTokenExpirationDatetime() {
 		return tokenExpirationDatetime;
 	}
 
-	public void setTokenExpirationDatetime(Date tokenExpirationDatetime) {
+	public void setTokenExpirationDatetime(LocalDateTime tokenExpirationDatetime) {
 		this.tokenExpirationDatetime = tokenExpirationDatetime;
 	}
 

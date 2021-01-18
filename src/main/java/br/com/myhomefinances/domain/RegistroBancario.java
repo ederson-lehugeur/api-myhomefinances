@@ -1,7 +1,7 @@
 package br.com.myhomefinances.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -20,8 +20,8 @@ public class RegistroBancario implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private Double valor;
-	private Date dataHora;
-	private Date dataHoraCriacao;
+	private LocalDateTime dataHora;
+	private LocalDateTime dataHoraCriacao = LocalDateTime.now();
 
 	@ManyToOne
 	@JoinColumn(name="conta_id", foreignKey=@ForeignKey(name="FK_REGISTROBANCARIO_CONTA"))
@@ -33,11 +33,10 @@ public class RegistroBancario implements Serializable {
 
 	public RegistroBancario() {}
 
-	public RegistroBancario(Long id, Double valor, Date dataHora, Conta conta, Item item) {
+	public RegistroBancario(Long id, Double valor, LocalDateTime dataHora, Conta conta, Item item) {
 		this.id = id;
 		this.valor = valor;
 		this.dataHora = dataHora;
-		this.dataHoraCriacao = new Date();
 		this.conta = conta;
 		this.item = item;
 	}
@@ -58,20 +57,16 @@ public class RegistroBancario implements Serializable {
 		this.valor = valor;
 	}
 
-	public Date getDataHora() {
+	public LocalDateTime getDataHora() {
 		return dataHora;
 	}
 
-	public void setDataHora(Date dataHora) {
+	public void setDataHora(LocalDateTime dataHora) {
 		this.dataHora = dataHora;
 	}
 
-	public Date getDataHoraCriacao() {
+	public LocalDateTime getDataHoraCriacao() {
 		return dataHoraCriacao;
-	}
-
-	public void setDataHoraCriacao(Date dataHoraCriacao) {
-		this.dataHoraCriacao = dataHoraCriacao;
 	}
 
 	public Conta getConta() {

@@ -1,6 +1,5 @@
 package br.com.myhomefinances.service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -92,7 +91,7 @@ public class RegistroService {
 			throw new NegativeBalanceException("Saldo com valor negativo");
 		}
 
-		Saldo novoSaldo = new Saldo(null, valor, new Date(), registro.getUsuario());
+		Saldo novoSaldo = new Saldo(null, valor, registro.getUsuario());
 
 		saldoService.insert(novoSaldo);
 
@@ -117,7 +116,7 @@ public class RegistroService {
 			throw new NegativeBalanceException("Saldo com valor negativo");
 		}
 
-		Saldo novoSaldo = new Saldo(null, valor, new Date(), registro.getUsuario());
+		Saldo novoSaldo = new Saldo(null, valor, registro.getUsuario());
 
 		saldoService.insert(novoSaldo);
 

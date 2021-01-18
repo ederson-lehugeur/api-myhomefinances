@@ -16,6 +16,6 @@ public interface SaldoRepository extends JpaRepository<Saldo, Long> {
 
 	Optional<Saldo> findByIdAndUsuario(Long id, Usuario usuario);
 
-	Saldo findFirstByUsuarioOrderByDataHoraDesc(Usuario usuario);
+	Saldo findFirstByUsuarioOrderByDataHoraCriacaoDesc(Usuario usuario);
 
 }

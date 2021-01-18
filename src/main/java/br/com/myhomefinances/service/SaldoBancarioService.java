@@ -25,7 +25,7 @@ public class SaldoBancarioService {
 	public List<SaldoBancario> findByContaOrderByDataHoraDesc(Long idConta) {
 		Conta conta = contaService.findById(idConta);
 
-		List<SaldoBancario> saldosBancarios = saldoBancarioRepository.findByContaOrderByDataHoraDesc(conta);
+		List<SaldoBancario> saldosBancarios = saldoBancarioRepository.findByContaOrderByDataHoraCriacaoDesc(conta);
 
 		return saldosBancarios;
 	}
@@ -40,7 +40,7 @@ public class SaldoBancarioService {
 	}
 
 	public SaldoBancario findFirstByContaOrderByDataHoraDesc(Conta conta) {
-		return saldoBancarioRepository.findFirstByContaOrderByDataHoraDesc(conta);
+		return saldoBancarioRepository.findFirstByContaOrderByDataHoraCriacaoDesc(conta);
 	}
 
 	public SaldoBancario insert(SaldoBancario saldoBancario) {

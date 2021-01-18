@@ -55,7 +55,7 @@ public class SaldoService {
 			throw new AuthorizationException("Acesso negado");
 		}
 
-		return saldoRepository.findFirstByUsuarioOrderByDataHoraDesc(usuario);
+		return saldoRepository.findFirstByUsuarioOrderByDataHoraCriacaoDesc(usuario);
 	}
 
 	public Saldo insert(Saldo saldo) {

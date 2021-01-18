@@ -1,7 +1,7 @@
 package br.com.myhomefinances.form;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotNull;
 
@@ -15,7 +15,7 @@ public class RegistroForm implements Serializable {
 
 	@NotNull
 	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
-	private Date dataHora;
+	private LocalDateTime dataHora;
 
 	@NotNull
 	private Long tipoRegistroId;
@@ -33,11 +33,11 @@ public class RegistroForm implements Serializable {
 		this.valor = valor;
 	}
 
-	public Date getDataHora() {
+	public LocalDateTime getDataHora() {
 		return dataHora;
 	}
 
-	public void setDataHora(Date dataHora) {
+	public void setDataHora(LocalDateTime dataHora) {
 		this.dataHora = dataHora;
 	}
 

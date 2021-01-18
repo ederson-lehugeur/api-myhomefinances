@@ -1,9 +1,8 @@
 package br.com.myhomefinances.service;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -132,11 +131,9 @@ public class DBService {
 		tipoRegistroRepository.saveAll(Arrays.asList(tipoRegistro1, tipoRegistro2,
 				tipoRegistro3, tipoRegistro4, tipoRegistro5));
 
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS");
+		LocalDateTime hoje = LocalDateTime.now();
 
-		String now = sdf.format(new Date());
-
-		Saldo saldo1 = new Saldo(null, 0.00, sdf.parse(now), usuario1);
+		Saldo saldo1 = new Saldo(null, 0.00, usuario1);
 
 		saldoRepository.saveAll(Arrays.asList(saldo1));
 
@@ -155,11 +152,11 @@ public class DBService {
 
 		contaRepository.saveAll(Arrays.asList(conta1));
 
-		SaldoBancario saldoBancario1 = new SaldoBancario(null, 0.00, sdf.parse(now), conta1);
+		SaldoBancario saldoBancario1 = new SaldoBancario(null, 0.00, conta1);
 
 		saldoBancarioRepository.saveAll(Arrays.asList(saldoBancario1));
 
-		Registro registro1 = new Registro(null, 0.00, sdf.parse(now), tipoRegistro5, usuario1, item5);
+		Registro registro1 = new Registro(null, 0.00, hoje, tipoRegistro5, usuario1, item5);
 
 		registroRepository.saveAll(Arrays.asList(registro1));
 	}

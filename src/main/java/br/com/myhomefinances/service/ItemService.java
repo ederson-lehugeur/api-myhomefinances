@@ -82,7 +82,7 @@ public class ItemService {
 	private void updateData(Item novoItem, Item item) {
 		novoItem.setNome(item.getNome());
 		novoItem.setComplemento(item.getComplemento());
-		novoItem.setDataHora(item.getDataHora());
+		novoItem.setDataHoraCriacao(item.getDataHoraCriacao());
 		novoItem.setCategoria(item.getCategoria());
 	}
 

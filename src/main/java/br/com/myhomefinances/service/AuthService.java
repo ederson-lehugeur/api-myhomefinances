@@ -1,6 +1,6 @@
 package br.com.myhomefinances.service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class AuthService {
 		Usuario usuario = usuarioService.findByEmail(email);
 
 		usuario.setResetToken(UUID.randomUUID().toString());
-		usuario.setTokenExpirationDatetime(new Date(System.currentTimeMillis() + expirationResetToken));
+		usuario.setTokenExpirationDatetime(LocalDateTime.now().plusSeconds(expirationResetToken / 1000));
 
 		usuarioService.updateUsuario(usuario);
 
@@ -46,9 +46,9 @@ public class AuthService {
 
 		Usuario usuario = usuarioService.findByResetToken(token);
 
-		Date now = new Date(System.currentTimeMillis());
+		LocalDateTime now = LocalDateTime.now();
 
-		if (now.after(usuario.getTokenExpirationDatetime())) {
+		if (now.isAfter(usuario.getTokenExpirationDatetime())) {
 			throw new TokenExpiredException("Token expirado");
 		}
 

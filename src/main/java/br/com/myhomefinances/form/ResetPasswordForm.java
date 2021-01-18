@@ -3,14 +3,21 @@ package br.com.myhomefinances.form;
 import java.io.Serializable;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 
 public class ResetPasswordForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@NotEmpty(message="Preenchimento obrigatório")
+	@NotNull
+	@NotEmpty
+	@Length(min=4, max=255)
 	private String senha;
 
-	@NotEmpty(message="Preenchimento obrigatório")
+	@NotNull
+	@NotEmpty
+	@Length(min=4, max=255)
 	private String confirmacaoSenha;
 
 	public String getSenha() {

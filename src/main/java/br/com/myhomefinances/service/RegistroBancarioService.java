@@ -1,6 +1,5 @@
 package br.com.myhomefinances.service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -93,7 +92,7 @@ public class RegistroBancarioService {
 
 		Double valor = saldoBancario.getSaldo() + registroBancario.getValor();
 
-		SaldoBancario novoSaldoBancario = new SaldoBancario(null, valor, new Date(), registroBancario.getConta());
+		SaldoBancario novoSaldoBancario = new SaldoBancario(null, valor, registroBancario.getConta());
 
 		saldoBancarioService.insert(novoSaldoBancario);
 

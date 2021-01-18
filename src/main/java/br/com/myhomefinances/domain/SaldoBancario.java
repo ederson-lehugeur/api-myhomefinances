@@ -1,7 +1,7 @@
 package br.com.myhomefinances.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -20,7 +20,7 @@ public class SaldoBancario implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private Double saldo;
-	private Date dataHora;
+	private LocalDateTime dataHoraCriacao = LocalDateTime.now();
 
 	@ManyToOne
 	@JoinColumn(name="conta_id", foreignKey=@ForeignKey(name="FK_SALDOBANCARIO_CONTA"))
@@ -28,10 +28,9 @@ public class SaldoBancario implements Serializable {
 
 	public SaldoBancario() {}
 
-	public SaldoBancario(Long id, Double saldo, Date dataHora, Conta conta) {
+	public SaldoBancario(Long id, Double saldo, Conta conta) {
 		this.id = id;
 		this.saldo = saldo;
-		this.dataHora = dataHora;
 		this.conta = conta;
 	}
 
@@ -51,12 +50,8 @@ public class SaldoBancario implements Serializable {
 		this.saldo = saldo;
 	}
 
-	public Date getDataHora() {
-		return dataHora;
-	}
-
-	public void setDataHora(Date dataHora) {
-		this.dataHora = dataHora;
+	public LocalDateTime getDataHoraCriacao() {
+		return dataHoraCriacao;
 	}
 
 	public Conta getConta() {

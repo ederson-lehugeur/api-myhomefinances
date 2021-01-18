@@ -12,10 +12,10 @@ import br.com.myhomefinances.domain.SaldoBancario;
 @Repository
 public interface SaldoBancarioRepository extends JpaRepository<SaldoBancario, Long> {
 
-	List<SaldoBancario> findByContaOrderByDataHoraDesc(Conta conta);
+	List<SaldoBancario> findByContaOrderByDataHoraCriacaoDesc(Conta conta);
 
 	Optional<SaldoBancario> findByIdAndConta(Long id, Conta conta);
 
-	SaldoBancario findFirstByContaOrderByDataHoraDesc(Conta conta);
+	SaldoBancario findFirstByContaOrderByDataHoraCriacaoDesc(Conta conta);
 
 }

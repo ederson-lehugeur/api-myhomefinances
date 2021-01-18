@@ -1,7 +1,7 @@
 package br.com.myhomefinances.dto;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -14,7 +14,7 @@ public class RegistroDto implements Serializable {
 	private Double valor;
 
 	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss.SSS")
-	private Date dataHora;
+	private LocalDateTime dataHora;
 	private Long tipoRegistroId;
 	private String nomeTipoRegistro;
 	private Long itemId;
@@ -40,7 +40,7 @@ public class RegistroDto implements Serializable {
 		return valor;
 	}
 
-	public Date getDataHora() {
+	public LocalDateTime getDataHora() {
 		return dataHora;
 	}
 

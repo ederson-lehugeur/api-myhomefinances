@@ -1,6 +1,5 @@
 package br.com.myhomefinances.service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -81,7 +80,7 @@ public class UsuarioService {
 
 		usuario = usuarioRepository.save(usuario);
 
-		Saldo saldo = new Saldo(null, 0.0, new Date(), usuario);
+		Saldo saldo = new Saldo(null, 0.0, usuario);
 
 		saldoService.insert(saldo);
 

@@ -1,7 +1,7 @@
 package br.com.myhomefinances.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -21,7 +21,7 @@ public class Item implements Serializable {
 	private Long id;
 	private String nome;
 	private String complemento;
-	private Date dataHora = new Date();
+	private LocalDateTime dataHoraCriacao = LocalDateTime.now();
 
 	@ManyToOne
 	@JoinColumn(name="categoria_id", foreignKey=@ForeignKey(name="FK_ITEM_CATEGORIA"))
@@ -64,12 +64,12 @@ public class Item implements Serializable {
 		this.complemento = complemento;
 	}
 
-	public Date getDataHora() {
-		return dataHora;
+	public LocalDateTime getDataHoraCriacao() {
+		return dataHoraCriacao;
 	}
 
-	public void setDataHora(Date dataHora) {
-		this.dataHora = dataHora;
+	public void setDataHoraCriacao(LocalDateTime dataHoraCriacao) {
+		this.dataHoraCriacao = dataHoraCriacao;
 	}
 
 	public Categoria getCategoria() {
