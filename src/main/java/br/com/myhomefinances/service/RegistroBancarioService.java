@@ -62,7 +62,7 @@ public class RegistroBancarioService {
 	public Page<RegistroBancario> findByConta(Long idConta, Pageable paginacao) {
 		Conta conta = contaService.findById(idConta);
 
-		Page<RegistroBancario> registrosBancarios = registroBancarioRepository.findByConta(conta, paginacao);
+		Page<RegistroBancario> registrosBancarios = registroBancarioRepository.findByContaId(conta.getId(), paginacao);
 
 		return registrosBancarios;
 	}
@@ -70,17 +70,18 @@ public class RegistroBancarioService {
 	public RegistroBancario findByIdAndConta(Long idRegistroBancario, Long idConta) {
 		Conta conta = contaService.findById(idConta);
 
-		Optional<RegistroBancario> registroBancario = registroBancarioRepository.findByIdAndConta(idRegistroBancario, conta);
+		Optional<RegistroBancario> registroBancario = registroBancarioRepository.findByIdAndContaId(idRegistroBancario, conta.getId());
 
 		return registroBancario.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
 				Registro.class.getName()));
 	}
 
+	// Refatorar
 	@Transactional
 	public RegistroBancario insert(RegistroBancario registroBancario) {
 		Usuario usuario = UsuarioService.authenticated();
 
-		if (usuario == null || usuario.getId() != registroBancario.getConta().getUsuario().getId()) {
+		if (usuario.getId() != registroBancario.getConta().getUsuario().getId()) {
 			throw new AuthorizationException("Acesso negado");
 		}
 

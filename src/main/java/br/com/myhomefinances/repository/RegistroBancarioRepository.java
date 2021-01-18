@@ -8,16 +8,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import br.com.myhomefinances.domain.Conta;
 import br.com.myhomefinances.domain.RegistroBancario;
 
 @Repository
 public interface RegistroBancarioRepository extends JpaRepository<RegistroBancario, Long> {
 
-	List<RegistroBancario> findByConta(Conta conta);
+	List<RegistroBancario> findByContaId(Long idConta);
 
-	Optional<RegistroBancario> findByIdAndConta(Long id, Conta conta);
+	Optional<RegistroBancario> findByIdAndContaId(Long id, Long idConta);
 
-	Page<RegistroBancario> findByConta(Conta conta, Pageable pageRequest);
+	Page<RegistroBancario> findByContaId(Long idConta, Pageable pageRequest);
 
 }

@@ -15,12 +15,23 @@ public class BancoForm implements Serializable {
 	@Length(min=3, max=255)
 	private String nome;
 
+	@NotNull
+	private Integer codigo;
+
 	public String getNome() {
 		return nome;
 	}
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public Integer getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
 	}
 
 }

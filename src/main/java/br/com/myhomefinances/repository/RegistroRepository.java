@@ -9,15 +9,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.com.myhomefinances.domain.Registro;
-import br.com.myhomefinances.domain.Usuario;
 
 @Repository
 public interface RegistroRepository extends JpaRepository<Registro, Long> {
 
-	List<Registro> findByUsuario(Usuario usuario);
+	List<Registro> findByUsuarioId(Long idUsuario);
 
-	Optional<Registro> findByIdAndUsuario(Long id, Usuario usuario);
+	Optional<Registro> findByIdAndUsuarioId(Long id, Long idUsuario);
 
-	Page<Registro> findByUsuario(Usuario usuario, Pageable pageRequest);
+	Page<Registro> findByUsuarioId(Long idUsuario, Pageable pageRequest);
 
 }

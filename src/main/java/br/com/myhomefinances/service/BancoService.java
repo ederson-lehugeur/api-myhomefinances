@@ -5,17 +5,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.myhomefinances.domain.Banco;
 import br.com.myhomefinances.dto.BancoDto;
 import br.com.myhomefinances.form.BancoForm;
 import br.com.myhomefinances.repository.BancoRepository;
-import br.com.myhomefinances.service.exception.DataIntegrityException;
 import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
 @Service
@@ -37,12 +32,6 @@ public class BancoService {
 				Banco.class.getName()));
 	}
 
-	public Page<Banco> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-
-		return bancoRepository.findAll(pageRequest);
-	}
-
 	public Banco insert(Banco banco) {
 		banco.setId(null);
 
@@ -50,15 +39,11 @@ public class BancoService {
 	}
 
 	public Banco convertToEntity(BancoForm bancoForm) {
-		return new Banco(bancoForm.getNome());
+		return new Banco(bancoForm.getCodigo(), bancoForm.getNome());
 	}
 
 	public List<BancoDto> convertToDto(List<Banco> bancos) {
 		return bancos.stream().map(BancoDto::new).collect(Collectors.toList());
-	}
-
-	public Page<BancoDto> convertToDto(Page<Banco> bancosPage) {
-		return bancosPage.map(BancoDto::new);
 	}
 
 	public Banco update(Banco banco) {
@@ -72,15 +57,11 @@ public class BancoService {
 	public void delete(Long id) {
 		findById(id);
 
-		try {
-			bancoRepository.deleteById(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possível excluir uma banco que está associado"
-					+ " a uma conta.");
-		}
+		bancoRepository.deleteById(id);
 	}
 
 	private void updateData(Banco novoBanco, Banco banco) {
+		novoBanco.setCodigo(banco.getCodigo());
 		novoBanco.setNome(banco.getNome());
 	}
 

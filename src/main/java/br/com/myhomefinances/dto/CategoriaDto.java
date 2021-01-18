@@ -10,15 +10,11 @@ public class CategoriaDto implements Serializable {
 	private Long id;
 	private String nome;
 	private String complemento;
-	private Long usuarioId;
-	private String nomeUsuario;
 
 	public CategoriaDto(Categoria categoria) {
 		id = categoria.getId();
 		nome = categoria.getNome();
 		complemento = categoria.getComplemento();
-		usuarioId = categoria.getUsuario().getId();
-		nomeUsuario = categoria.getUsuario().getNome();
 	}
 
 	public Long getId() {
@@ -31,14 +27,6 @@ public class CategoriaDto implements Serializable {
 
 	public String getComplemento() {
 		return complemento;
-	}
-
-	public Long getUsuarioId() {
-		return usuarioId;
-	}
-
-	public String getNomeUsuario() {
-		return nomeUsuario;
 	}
 
 }

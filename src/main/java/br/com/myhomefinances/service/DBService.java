@@ -77,13 +77,21 @@ public class DBService {
 	public void instantiateTestDatabase() throws ParseException {
 
 		Categoria categoria1 = new Categoria(null, "Operação Bancária",
-				"Operações de Saque, Depósito, Transferências, etc.", null);
-		Categoria categoria2 = new Categoria(null, "Compras no mercado", null, null);
-		Categoria categoria3 = new Categoria(null, "Compras na farmácia", null, null);
-		Categoria categoria4 = new Categoria(null, "Viagens", null, null);
-		Categoria categoria5 = new Categoria(null, "Variados", null, null);
+				"Operações de Saque, Depósito, Transferências, etc.");
+		Categoria categoria2 = new Categoria(null, "Casa", null);
+		Categoria categoria3 = new Categoria(null, "Educação", null);
+		Categoria categoria4 = new Categoria(null, "Eletrônicos", null);
+		Categoria categoria5 = new Categoria(null, "Lazer", null);
+		Categoria categoria6 = new Categoria(null, "Outros", null);
+		Categoria categoria7 = new Categoria(null, "Restaurante", null);
+		Categoria categoria8 = new Categoria(null, "Saúde", null);
+		Categoria categoria9 = new Categoria(null, "Serviços", null);
+		Categoria categoria10 = new Categoria(null, "Supermercado", null);
+		Categoria categoria11 = new Categoria(null, "Transporte", null);
+		Categoria categoria12 = new Categoria(null, "Vestuário", null);
+		Categoria categoria13 = new Categoria(null, "Viagem", null);
 
-		Usuario usuario0 = new Usuario(null, "Admin", null, "admin@myhomefinances.com",
+		Usuario usuario0 = new Usuario(null, "Admin", "Admin", "admin@myhomefinances.com",
 				bCryptPasswordEncoder.encode("Q1W2E3R4"));
 
 		Usuario usuario1 = new Usuario(null, "Ederson", "Lehugeur", "eder.lehugeur@gmail.com",
@@ -105,28 +113,23 @@ public class DBService {
 		perfilRepository.saveAll(Arrays.asList(perfil1, perfil2));
 		usuarioRepository.saveAll(Arrays.asList(usuario0, usuario1, usuario2));
 
-		categoria1.setUsuario(usuario1);
-		categoria2.setUsuario(usuario1);
-		categoria3.setUsuario(usuario1);
-		categoria4.setUsuario(usuario1);
-		categoria5.setUsuario(usuario1);
-
-		Item item1 = new Item("Saque", null, categoria1, usuario1);
-		Item item2 = new Item("Depósito", null, categoria1, usuario1);
-		Item item3 = new Item("Transferência", null, categoria1, usuario1);
-		Item item4 = new Item("Salário", null, categoria1, usuario1);
-		Item item5 = new Item("Saldo inicial", null, categoria5, usuario1);
+		Item item1 = new Item("Saldo inicial", null, categoria1, usuario1);
+		Item item2 = new Item("Saque", null, categoria1, usuario1);
+		Item item3 = new Item("Depósito", null, categoria1, usuario1);
+		Item item4 = new Item("Transferência", null, categoria1, usuario1);
+		Item item5 = new Item("Salário", null, categoria1, usuario1);
 
 		categoriaRepository.saveAll(Arrays.asList(categoria1, categoria2, categoria3,
-				categoria4, categoria5));
+				categoria4, categoria5, categoria6, categoria7, categoria8, categoria9,
+				categoria10, categoria11, categoria12, categoria13));
 		itemRepository.saveAll(Arrays.asList(item1, item2, item3, item4,
 				item5));
 
-		TipoRegistro tipoRegistro1 = new TipoRegistro(null, "Pagamento", 1);
-		TipoRegistro tipoRegistro2 = new TipoRegistro(null, "Saque", 0);
-		TipoRegistro tipoRegistro3 = new TipoRegistro(null, "Ganho", 0);
-		TipoRegistro tipoRegistro4 = new TipoRegistro(null, "Salário", 0);
-		TipoRegistro tipoRegistro5 = new TipoRegistro(null, "Saldo inicial", 0);
+		TipoRegistro tipoRegistro1 = new TipoRegistro(null, "Saldo inicial", 0);
+		TipoRegistro tipoRegistro2 = new TipoRegistro(null, "Pagamento", 1);
+		TipoRegistro tipoRegistro3 = new TipoRegistro(null, "Saque", 0);
+		TipoRegistro tipoRegistro4 = new TipoRegistro(null, "Ganho", 0);
+		TipoRegistro tipoRegistro5 = new TipoRegistro(null, "Salário", 0);
 
 		tipoRegistroRepository.saveAll(Arrays.asList(tipoRegistro1, tipoRegistro2,
 				tipoRegistro3, tipoRegistro4, tipoRegistro5));
@@ -134,21 +137,38 @@ public class DBService {
 		LocalDateTime hoje = LocalDateTime.now();
 
 		Saldo saldo1 = new Saldo(null, 0.00, usuario1);
+		Saldo saldo2 = new Saldo(null, 0.00, usuario2);
 
-		saldoRepository.saveAll(Arrays.asList(saldo1));
+		saldoRepository.saveAll(Arrays.asList(saldo1, saldo2));
 
-		Banco banco1 = new Banco("NuBank");
-		Banco banco2 = new Banco("Caixa Econômica Federal");
+		Banco banco1 = new Banco(001, "Banco do Brasil S.A.");
+		Banco banco2 = new Banco(033, "Banco Santander (Brasil) S.A.");
+		Banco banco3 = new Banco(104, "Caixa Econômica Federal");
+		Banco banco4 = new Banco(237, "Banco Bradesco S.A.");
+		Banco banco5 = new Banco(341, "Banco Itaú S.A.");
+		Banco banco6 = new Banco(356, "Banco Real S.A. (antigo)");
+		Banco banco7 = new Banco(389, "Banco Mercantil do Brasil S.A.");
+		Banco banco8 = new Banco(399, "HSBC Bank Brasil S.A. – Banco Múltiplo");
+		Banco banco9 = new Banco(422, "Banco Safra S.A.");
+		Banco banco10 = new Banco(453, "Banco Rural S.A.");
+		Banco banco11 = new Banco(633, "Banco Rendimento S.A.");
+		Banco banco12 = new Banco(652, "Itaú Unibanco Holding S.A.");
+		Banco banco13 = new Banco(745, "Banco Citibank S.A.");
+		Banco banco14 = new Banco(260, "Nu Pagamentos S.A.");
+		Banco banco15 = new Banco(336, "Banco C6 S.A");
+		Banco banco16 = new Banco(077, "Banco Inter S.A.");
 
-		bancoRepository.saveAll(Arrays.asList(banco1, banco2));
+		bancoRepository.saveAll(Arrays.asList(banco1, banco2, banco3, banco4, banco5,
+				banco6, banco7, banco8, banco9, banco10, banco11, banco12, banco13,
+				banco14, banco15, banco16));
 
-		TipoConta tipoConta1 = new TipoConta(null, "Conta Digital");
-		TipoConta tipoConta2 = new TipoConta(null, "Conta Corrente");
-		TipoConta tipoConta3 = new TipoConta(null, "Conta Poupança");
+		TipoConta tipoConta1 = new TipoConta(null, "Conta-corrente");
+		TipoConta tipoConta2 = new TipoConta(null, "Conta poupança");
+		TipoConta tipoConta3 = new TipoConta(null, "Conta-salário");
 
 		tipoContaRepository.saveAll(Arrays.asList(tipoConta1, tipoConta2, tipoConta3));
 
-		Conta conta1 = new Conta(null, banco1, tipoConta1, usuario1);
+		Conta conta1 = new Conta(null, banco14, tipoConta1, usuario1);
 
 		contaRepository.saveAll(Arrays.asList(conta1));
 
@@ -156,7 +176,7 @@ public class DBService {
 
 		saldoBancarioRepository.saveAll(Arrays.asList(saldoBancario1));
 
-		Registro registro1 = new Registro(null, 0.00, hoje, tipoRegistro5, usuario1, item5);
+		Registro registro1 = new Registro(null, 0.00, hoje, tipoRegistro1, usuario1, item1);
 
 		registroRepository.saveAll(Arrays.asList(registro1));
 	}

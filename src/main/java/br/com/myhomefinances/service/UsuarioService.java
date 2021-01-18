@@ -49,7 +49,7 @@ public class UsuarioService {
 	public Usuario findById(Long id) {
 		Usuario usuarioAutenticado = UsuarioService.authenticated();
 
-		if (usuarioAutenticado == null || (!usuarioAutenticado.hasRole("ROLE_ADMIN") && !id.equals(usuarioAutenticado.getId()))) {
+		if ((!usuarioAutenticado.hasRole("ROLE_ADMIN") && !id.equals(usuarioAutenticado.getId()))) {
 			throw new AuthorizationException("Acesso negado");
 		}
 
@@ -92,7 +92,7 @@ public class UsuarioService {
 	public Usuario update(Usuario usuario) {
 		Usuario usuarioAutenticado = UsuarioService.authenticated();
 
-		if (usuarioAutenticado == null || !usuario.getId().equals(usuarioAutenticado.getId())) {
+		if (!usuario.getId().equals(usuarioAutenticado.getId())) {
 			throw new AuthorizationException("Acesso negado");
 		}
 
@@ -139,12 +139,14 @@ public class UsuarioService {
 	}
 
 	public static Usuario authenticated() {
-		try {
-			return (Usuario) SecurityContextHolder.getContext()
-					.getAuthentication().getPrincipal();
-		} catch (Exception e) {
-			return null;
+		Usuario usuario = (Usuario) SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal();
+
+		if (usuario == null) {
+			throw new AuthorizationException("Acesso negado");
 		}
+
+		return usuario;
 	}
 
 }

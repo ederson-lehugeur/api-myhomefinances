@@ -6,16 +6,15 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import br.com.myhomefinances.domain.Conta;
 import br.com.myhomefinances.domain.SaldoBancario;
 
 @Repository
 public interface SaldoBancarioRepository extends JpaRepository<SaldoBancario, Long> {
 
-	List<SaldoBancario> findByContaOrderByDataHoraCriacaoDesc(Conta conta);
+	List<SaldoBancario> findByContaIdOrderByDataHoraCriacaoDesc(Long idConta);
 
-	Optional<SaldoBancario> findByIdAndConta(Long id, Conta conta);
+	Optional<SaldoBancario> findByIdAndContaId(Long id, Long idConta);
 
-	SaldoBancario findFirstByContaOrderByDataHoraCriacaoDesc(Conta conta);
+	SaldoBancario findFirstByContaIdOrderByDataHoraCriacaoDesc(Long idConta);
 
 }

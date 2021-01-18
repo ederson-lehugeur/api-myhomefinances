@@ -18,7 +18,6 @@ import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.dto.RegistroDto;
 import br.com.myhomefinances.form.RegistroForm;
 import br.com.myhomefinances.repository.RegistroRepository;
-import br.com.myhomefinances.service.exception.AuthorizationException;
 import br.com.myhomefinances.service.exception.NegativeBalanceException;
 import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
@@ -43,11 +42,7 @@ public class RegistroService {
 	public Page<Registro> findAll(Pageable paginacao) {
 		Usuario usuario = UsuarioService.authenticated();
 
-		if (usuario == null) {
-			throw new AuthorizationException("Acesso negado");
-		}
-
-		Page<Registro> registrosPage = registroRepository.findByUsuario(usuario, paginacao);
+		Page<Registro> registrosPage = registroRepository.findByUsuarioId(usuario.getId(), paginacao);
 
 		return registrosPage;
 	}
@@ -55,23 +50,16 @@ public class RegistroService {
 	public Registro findById(Long id) {
 		Usuario usuario = UsuarioService.authenticated();
 
-		if (usuario == null) {
-			throw new AuthorizationException("Acesso negado");
-		}
-
-		Optional<Registro> registro = registroRepository.findByIdAndUsuario(id, usuario);
+		Optional<Registro> registro = registroRepository.findByIdAndUsuarioId(id, usuario.getId());
 
 		return registro.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
 				Registro.class.getName()));
 	}
 
+	// Refatorar
 	@Transactional
 	public Registro insert(Registro registro) {
 		Usuario usuario = UsuarioService.authenticated();
-
-		if (usuario == null) {
-			throw new AuthorizationException("Acesso negado");
-		}
 
 		registro.setId(null);
 
@@ -125,10 +113,6 @@ public class RegistroService {
 
 	public Registro convertToEntity(RegistroForm registroForm) {
 		Usuario usuario = UsuarioService.authenticated();
-
-		if (usuario == null) {
-			throw new AuthorizationException("Acesso negado");
-		}
 
 		TipoRegistro tipoRegistro = tipoRegistroService.findById(registroForm.getTipoRegistroId());
 

@@ -5,18 +5,19 @@ import java.io.Serializable;
 import br.com.myhomefinances.domain.Banco;
 
 public class BancoDto implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
+	private Integer codigo;
 	private String nome;
 
 	public BancoDto(Banco banco) {
-		id = banco.getId();
+		codigo = banco.getCodigo();
 		nome = banco.getNome();
 	}
 
-	public Long getId() {
-		return id;
+	public Integer getCodigo() {
+		return codigo;
 	}
 
 	public String getNome() {

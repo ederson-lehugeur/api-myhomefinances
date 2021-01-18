@@ -9,15 +9,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.com.myhomefinances.domain.Conta;
-import br.com.myhomefinances.domain.Usuario;
 
 @Repository
 public interface ContaRepository extends JpaRepository<Conta, Long> {
 
-	List<Conta> findAllByUsuario(Usuario usuario);
+	List<Conta> findAllByUsuarioId(Long idUsuario);
 
-	Optional<Conta> findByIdAndUsuario(Long id, Usuario usuario);
+	Optional<Conta> findByIdAndUsuarioId(Long id, Long idUsuario);
 
-	Page<Conta> findAllByUsuario(Usuario usuario, Pageable pageRequest);
+	Page<Conta> findAllByUsuarioId(Long idUsuario, Pageable pageRequest);
 
 }

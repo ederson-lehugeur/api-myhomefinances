@@ -11,7 +11,6 @@ import br.com.myhomefinances.domain.Saldo;
 import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.dto.SaldoDto;
 import br.com.myhomefinances.repository.SaldoRepository;
-import br.com.myhomefinances.service.exception.AuthorizationException;
 import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
 @Service
@@ -26,11 +25,7 @@ public class SaldoService {
 	public List<Saldo> findAll() {
 		Usuario usuario = UsuarioService.authenticated();
 
-		if (usuario == null) {
-			throw new AuthorizationException("Acesso negado");
-		}
-
-		List<Saldo> saldos = saldoRepository.findByUsuario(usuario);
+		List<Saldo> saldos = saldoRepository.findByUsuarioId(usuario.getId());
 
 		return saldos;
 	}
@@ -38,11 +33,7 @@ public class SaldoService {
 	public Saldo findById(Long id) {
 		Usuario usuario = UsuarioService.authenticated();
 
-		if (usuario == null) {
-			throw new AuthorizationException("Acesso negado");
-		}
-
-		Optional<Saldo> saldo = saldoRepository.findByIdAndUsuario(id, usuario);
+		Optional<Saldo> saldo = saldoRepository.findByIdAndUsuarioId(id, usuario.getId());
 
 		return saldo.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
 				Saldo.class.getName()));
@@ -51,11 +42,7 @@ public class SaldoService {
 	public Saldo findFirstOrderByDataHoraDesc() {
 		Usuario usuario = UsuarioService.authenticated();
 
-		if (usuario == null) {
-			throw new AuthorizationException("Acesso negado");
-		}
-
-		return saldoRepository.findFirstByUsuarioOrderByDataHoraCriacaoDesc(usuario);
+		return saldoRepository.findFirstByUsuarioIdOrderByDataHoraCriacaoDesc(usuario.getId());
 	}
 
 	public Saldo insert(Saldo saldo) {

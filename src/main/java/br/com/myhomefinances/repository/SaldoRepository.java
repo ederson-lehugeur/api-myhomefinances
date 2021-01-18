@@ -7,15 +7,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.com.myhomefinances.domain.Saldo;
-import br.com.myhomefinances.domain.Usuario;
 
 @Repository
 public interface SaldoRepository extends JpaRepository<Saldo, Long> {
 
-	List<Saldo> findByUsuario(Usuario usuario);
+	List<Saldo> findByUsuarioId(Long idUsuario);
 
-	Optional<Saldo> findByIdAndUsuario(Long id, Usuario usuario);
+	Optional<Saldo> findByIdAndUsuarioId(Long id, Long idUsuario);
 
-	Saldo findFirstByUsuarioOrderByDataHoraCriacaoDesc(Usuario usuario);
+	Saldo findFirstByUsuarioIdOrderByDataHoraCriacaoDesc(Long idUsuario);
 
 }

@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -17,7 +16,6 @@ import br.com.myhomefinances.domain.Perfil;
 import br.com.myhomefinances.dto.PerfilDto;
 import br.com.myhomefinances.form.PerfilForm;
 import br.com.myhomefinances.repository.PerfilRepository;
-import br.com.myhomefinances.service.exception.DataIntegrityException;
 import br.com.myhomefinances.service.exception.InvalidPerfilException;
 import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
@@ -73,11 +71,7 @@ public class PerfilService {
 	public void delete(Long id) {
 		findById(id);
 
-		try {
-			perfilRepository.deleteById(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possível excluir um perfil que está relacionado com um usuário.");
-		}
+		perfilRepository.deleteById(id);
 	}
 
 	public Perfil convertToEntity(PerfilForm perfilForm) {

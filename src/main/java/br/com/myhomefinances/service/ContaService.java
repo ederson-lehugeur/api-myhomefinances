@@ -35,7 +35,7 @@ public class ContaService {
 	public List<Conta> findAll() {
 		Usuario usuario = UsuarioService.authenticated();
 
-		List<Conta> contas = contaRepository.findAllByUsuario(usuario);
+		List<Conta> contas = contaRepository.findAllByUsuarioId(usuario.getId());
 
 		return contas;
 	}
@@ -43,7 +43,7 @@ public class ContaService {
 	public Conta findById(Long idConta) {
 		Usuario usuario = UsuarioService.authenticated();
 
-		Optional<Conta> conta = contaRepository.findByIdAndUsuario(idConta, usuario);
+		Optional<Conta> conta = contaRepository.findByIdAndUsuarioId(idConta, usuario.getId());
 
 		return conta.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
 				Conta.class.getName()));

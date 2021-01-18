@@ -3,12 +3,9 @@ package br.com.myhomefinances.domain;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Categoria implements Serializable {
@@ -21,17 +18,12 @@ public class Categoria implements Serializable {
 	private String nome;
 	private String complemento;
 
-	@ManyToOne
-	@JoinColumn(name="usuario_id", foreignKey=@ForeignKey(name="FK_CATEGORIA_USUARIO"))
-	private Usuario usuario;
-
 	public Categoria() {}
 
-	public Categoria(Long id, String nome, String complemento, Usuario usuario) {
+	public Categoria(Long id, String nome, String complemento) {
 		this.id = id;
 		this.nome = nome;
 		this.complemento = complemento;
-		this.usuario = usuario;
 	}
 
 	public Long getId() {
@@ -56,14 +48,6 @@ public class Categoria implements Serializable {
 
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
-	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
 	}
 
 	@Override
