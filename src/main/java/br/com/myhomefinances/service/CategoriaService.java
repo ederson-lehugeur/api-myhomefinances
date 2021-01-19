@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.myhomefinances.domain.Categoria;
@@ -22,8 +24,8 @@ public class CategoriaService {
 	@Autowired
 	UsuarioService usuarioService;
 
-	public List<Categoria> findAll() {
-		List<Categoria> categorias = categoriaRepository.findAll();
+	public Page<Categoria> findAll(Pageable paginacao) {
+		Page<Categoria> categorias = categoriaRepository.findAll(paginacao);
 
 		return categorias;
 	}
@@ -62,6 +64,10 @@ public class CategoriaService {
 
 	public List<CategoriaDto> convertToDto(List<Categoria> categorias) {
 		return categorias.stream().map(CategoriaDto::new).collect(Collectors.toList());
+	}
+
+	public Page<CategoriaDto> convertToDto(Page<Categoria> categoriasPage) {
+		return categoriasPage.map(CategoriaDto::new);
 	}
 
 	private void updateData(Categoria novaCategoria, Categoria categoria) {
