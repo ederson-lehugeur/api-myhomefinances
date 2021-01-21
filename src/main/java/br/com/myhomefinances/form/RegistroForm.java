@@ -23,8 +23,6 @@ public class RegistroForm implements Serializable {
 	@NotNull
 	private Long itemId;
 
-	private Long usuarioId;
-
 	public Double getValor() {
 		return valor;
 	}
@@ -55,14 +53,6 @@ public class RegistroForm implements Serializable {
 
 	public void setItemId(Long itemId) {
 		this.itemId = itemId;
-	}
-
-	public Long getUsuarioId() {
-		return usuarioId;
-	}
-
-	public void setUsuarioId(Long usuarioId) {
-		this.usuarioId = usuarioId;
 	}
 
 }

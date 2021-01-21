@@ -7,10 +7,12 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.myhomefinances.domain.Registro;
 import br.com.myhomefinances.domain.Saldo;
 import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.dto.SaldoDto;
 import br.com.myhomefinances.repository.SaldoRepository;
+import br.com.myhomefinances.service.exception.NegativeBalanceException;
 import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
 @Service
@@ -55,6 +57,26 @@ public class SaldoService {
 
 	public List<SaldoDto> convertToDto(List<Saldo> saldos) {
 		return saldos.stream().map(SaldoDto::new).collect(Collectors.toList());
+	}
+
+	public void updateSaldo(Registro registro) {
+		Saldo saldo = findFirstOrderByDataHoraDesc();
+
+		Double valor;
+
+		if (registro.getTipoRegistro().getEhRegistroDeSaida() == 1) {
+			valor = saldo.getSaldo() - registro.getValor();
+		} else {
+			valor = saldo.getSaldo() + registro.getValor();
+		}
+
+		if (valor < 0) {
+			throw new NegativeBalanceException("Saldo com valor negativo");
+		}
+
+		saldo.setSaldo(valor);
+
+		saldo = saldoRepository.save(saldo);
 	}
 
 }

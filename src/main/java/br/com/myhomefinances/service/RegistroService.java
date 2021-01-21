@@ -12,13 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.myhomefinances.domain.Item;
 import br.com.myhomefinances.domain.Registro;
-import br.com.myhomefinances.domain.Saldo;
 import br.com.myhomefinances.domain.TipoRegistro;
 import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.dto.RegistroDto;
 import br.com.myhomefinances.form.RegistroForm;
 import br.com.myhomefinances.repository.RegistroRepository;
-import br.com.myhomefinances.service.exception.NegativeBalanceException;
 import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
 @Service
@@ -56,57 +54,40 @@ public class RegistroService {
 				Registro.class.getName()));
 	}
 
-	// Refatorar
 	@Transactional
 	public Registro insert(Registro registro) {
 		Usuario usuario = UsuarioService.authenticated();
 
 		registro.setId(null);
+		registro.setUsuario(usuario);
+
+		saldoService.updateSaldo(registro);
 
 		registro = registroRepository.save(registro);
 
-		Saldo saldo = saldoService.findFirstOrderByDataHoraDesc();
-
-		Double valor;
-
-		if (registro.getTipoRegistro().getEhRegistroDeSaida() == 1) {
-			valor = saldo.getSaldo() - registro.getValor();
-		} else {
-			valor = saldo.getSaldo() + registro.getValor();
-		}
-
-		if (valor < 0) {
-			throw new NegativeBalanceException("Saldo com valor negativo");
-		}
-
-		Saldo novoSaldo = new Saldo(null, valor, registro.getUsuario());
-
-		saldoService.insert(novoSaldo);
-
 		return registro;
+	}
+
+	@Transactional
+	public Registro update(Registro registro) {
+		Usuario usuario = UsuarioService.authenticated();
+
+		registro.setUsuario(usuario);
+
+		Registro novoRegistro = findById(registro.getId());
+
+		updateData(novoRegistro, registro);
+
+		saldoService.updateSaldo(novoRegistro);
+
+		return registroRepository.save(novoRegistro);
 	}
 
 	@Transactional
 	public void delete(Long id) {
 		Registro registro = findById(id);
 
-		Saldo saldo = saldoService.findFirstOrderByDataHoraDesc();
-
-		Double valor;
-
-		if (registro.getTipoRegistro().getEhRegistroDeSaida() == 1) {
-			valor = saldo.getSaldo() + registro.getValor();
-		} else {
-			valor = saldo.getSaldo() - registro.getValor();
-		}
-
-		if (valor < 0) {
-			throw new NegativeBalanceException("Saldo com valor negativo");
-		}
-
-		Saldo novoSaldo = new Saldo(null, valor, registro.getUsuario());
-
-		saldoService.insert(novoSaldo);
+		saldoService.updateSaldo(registro);
 
 		registroRepository.deleteById(id);
 	}
@@ -128,6 +109,14 @@ public class RegistroService {
 
 	public Page<RegistroDto> convertToDto(Page<Registro> registrosPage) {
 		return registrosPage.map(RegistroDto::new);
+	}
+
+	private void updateData(Registro novoRegistro, Registro registro) {
+		novoRegistro.setItem(registro.getItem());
+		novoRegistro.setValor(registro.getValor());
+		novoRegistro.setTipoRegistro(registro.getTipoRegistro());
+		novoRegistro.setDataHora(registro.getDataHora());
+		novoRegistro.setUsuario(registro.getUsuario());
 	}
 
 }
