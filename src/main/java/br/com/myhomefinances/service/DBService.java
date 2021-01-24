@@ -1,7 +1,6 @@
 package br.com.myhomefinances.service;
 
 import java.text.ParseException;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import br.com.myhomefinances.domain.Categoria;
 import br.com.myhomefinances.domain.Conta;
 import br.com.myhomefinances.domain.Item;
 import br.com.myhomefinances.domain.Perfil;
-import br.com.myhomefinances.domain.Registro;
 import br.com.myhomefinances.domain.Saldo;
 import br.com.myhomefinances.domain.SaldoBancario;
 import br.com.myhomefinances.domain.TipoConta;
@@ -97,21 +95,17 @@ public class DBService {
 		Usuario usuario1 = new Usuario(null, "Ederson", "Lehugeur", "eder.lehugeur@gmail.com",
 				bCryptPasswordEncoder.encode("Q1W2E3R4"));
 
-		Usuario usuario2 = new Usuario(null, "Fulano", "da Silva", "fulano@gmail.com",
-				bCryptPasswordEncoder.encode("Q1W2E3R4"));
-
 		Perfil perfil1 = new Perfil(null, "ROLE_CLIENTE");
 		Perfil perfil2 = new Perfil(null, "ROLE_ADMIN");
 
 		usuario0.getPerfis().addAll(Arrays.asList(perfil1, perfil2));
 		usuario1.getPerfis().addAll(Arrays.asList(perfil1));
-		usuario2.getPerfis().addAll(Arrays.asList(perfil1));
 
-		perfil1.getUsuarios().addAll(Arrays.asList(usuario0, usuario1, usuario2));
+		perfil1.getUsuarios().addAll(Arrays.asList(usuario0, usuario1));
 		perfil2.getUsuarios().addAll(Arrays.asList(usuario0));
 
 		perfilRepository.saveAll(Arrays.asList(perfil1, perfil2));
-		usuarioRepository.saveAll(Arrays.asList(usuario0, usuario1, usuario2));
+		usuarioRepository.saveAll(Arrays.asList(usuario0, usuario1));
 
 		Item item1 = new Item("Saldo inicial", null, categoria1, usuario1);
 		Item item2 = new Item("Saque", null, categoria1, usuario1);
@@ -125,21 +119,14 @@ public class DBService {
 		itemRepository.saveAll(Arrays.asList(item1, item2, item3, item4,
 				item5));
 
-		TipoRegistro tipoRegistro1 = new TipoRegistro(null, "Saldo inicial", 0);
-		TipoRegistro tipoRegistro2 = new TipoRegistro(null, "Pagamento", 1);
-		TipoRegistro tipoRegistro3 = new TipoRegistro(null, "Saque", 0);
-		TipoRegistro tipoRegistro4 = new TipoRegistro(null, "Ganho", 0);
-		TipoRegistro tipoRegistro5 = new TipoRegistro(null, "Salário", 0);
+		TipoRegistro tipoRegistro1 = new TipoRegistro(null, "Entrada", 0);
+		TipoRegistro tipoRegistro2 = new TipoRegistro(null, "Saida", 1);
 
-		tipoRegistroRepository.saveAll(Arrays.asList(tipoRegistro1, tipoRegistro2,
-				tipoRegistro3, tipoRegistro4, tipoRegistro5));
-
-		LocalDateTime hoje = LocalDateTime.now();
+		tipoRegistroRepository.saveAll(Arrays.asList(tipoRegistro1, tipoRegistro2));
 
 		Saldo saldo1 = new Saldo(null, 0.00, usuario1);
-		Saldo saldo2 = new Saldo(null, 0.00, usuario2);
 
-		saldoRepository.saveAll(Arrays.asList(saldo1, saldo2));
+		saldoRepository.saveAll(Arrays.asList(saldo1));
 
 		Banco banco1 = new Banco(001, "Banco do Brasil S.A.");
 		Banco banco2 = new Banco(033, "Banco Santander (Brasil) S.A.");
@@ -165,19 +152,18 @@ public class DBService {
 		TipoConta tipoConta1 = new TipoConta(null, "Conta-corrente");
 		TipoConta tipoConta2 = new TipoConta(null, "Conta poupança");
 		TipoConta tipoConta3 = new TipoConta(null, "Conta-salário");
+		TipoConta tipoConta4 = new TipoConta(null, "Conta universitária");
+		TipoConta tipoConta5 = new TipoConta(null, "Conta digital");
 
-		tipoContaRepository.saveAll(Arrays.asList(tipoConta1, tipoConta2, tipoConta3));
+		tipoContaRepository.saveAll(Arrays.asList(tipoConta1, tipoConta2, tipoConta3, tipoConta4, tipoConta5));
 
-		Conta conta1 = new Conta(null, banco14, tipoConta1, usuario1);
+		Conta conta1 = new Conta(null, banco14, tipoConta5, usuario1);
 
 		contaRepository.saveAll(Arrays.asList(conta1));
 
 		SaldoBancario saldoBancario1 = new SaldoBancario(null, 0.00, conta1);
 
 		saldoBancarioRepository.saveAll(Arrays.asList(saldoBancario1));
-
-		Registro registro1 = new Registro(null, 0.00, hoje, tipoRegistro1, usuario1, item1);
-
-		registroRepository.saveAll(Arrays.asList(registro1));
 	}
+
 }
