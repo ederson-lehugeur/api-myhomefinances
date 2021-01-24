@@ -24,27 +24,13 @@ public class SaldoService {
 	@Autowired
 	UsuarioService usuarioService;
 
-	public List<Saldo> findAll() {
+	public Saldo find() {
 		Usuario usuario = UsuarioService.authenticated();
 
-		List<Saldo> saldos = saldoRepository.findByUsuarioId(usuario.getId());
-
-		return saldos;
-	}
-
-	public Saldo findById(Long id) {
-		Usuario usuario = UsuarioService.authenticated();
-
-		Optional<Saldo> saldo = saldoRepository.findByIdAndUsuarioId(id, usuario.getId());
+		Optional<Saldo> saldo = saldoRepository.findByUsuarioId(usuario.getId());
 
 		return saldo.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
 				Saldo.class.getName()));
-	}
-
-	public Saldo findFirstOrderByDataHoraDesc() {
-		Usuario usuario = UsuarioService.authenticated();
-
-		return saldoRepository.findFirstByUsuarioIdOrderByDataHoraCriacaoDesc(usuario.getId());
 	}
 
 	public Saldo insert(Saldo saldo) {
@@ -59,8 +45,8 @@ public class SaldoService {
 		return saldos.stream().map(SaldoDto::new).collect(Collectors.toList());
 	}
 
-	public void updateSaldo(Registro registro) {
-		Saldo saldo = findFirstOrderByDataHoraDesc();
+	public void updateSaldoDeRegistroAdicionado(Registro registro) {
+		Saldo saldo = find();
 
 		Double valor;
 
@@ -70,8 +56,49 @@ public class SaldoService {
 			valor = saldo.getSaldo() + registro.getValor();
 		}
 
-		if (valor < 0) {
-			throw new NegativeBalanceException("Saldo com valor negativo");
+		if (valor == null || valor < 0) {
+			throw new NegativeBalanceException("Saldo inválido");
+		}
+
+		saldo.setSaldo(valor);
+
+		saldo = saldoRepository.save(saldo);
+	}
+
+	public void updateSaldoDeRegistroDeletado(Registro registro) {
+		Saldo saldo = find();
+
+		Double valor;
+
+		if (registro.getTipoRegistro().getEhRegistroDeSaida() == 1) {
+			valor = saldo.getSaldo() + registro.getValor();
+		} else {
+			valor = saldo.getSaldo() - registro.getValor();
+		}
+
+		if (valor == null || valor < 0) {
+			throw new NegativeBalanceException("Saldo inválido");
+		}
+
+		saldo.setSaldo(valor);
+
+		saldo = saldoRepository.save(saldo);
+	}
+
+	public void updateSaldoDeRegistroAtualizado(Registro registro) {
+		Saldo saldo = find();
+
+		Double valor;
+		Double diferenca = registro.getValor() - registro.getValorPreAtualizacao();
+
+		if (registro.getTipoRegistro().getEhRegistroDeSaida() == 1) {
+			valor = saldo.getSaldo() + diferenca;
+		} else {
+			valor = saldo.getSaldo() + diferenca;
+		}
+
+		if (valor == null || valor < 0) {
+			throw new NegativeBalanceException("Saldo inválido");
 		}
 
 		saldo.setSaldo(valor);

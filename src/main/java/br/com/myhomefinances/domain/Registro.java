@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 @Entity
 public class Registro implements Serializable {
@@ -22,6 +23,9 @@ public class Registro implements Serializable {
 	private Double valor;
 	private LocalDateTime dataHora;
 	private LocalDateTime dataHoraCriacao = LocalDateTime.now();
+
+	@Transient
+    private Double valorPreAtualizacao;
 
 	@ManyToOne
 	@JoinColumn(name="tiporegistro_id", foreignKey=@ForeignKey(name="FK_REGISTRO_TIPOREGISTRO"))
@@ -98,6 +102,14 @@ public class Registro implements Serializable {
 
 	public void setItem(Item item) {
 		this.item = item;
+	}
+
+	public Double getValorPreAtualizacao() {
+		return valorPreAtualizacao;
+	}
+
+	public void setValorPreAtualizacao(Double valorPreAtualizacao) {
+		this.valorPreAtualizacao = valorPreAtualizacao;
 	}
 
 	@Override

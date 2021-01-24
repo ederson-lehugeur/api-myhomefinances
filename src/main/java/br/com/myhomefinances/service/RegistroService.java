@@ -61,7 +61,7 @@ public class RegistroService {
 		registro.setId(null);
 		registro.setUsuario(usuario);
 
-		saldoService.updateSaldo(registro);
+		saldoService.updateSaldoDeRegistroAdicionado(registro);
 
 		registro = registroRepository.save(registro);
 
@@ -70,15 +70,11 @@ public class RegistroService {
 
 	@Transactional
 	public Registro update(Registro registro) {
-		Usuario usuario = UsuarioService.authenticated();
-
-		registro.setUsuario(usuario);
-
 		Registro novoRegistro = findById(registro.getId());
 
 		updateData(novoRegistro, registro);
 
-		saldoService.updateSaldo(novoRegistro);
+		saldoService.updateSaldoDeRegistroAtualizado(novoRegistro);
 
 		return registroRepository.save(novoRegistro);
 	}
@@ -87,7 +83,7 @@ public class RegistroService {
 	public void delete(Long id) {
 		Registro registro = findById(id);
 
-		saldoService.updateSaldo(registro);
+		saldoService.updateSaldoDeRegistroDeletado(registro);
 
 		registroRepository.deleteById(id);
 	}
@@ -113,6 +109,7 @@ public class RegistroService {
 
 	private void updateData(Registro novoRegistro, Registro registro) {
 		novoRegistro.setItem(registro.getItem());
+		novoRegistro.setValorPreAtualizacao(novoRegistro.getValor());
 		novoRegistro.setValor(registro.getValor());
 		novoRegistro.setTipoRegistro(registro.getTipoRegistro());
 		novoRegistro.setDataHora(registro.getDataHora());

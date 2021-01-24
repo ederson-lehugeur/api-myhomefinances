@@ -1,7 +1,5 @@
 package br.com.myhomefinances.resource;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,16 +17,9 @@ public class SaldoResource {
 	@Autowired
 	SaldoService saldoService;
 
-	@GetMapping
-	public ResponseEntity<List<SaldoDto>> findAll() {
-		List<Saldo> saldos = saldoService.findAll();
-
-		return ResponseEntity.ok().body(saldoService.convertToDto(saldos));
-	}
-
 	@GetMapping(value="/last")
 	public ResponseEntity<SaldoDto> findLast() {
-		Saldo saldo = saldoService.findFirstOrderByDataHoraDesc();
+		Saldo saldo = saldoService.find();
 
 		return ResponseEntity.ok().body(new SaldoDto(saldo));
 	}
