@@ -92,7 +92,7 @@ public class SaldoService {
 		Double diferenca = registro.getValor() - registro.getValorPreAtualizacao();
 
 		if (registro.getTipoRegistro().getEhRegistroDeSaida() == 1) {
-			valor = saldo.getSaldo() + diferenca;
+			valor = saldo.getSaldo() - diferenca;
 		} else {
 			valor = saldo.getSaldo() + diferenca;
 		}
