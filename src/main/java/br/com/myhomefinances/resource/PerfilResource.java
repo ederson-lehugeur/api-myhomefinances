@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.myhomefinances.domain.Perfil;
-import br.com.myhomefinances.dto.PerfilDto;
-import br.com.myhomefinances.form.PerfilForm;
+import br.com.myhomefinances.resource.dto.PerfilDto;
+import br.com.myhomefinances.resource.form.PerfilForm;
 import br.com.myhomefinances.service.PerfilService;
 
 @RestController

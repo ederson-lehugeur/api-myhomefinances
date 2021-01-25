@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.myhomefinances.domain.Categoria;
-import br.com.myhomefinances.dto.CategoriaDto;
-import br.com.myhomefinances.form.CategoriaForm;
+import br.com.myhomefinances.resource.dto.CategoriaDto;
+import br.com.myhomefinances.resource.form.CategoriaForm;
 import br.com.myhomefinances.service.CategoriaService;
 
 @RestController

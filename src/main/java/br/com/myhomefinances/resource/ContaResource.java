@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.myhomefinances.domain.Conta;
-import br.com.myhomefinances.dto.ContaDto;
-import br.com.myhomefinances.form.ContaForm;
+import br.com.myhomefinances.resource.dto.ContaDto;
+import br.com.myhomefinances.resource.form.ContaForm;
 import br.com.myhomefinances.service.ContaService;
 import br.com.myhomefinances.service.UsuarioService;
 

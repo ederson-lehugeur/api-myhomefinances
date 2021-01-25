@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import br.com.myhomefinances.domain.Conta;
 import br.com.myhomefinances.domain.SaldoBancario;
-import br.com.myhomefinances.dto.SaldoBancarioDto;
 import br.com.myhomefinances.repository.SaldoBancarioRepository;
+import br.com.myhomefinances.resource.dto.SaldoBancarioDto;
 import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
 @Service

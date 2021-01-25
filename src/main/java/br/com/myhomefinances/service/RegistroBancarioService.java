@@ -17,9 +17,9 @@ import br.com.myhomefinances.domain.RegistroBancario;
 import br.com.myhomefinances.domain.SaldoBancario;
 import br.com.myhomefinances.domain.TipoRegistro;
 import br.com.myhomefinances.domain.Usuario;
-import br.com.myhomefinances.dto.RegistroBancarioDto;
-import br.com.myhomefinances.form.RegistroBancarioForm;
 import br.com.myhomefinances.repository.RegistroBancarioRepository;
+import br.com.myhomefinances.resource.dto.RegistroBancarioDto;
+import br.com.myhomefinances.resource.form.RegistroBancarioForm;
 import br.com.myhomefinances.service.exception.AuthorizationException;
 import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 

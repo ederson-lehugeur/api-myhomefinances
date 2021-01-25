@@ -14,9 +14,9 @@ import br.com.myhomefinances.domain.Item;
 import br.com.myhomefinances.domain.Registro;
 import br.com.myhomefinances.domain.TipoRegistro;
 import br.com.myhomefinances.domain.Usuario;
-import br.com.myhomefinances.dto.RegistroDto;
-import br.com.myhomefinances.form.RegistroForm;
 import br.com.myhomefinances.repository.RegistroRepository;
+import br.com.myhomefinances.resource.dto.RegistroDto;
+import br.com.myhomefinances.resource.form.RegistroForm;
 import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
 @Service

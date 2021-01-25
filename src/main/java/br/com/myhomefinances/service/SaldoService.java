@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import br.com.myhomefinances.domain.Registro;
 import br.com.myhomefinances.domain.Saldo;
 import br.com.myhomefinances.domain.Usuario;
-import br.com.myhomefinances.dto.SaldoDto;
 import br.com.myhomefinances.repository.SaldoRepository;
+import br.com.myhomefinances.resource.dto.SaldoDto;
 import br.com.myhomefinances.service.exception.NegativeBalanceException;
 import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 

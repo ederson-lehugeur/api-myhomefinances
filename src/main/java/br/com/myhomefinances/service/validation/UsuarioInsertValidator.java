@@ -10,9 +10,9 @@ import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.myhomefinances.domain.Usuario;
-import br.com.myhomefinances.form.UsuarioNewForm;
 import br.com.myhomefinances.repository.UsuarioRepository;
 import br.com.myhomefinances.resource.exception.FieldMessage;
+import br.com.myhomefinances.resource.form.UsuarioNewForm;
 
 public class UsuarioInsertValidator implements ConstraintValidator<UsuarioInsert, UsuarioNewForm> {
 

@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.myhomefinances.domain.RegistroBancario;
-import br.com.myhomefinances.dto.RegistroBancarioDto;
-import br.com.myhomefinances.form.RegistroBancarioForm;
+import br.com.myhomefinances.resource.dto.RegistroBancarioDto;
+import br.com.myhomefinances.resource.form.RegistroBancarioForm;
 import br.com.myhomefinances.service.RegistroBancarioService;
 
 @RestController

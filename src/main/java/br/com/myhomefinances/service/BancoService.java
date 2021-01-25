@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.myhomefinances.domain.Banco;
-import br.com.myhomefinances.dto.BancoDto;
-import br.com.myhomefinances.form.BancoForm;
 import br.com.myhomefinances.repository.BancoRepository;
+import br.com.myhomefinances.resource.dto.BancoDto;
+import br.com.myhomefinances.resource.form.BancoForm;
 import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
 @Service

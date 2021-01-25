@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerMapping;
 
 import br.com.myhomefinances.domain.Usuario;
-import br.com.myhomefinances.form.UsuarioUpdateForm;
 import br.com.myhomefinances.repository.UsuarioRepository;
 import br.com.myhomefinances.resource.exception.FieldMessage;
+import br.com.myhomefinances.resource.form.UsuarioUpdateForm;
 
 public class UsuarioUpdateValidator implements ConstraintValidator<UsuarioUpdate, UsuarioUpdateForm> {
 

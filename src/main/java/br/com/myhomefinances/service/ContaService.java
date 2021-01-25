@@ -12,9 +12,9 @@ import br.com.myhomefinances.domain.Banco;
 import br.com.myhomefinances.domain.Conta;
 import br.com.myhomefinances.domain.TipoConta;
 import br.com.myhomefinances.domain.Usuario;
-import br.com.myhomefinances.dto.ContaDto;
-import br.com.myhomefinances.form.ContaForm;
 import br.com.myhomefinances.repository.ContaRepository;
+import br.com.myhomefinances.resource.dto.ContaDto;
+import br.com.myhomefinances.resource.form.ContaForm;
 import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
 @Service

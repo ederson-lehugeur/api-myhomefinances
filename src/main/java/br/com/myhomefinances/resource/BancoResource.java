@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.myhomefinances.domain.Banco;
-import br.com.myhomefinances.dto.BancoDto;
-import br.com.myhomefinances.form.BancoForm;
+import br.com.myhomefinances.resource.dto.BancoDto;
+import br.com.myhomefinances.resource.form.BancoForm;
 import br.com.myhomefinances.service.BancoService;
 
 @RestController

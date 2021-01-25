@@ -13,9 +13,9 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.myhomefinances.domain.Perfil;
-import br.com.myhomefinances.dto.PerfilDto;
-import br.com.myhomefinances.form.PerfilForm;
 import br.com.myhomefinances.repository.PerfilRepository;
+import br.com.myhomefinances.resource.dto.PerfilDto;
+import br.com.myhomefinances.resource.form.PerfilForm;
 import br.com.myhomefinances.service.exception.InvalidPerfilException;
 import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 

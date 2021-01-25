@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.myhomefinances.domain.TipoRegistro;
-import br.com.myhomefinances.dto.TipoRegistroDto;
-import br.com.myhomefinances.form.TipoRegistroForm;
+import br.com.myhomefinances.resource.dto.TipoRegistroDto;
+import br.com.myhomefinances.resource.form.TipoRegistroForm;
 import br.com.myhomefinances.service.TipoRegistroService;
 
 @RestController

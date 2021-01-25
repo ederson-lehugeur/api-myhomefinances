@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.myhomefinances.domain.Usuario;
-import br.com.myhomefinances.dto.UsuarioDto;
-import br.com.myhomefinances.form.UsuarioNewForm;
-import br.com.myhomefinances.form.UsuarioUpdateForm;
+import br.com.myhomefinances.resource.dto.UsuarioDto;
+import br.com.myhomefinances.resource.form.UsuarioNewForm;
+import br.com.myhomefinances.resource.form.UsuarioUpdateForm;
 import br.com.myhomefinances.service.UsuarioService;
 
 @RestController

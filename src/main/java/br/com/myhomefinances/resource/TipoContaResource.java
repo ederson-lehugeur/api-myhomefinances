@@ -21,8 +21,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.myhomefinances.domain.TipoConta;
-import br.com.myhomefinances.dto.TipoContaDto;
-import br.com.myhomefinances.form.TipoContaForm;
+import br.com.myhomefinances.resource.dto.TipoContaDto;
+import br.com.myhomefinances.resource.form.TipoContaForm;
 import br.com.myhomefinances.service.TipoContaService;
 
 @RestController

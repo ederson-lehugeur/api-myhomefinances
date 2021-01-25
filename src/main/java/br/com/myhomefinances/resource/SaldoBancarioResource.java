@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.myhomefinances.domain.SaldoBancario;
-import br.com.myhomefinances.dto.SaldoBancarioDto;
+import br.com.myhomefinances.resource.dto.SaldoBancarioDto;
 import br.com.myhomefinances.service.SaldoBancarioService;
 
 @RestController

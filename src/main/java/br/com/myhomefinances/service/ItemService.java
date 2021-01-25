@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 import br.com.myhomefinances.domain.Categoria;
 import br.com.myhomefinances.domain.Item;
 import br.com.myhomefinances.domain.Usuario;
-import br.com.myhomefinances.dto.ItemDto;
-import br.com.myhomefinances.form.ItemForm;
 import br.com.myhomefinances.repository.ItemRepository;
+import br.com.myhomefinances.resource.dto.ItemDto;
+import br.com.myhomefinances.resource.form.ItemForm;
 import br.com.myhomefinances.service.exception.ObjectNotFoundException;
 
 @Service
