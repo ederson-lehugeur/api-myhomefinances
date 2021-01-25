@@ -34,7 +34,7 @@ class UsuarioServiceTest {
 	void init() {
 		if (!initialized) {
 			Perfil perfil1 = new Perfil(null, "ROLE_ADMIN");
-			Perfil perfil2 = new Perfil(null, "ROLE_CLIENTE");
+			Perfil perfil2 = new Perfil(null, "ROLE_USER");
 
 			perfilRepository.saveAll(Arrays.asList(perfil1, perfil2));
 
@@ -49,7 +49,7 @@ class UsuarioServiceTest {
 		Usuario novoUsuario = usuarioService.insert(usuario);
 
 		Assertions.assertEquals(1, novoUsuario.getPerfis().size());
-		Assertions.assertEquals("ROLE_CLIENTE", novoUsuario.getPerfis().get(0).getNome());
+		Assertions.assertEquals("ROLE_USER", novoUsuario.getPerfis().get(0).getNome());
 	}
 
 	@Test

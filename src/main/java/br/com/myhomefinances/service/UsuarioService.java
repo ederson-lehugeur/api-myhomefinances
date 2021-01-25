@@ -79,7 +79,7 @@ public class UsuarioService {
 	public Usuario insert(Usuario usuario) {
 		usuario.setId(null);
 
-		Perfil perfil = perfilService.findByNome("ROLE_CLIENTE");
+		Perfil perfil = perfilService.findByNome("ROLE_USER");
 
 		usuario.getPerfis().add(perfil);
 

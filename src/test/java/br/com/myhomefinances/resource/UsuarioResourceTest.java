@@ -32,7 +32,7 @@ class UsuarioResourceTest {
 	@Test
 	void testarCriacaoDeUsuarioComTodosCamposPreenchidosCorretamente201() throws Exception {
 		Perfil perfil1 = new Perfil(null, "ROLE_ADMIN");
-		Perfil perfil2 = new Perfil(null, "ROLE_CLIENTE");
+		Perfil perfil2 = new Perfil(null, "ROLE_USER");
 
 		perfilRepository.saveAll(Arrays.asList(perfil1, perfil2));
 
