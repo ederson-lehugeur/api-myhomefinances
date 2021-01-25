@@ -85,7 +85,7 @@ public class UsuarioService {
 
 		usuario = usuarioRepository.save(usuario);
 
-		Saldo saldo = new Saldo(null, 0.0, usuario);
+		Saldo saldo = new Saldo(null, 0D, usuario);
 
 		saldoService.insert(saldo);
 

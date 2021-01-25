@@ -1,6 +1,7 @@
 package br.com.myhomefinances.resource;
 
 import java.net.URI;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import br.com.myhomefinances.domain.Perfil;
+import br.com.myhomefinances.repository.PerfilRepository;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -22,8 +26,16 @@ class UsuarioResourceTest {
 	@Autowired
 	private MockMvc mockMvc;
 
+	@Autowired
+	private PerfilRepository perfilRepository;
+
 	@Test
 	void testarCriacaoDeUsuarioComTodosCamposPreenchidosCorretamente201() throws Exception {
+		Perfil perfil1 = new Perfil(null, "ROLE_ADMIN");
+		Perfil perfil2 = new Perfil(null, "ROLE_CLIENTE");
+
+		perfilRepository.saveAll(Arrays.asList(perfil1, perfil2));
+
 		URI uri = new URI(BASE_URL);
 		String json = "{\"nome\":\"Alan\", \"sobrenome\":\"Turing\", \"email\":\"alanturing@gmail.com\", \"senha\":\"Q1W2E3R4\"}";
 
