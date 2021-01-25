@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import br.com.myhomefinances.domain.Perfil;
 import br.com.myhomefinances.domain.Saldo;
 import br.com.myhomefinances.domain.Usuario;
 import br.com.myhomefinances.dto.UsuarioDto;
@@ -77,6 +78,10 @@ public class UsuarioService {
 
 	public Usuario insert(Usuario usuario) {
 		usuario.setId(null);
+
+		Perfil perfil = perfilService.findByNome("ROLE_CLIENTE");
+
+		usuario.getPerfis().add(perfil);
 
 		usuario = usuarioRepository.save(usuario);
 

@@ -40,6 +40,13 @@ public class PerfilService {
 				Perfil.class.getName()));
 	}
 
+	public Perfil findByNome(String nome) {
+		Optional<Perfil> perfil = perfilRepository.findByNome(nome);
+
+		return perfil.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!",
+				Perfil.class.getName()));
+	}
+
 	public Page<Perfil> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 

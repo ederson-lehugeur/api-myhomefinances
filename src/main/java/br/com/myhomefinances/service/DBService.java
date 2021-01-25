@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ import br.com.myhomefinances.repository.TipoRegistroRepository;
 import br.com.myhomefinances.repository.UsuarioRepository;
 
 @Service
+@Profile(value={"test", "dev"})
 public class DBService {
 
 	@Autowired
