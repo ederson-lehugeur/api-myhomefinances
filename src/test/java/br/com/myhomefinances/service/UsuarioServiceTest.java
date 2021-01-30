@@ -54,7 +54,7 @@ class UsuarioServiceTest {
 
 	@Test
 	void testarContaComSaldoZeroNaCriacaoDeUsuario_Sucesso() {
-		Usuario usuario = new Usuario(null, "Alan", "Turing", "alanturing@gmail.com", "$2a$10$VsLSsK65i7UVSW3c/SS9Vexv.sdizQTQHQgyrQ5BuD4gPKwfo94Bi");
+		Usuario usuario = new Usuario(null, "Ada", "Lovelace", "adalovelace@gmail.com", "$2a$10$VsLSsK65i7UVSW3c/SS9Vexv.sdizQTQHQgyrQ5BuD4gPKwfo94Bi");
 
 		Usuario novoUsuario = usuarioService.insert(usuario);
 
